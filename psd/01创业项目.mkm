@@ -1,0 +1,13 @@
+<MKM version="2.0" imageFileUrl="file:///C:/wamp/www/github/danfei/psd/01%e5%88%9b%e4%b8%9a%e9%a1%b9%e7%9b%ae.psd">
+  <Marks>
+    <LengthMark direction="12" color="16711680" length="30" x="0" y="682"/>
+    <LengthMark direction="3" color="16711680" length="3" x="209" y="224"/>
+    <LengthMark direction="3" color="16711680" length="20" x="494" y="561"/>
+    <LengthMark direction="3" color="16711680" length="20" x="493" y="464"/>
+    <ColorMark defaultDirection="9" colorSystem="hex" direction="9" color="16711680" targetColor="4884462" offsetX="25" offsetY="10" x="128" y="225"/>
+    <ColorMark defaultDirection="9" colorSystem="hex" direction="9" color="16711680" targetColor="16412503" offsetX="25" offsetY="10" x="121" y="827"/>
+    <LengthMark direction="12" color="16711680" length="142" x="52" y="859"/>
+    <LengthMark direction="12" color="16711680" length="20" x="39" y="552"/>
+    <LengthMark direction="12" color="16711680" length="18" x="31" y="325"/>
+  </Marks>
+</MKM>

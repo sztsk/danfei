@@ -1,0 +1,32 @@
+<ion-view title="{{data.title}}" class="detail">
+    <ion-content class="has-header">
+        <img class="detail_banner" src="{{data.banner}}" alt="" />
+        <article class="detail_cnt">
+            <h1 class="detail_tit positive">{{data.title}}</h1>
+            <div class="detail_info"><span>{{data.city}}</span>|<span>{{data.type}}</span>|<span>核心成员:<span>{{data.members}}</span>人</span></div>
+            <div class="detail_info"><span>成立时间:{{data.date}}</span>| <span>融资阶段:{{data.stage}}</span></div>
+            <div class="detail_summary">{{data.summary}}</div>
+            <div class="detail_art">
+                {{data.content}}
+            </div>
+            <div class="detail_action">
+
+                <button class="button button-full button-positive">
+                    我要投资
+                </button>
+                <!--<a class="detail_fund" href="##">我要投资</a>-->
+                <div class="row detail_share">
+                    <div class="col">
+                        <a href="javascript:;"><i class="ion-ios7-heart-outline"></i>已赞</a>
+                    </div>
+                    <div class="col">
+                        <a href="javascript:;"><i class="ion-ios7-redo-outline"></i>分享</a>
+                    </div>
+                    <div class="col">
+                        <a href="javascript:;"><i class="ion-ios7-star-outline"></i>收藏</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </ion-content>
+</ion-view>

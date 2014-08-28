@@ -1,31 +1,58 @@
 <ion-side-menus>
 
-  <ion-pane ion-side-menu-content>
-    <ion-nav-bar class="bar-stable nav-title-slide-ios7">
-      <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> Back</ion-nav-back-button>
-    </ion-nav-bar>
-    <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
-  </ion-pane>
+    <ion-pane ion-side-menu-content>
 
-  <ion-side-menu side="left">
-    <header class="bar bar-header bar-stable">
-      <h1 class="title">Left</h1>
-    </header>
-    <ion-content class="has-header">
-      <ion-list>
-        <ion-item nav-clear menu-close ng-click="login()">
-          Login
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/search">
-          Search
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/browse">
-          Browse
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/playlists">
-          Playlists
-        </ion-item>
-      </ion-list>
-    </ion-content>
-  </ion-side-menu>
+        <ion-nav-bar class="bar-stable bar-positive nav-title-slide-ios7">
+            <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> 返回
+            </ion-nav-back-button>
+        </ion-nav-bar>
+
+        <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
+
+        <ion-tabs  class="tabs-stable tabs-icon-top">
+
+            <ion-tab href="#/app/home" title="首页" icon-on="ion-ios7-home" icon-off="ion-ios7-home-outline">
+                <ion-nav-view name="indexContent"><br><br><br><br><br><br><br><br>111
+                </ion-nav-view>
+                <!-- Tab 1 content -->
+            </ion-tab>
+
+            <ion-tab href="#/app/working" title="创业项目" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline">
+                <ion-nav-view name="workingContent"></ion-nav-view>
+                <!-- Tab 2 content -->
+            </ion-tab>
+
+            <ion-tab href="#/app/partner" title="合作伙伴" icon-on="ion-ios7-people" icon-off="ion-ios7-people-outline">
+                <ion-nav-view name="partnerContent"></ion-nav-view>
+                <!-- Tab 3 content -->
+            </ion-tab>
+            <ion-tab href="#/app/events" title="最新活动" icon-on="ion-ios7-calendar" icon-off="ion-ios7-calendar-outline">
+                <ion-nav-view name="eventsContent"></ion-nav-view>
+                <!-- Tab 3 content -->
+            </ion-tab>
+
+        </ion-tabs>
+    </ion-pane>
+
+    <ion-side-menu side="left">
+        <header class="bar bar-header bar-stable">
+            <h1 class="title">更多</h1>
+        </header>
+        <ion-content class="has-header">
+            <ion-list>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    Login
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/search">
+                    Search
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/browse">
+                    Browse
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/playlists">
+                    Playlists
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
 </ion-side-menus>
