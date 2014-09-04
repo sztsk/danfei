@@ -59,41 +59,50 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
                 }
             })
 
-            .state('app.parther', {
-                url: "/parther",
+            .state('app.partner', {
+                url: "/partner",
                 views: {
                     'partnerContent': {
-                        templateUrl: "templates/parther.html"
+                        templateUrl: "templates/partner.html"
                     }
                 }
             })
 
-            .state('app.browse', {
-                url: "/browse",
+            .state('app.events', {
+                url: "/events",
                 views: {
-                    'workingContent': {
-                        templateUrl: "templates/browse.html"
+                    'eventsContent': {
+                        templateUrl: "templates/events.html"
                     }
                 }
             })
-            .state('app.playlists', {
-                url: "/playlists",
-                views: {
-                    'partnerContent': {
-                        templateUrl: "templates/playlists.html",
-                        controller: 'PlaylistsCtrl'
-                    }
-                }
-            })
-            .state('app.single', {
-                url: "/playlists/:playlistId",
-                views: {
-                    'menuContent': {
-                        templateUrl: "templates/playlist.html",
-                        controller: 'PlaylistCtrl'
-                    }
-                }
-            });
+
+//            .state('app.browse', {
+//                url: "/browse",
+//                views: {
+//                    'workingContent': {
+//                        templateUrl: "templates/browse.html"
+//                    }
+//                }
+//            })
+//            .state('app.playlists', {
+//                url: "/playlists",
+//                views: {
+//                    'partnerContent': {
+//                        templateUrl: "templates/playlists.html",
+//                        controller: 'PlaylistsCtrl'
+//                    }
+//                }
+//            })
+//            .state('app.single', {
+//                url: "/playlists/:playlistId",
+//                views: {
+//                    'menuContent': {
+//                        templateUrl: "templates/playlist.html",
+//                        controller: 'PlaylistCtrl'
+//                    }
+//                }
+//            });
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/home');
     });
