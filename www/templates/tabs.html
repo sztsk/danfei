@@ -1,14 +1,21 @@
-<ion-tabs class="tabs-positive tabs-icon-only">
+<ion-tabs class="tabs-stable tabs-icon-top">
 
-    <ion-tab title="Home" icon-on="ion-ios7-filing" icon-off="ion-ios7-filing-outline">
+    <ion-tab href="#/app/tabs/home" title="首页" icon-on="ion-ios7-home" icon-off="ion-ios7-home-outline">
+        <ion-nav-view name="indexContent"></ion-nav-view>
         <!-- Tab 1 content -->
     </ion-tab>
 
-    <ion-tab title="About" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline">
+    <ion-tab href="#/app/tabs/working" title="创业项目" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline">
+        <ion-nav-view name="workingContent"></ion-nav-view>
         <!-- Tab 2 content -->
     </ion-tab>
 
-    <ion-tab title="Settings" icon-on="ion-ios7-gear" icon-off="ion-ios7-gear-outline">
+    <ion-tab href="#/app/tabs/partner" title="合作伙伴" icon-on="ion-ios7-people" icon-off="ion-ios7-people-outline">
+        <ion-nav-view name="partnerContent"></ion-nav-view>
+        <!-- Tab 3 content -->
+    </ion-tab>
+    <ion-tab href="#/app/tabs/events" title="最新活动" icon-on="ion-ios7-calendar" icon-off="ion-ios7-calendar-outline">
+        <ion-nav-view name="eventsContent"></ion-nav-view>
         <!-- Tab 3 content -->
     </ion-tab>
 

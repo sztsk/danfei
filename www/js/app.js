@@ -30,17 +30,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
                 controller: 'AppCtrl'
             })
 
+            .state('app.tabs', {
+                url: "/tabs",
+                abstract: true,
+                templateUrl: "templates/tabs.html"
+            })
+
             //首页
-            .state('app.home', {
+            .state('app.tabs.home', {
                 url: "/home",
                 views: {
                     'indexContent': {
-                        templateUrl: "templates/home.html"
+                        templateUrl: "templates/home.html",
+                        controller : 'HomeController'
                     }
                 }
             })
             //创业项目
-            .state('app.working', {
+            .state('app.tabs.working', {
                 url: "/working",
                 views: {
                     'workingContent': {
@@ -49,7 +56,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
                 }
             })
             //创业详情页
-            .state('app.detail', {
+            .state('app.tabs.detail', {
                 url: "/working/:workingId",
                 views: {
                     'workingContent': {
@@ -59,7 +66,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
                 }
             })
 
-            .state('app.partner', {
+            .state('app.tabs.partner', {
                 url: "/partner",
                 views: {
                     'partnerContent': {
@@ -68,7 +75,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
                 }
             })
 
-            .state('app.events', {
+            .state('app.tabs.events', {
                 url: "/events",
                 views: {
                     'eventsContent': {
@@ -104,6 +111,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
 //                }
 //            });
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/app/home');
+        // 当没有被匹配时 跳转到app/home
+        $urlRouterProvider.otherwise('/app/tabs/home');
     });
 

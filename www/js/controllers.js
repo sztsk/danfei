@@ -4,7 +4,15 @@ angular.module('starter.controllers', [])
         // Form data for the login modal
         $scope.loginData = {};
 
+//        $scope.leftButtons = [{
+//            type: 'button-icon button-clear ion-navicon',
+//            tap: function(e) {
+//                $ionicSideMenuDelegate.toggleLeft($scope.$$childHead);
+//            }
+//        }];
+
         // Create the login modal that we will use later
+        //http://ionicframework.com/docs/api/service/$ionicModal/
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope
         }).then(function (modal) {
@@ -31,6 +39,7 @@ angular.module('starter.controllers', [])
                 $scope.closeLogin();
             }, 1000);
         };
+
     })
 
     .controller('PlaylistsCtrl', function ($scope) {
@@ -49,6 +58,26 @@ angular.module('starter.controllers', [])
             $scope.data = data;
             console.log(data,'123');
         })
+    })
+
+    .controller('HomeController', [ '$scope', '$state', function($scope, $state) {
+        $scope.navTitle = 'Tab Page';
+        console.log(12);
+//        $scope.leftButtons = [{
+//            type: 'button-icon icon ion-navicon',
+//            tap: function(e) {
+//                $scope.toggleMenu();
+//            }
+//        }];
+    }])
+
+    .controller('NavController',function($scope,$ionicSideMenuDelegate){
+        $scope.showMenu = function () {
+            $ionicSideMenuDelegate.toggleLeft();
+        };
+        $scope.showRightMenu = function () {
+            $ionicSideMenuDelegate.toggleRight();
+        };
     })
 
 
