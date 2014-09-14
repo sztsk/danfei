@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', 'starter.services'])
+angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services'])
 
     .run(function ($ionicPlatform) {
         $ionicPlatform.ready(function () {
@@ -46,7 +46,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
                     }
                 }
             })
-            //创业项目
+            //活动
+            .state('app.tabs.events', {
+                url: "/events",
+                views: {
+                    'eventsContent': {
+                        templateUrl: "templates/events.html"
+                    }
+                }
+            })
+            //活动详情
+            .state('app.tabs.edetail', {
+                url: "/events/:eventsid",
+                views: {
+                    'eventsContent': {
+                        templateUrl: "templates/events_detail.html"
+                    }
+                }
+            })
+
+            //服务 - 创业服务
             .state('app.tabs.working', {
                 url: "/working",
                 views: {
@@ -55,12 +74,34 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
                     }
                 }
             })
-            //创业详情页
+            //服务 - 创业服务 - 创业详情页
             .state('app.tabs.detail', {
                 url: "/working/:workingId",
                 views: {
                     'workingContent': {
                         templateUrl: "templates/detail.html",
+                        controller: 'DetailCtrl'
+                    }
+                }
+            })
+
+            //服务 - 职业机会 - 职业列表页
+            .state('app.tabs.jobs', {
+                url: "/jobs",
+                views: {
+                    'workingContent': {
+                        templateUrl: "templates/jobs.html",
+                        controller: 'DetailCtrl'
+                    }
+                }
+            })
+
+            //服务 - 职业机会 - 职业详情页
+            .state('app.tabs.jdetail', {
+                url: "/jobs/:jobsId",
+                views: {
+                    'workingContent': {
+                        templateUrl: "templates/jobs_detail.html",
                         controller: 'DetailCtrl'
                     }
                 }
@@ -75,14 +116,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.constant', '
                 }
             })
 
-            .state('app.tabs.events', {
-                url: "/events",
-                views: {
-                    'eventsContent': {
-                        templateUrl: "templates/events.html"
-                    }
-                }
-            })
 
 //            .state('app.browse', {
 //                url: "/browse",

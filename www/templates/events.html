@@ -1,5 +1,90 @@
-<ion-view title="最新活动">
+<ion-view title="活动">
     <ion-content class="has-header">
-        <h1>最新活动</h1>
+        <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+                <input type="text" placeholder="Email">
+            </label>
+            <button class="button button-small">
+                搜索
+            </button>
+        </div>
+        <!--筛选 S-->
+        <div class="row home_row">
+            <div class="col">
+                <select name="J_industry" id="J_industry">
+                    <option value="1">按行业</option>
+                    <option value="1">互联网</option>
+                    <option value="1">移动端</option>
+                    <option value="1">按行业</option>
+                </select>
+            </div>
+            <div class="col">
+                <select name="city" id="J_city">
+                    <option value="1">按地区</option>
+                    <option value="1">北京</option>
+                    <option value="1">上海</option>
+                    <option value="1">广州</option>
+                </select>
+            </div>
+            <div class="col">
+                <select name="stage" id="J_stage">
+                    <option value="1">按融资阶段</option>
+                    <option value="1">天使</option>
+                    <option value="1">A轮</option>
+                    <option value="1">B轮</option>
+                </select>
+            </div>
+        </div>
+        <!--筛选 E-->
+
+        <ion-list class="home_list">
+            <ion-item class="item" href="#/app/tabs/events/1">
+                <div class="home_info">
+                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
+                    <h2 class="positive">创业电视传媒 </h2>
+                    <div class="home_info_cnt">你的卖萌神器... 脸萌,你的卖萌神器!
+                        超萌超潮的拼脸软件。 拼自己、拼朋友让你们的生活萌翻了。可以分享到微信与朋友圈。
+                    </div>
+                </div>
+                <div class="home_detail">
+                    <span class="positive">融资:<strong>300万</strong></span>
+                    <span>深圳</span> |
+                    <span>移动互联网</span> |
+                    <span>核心成员：3人</span>
+                </div>
+            </ion-item>
+            <ion-item class="item" href="#/app/tabs/events/1">
+                <div class="home_info">
+                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
+                    <h2 class="positive">创业电视传媒 </h2>
+                    <div class="home_info_cnt">你的卖萌神器... 脸萌,你的卖萌神器!
+                        超萌超潮的拼脸软件。 拼自己、拼朋友让你们的生活萌翻了。可以分享到微信与朋友圈。
+                    </div>
+                </div>
+                <div class="home_detail">
+                    <span class="positive">融资:<strong>300万</strong></span>
+                    <span>深圳</span> |
+                    <span>移动互联网</span> |
+                    <span>核心成员：3人</span>
+                </div>
+            </ion-item>
+            <ion-item class="item">
+                <div class="home_info">
+                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
+                    <h2 class="positive">创业电视传媒 </h2>
+                    <div class="home_info_cnt">你的卖萌神器... 脸萌,你的卖萌神器!
+                        超萌超潮的拼脸软件。 拼自己、拼朋友让你们的生活萌翻了。可以分享到微信与朋友圈。
+                    </div>
+                </div>
+                <div class="home_detail">
+                    <span class="positive">融资:<strong>300万</strong></span>
+                    <span>深圳</span> |
+                    <span>移动互联网</span> |
+                    <span>核心成员：3人</span>
+                </div>
+            </ion-item>
+        </ion-list>
+
+
     </ion-content>
 </ion-view>

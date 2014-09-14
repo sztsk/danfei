@@ -1,5 +1,22 @@
-/* Empty. Add your own CSS if you like */
-.home_row select{ width: 100%;}
+
+/*===== 公共模块 =====*/
+
+/*分享*/
+.mod_share a{color: #5a5a5a; text-decoration: none; display: block; height: 26px; line-height: 26px;}
+.mod_share i{font-size: 20px; vertical-align: middle; margin-right: 5px;}
+/*列表*/
+.mod_list .list{margin: 0 15px; color: #5a5a5a;}
+.mod_item{border-top: 2px solid #4a87ee; margin-bottom: 10px;}
+.mod_item .item-content{padding-right: 16px;}
+    .mod_item_col1{ width: 70px; float: left; margin-right: 10px; text-align: center;}
+        .mod_item_img{ width: 70px; height: 70px; display: block; margin-bottom: 10px;}
+    .mod_item_col2{overflow: hidden;}
+        .mod_item_tit{font-weight: 700; margin-top: -5px;}
+        .mod_item_cnt{white-space: normal; max-height: 60px; overflow: hidden; margin-top: 10px;}
+/*select*/
+.mod_filter select{ width: 100%;}
+
+
 .home_list h2{font-weight: 700; margin-top: -5px;}
 .home_list .home_item_cnt{white-space: normal; max-height: 60px; overflow: hidden;}
 .home_list .list{ margin: 0 15px; font-size: 14px;}
@@ -19,5 +36,12 @@
 .detail_summary{padding: 10px; background: #f5f5f5; border: 1px solid #dedede; margin: 10px 0 }
 .detail_action{text-align: center; margin-top: 20px;}
 .detail_action .button{margin: 10px auto;}
-.detail_share a{color: #5a5a5a; text-decoration: none; display: block; height: 26px; line-height: 26px;}
-.detail_share i{font-size: 20px; vertical-align: middle; margin-right: 5px;}
+
+
+/*活动详情页*/
+.events_banner{ height: 150px; position: relative; background: #f2f2f2;}
+.events_cnt{padding: 15px; color: #5a5a5a;}
+.events_tit{font-size: 20px; font-weight: 700;}
+.events_info{ margin-bottom: 10px;}
+.events_part{ margin-bottom: 10px;}
+.events_part h1{font-size: 14px; margin-bottom: 5px;}
