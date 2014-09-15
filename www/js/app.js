@@ -79,7 +79,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 url: "/working/:workingId",
                 views: {
                     'workingContent': {
-                        templateUrl: "templates/detail.html",
+                        templateUrl: "templates/working_detail.html",
                         controller: 'DetailCtrl'
                     }
                 }
