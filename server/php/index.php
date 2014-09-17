@@ -1,6 +1,7 @@
 <?php
 
 require_once 'include/DBHandler.php';
+require_once 'include/PassHash.php';
 require 'libs/Slim/Slim.php';
 
 
@@ -27,7 +28,7 @@ $app->post(
             $response["message"] = "Oops! An error occurred while registereing";
         } else if ($res == USER_ALREADY_EXISTED) {
             $response["error"] = true;
-            $response["message"] = "Sorry, this email already existed";
+            $response["message"] = "抱歉，该手机号码已使用！";
         }
         echoRespnse(201,$response);
 
