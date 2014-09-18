@@ -91,7 +91,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 views: {
                     'workingContent': {
                         templateUrl: "templates/jobs.html",
-                        controller: 'DetailCtrl'
+                        controller: 'JobsCtrl'
                     }
                 }
             })

@@ -60,6 +60,19 @@ angular.module('app.controllers', [])
         })
     })
 
+    .controller('JobsCtrl',function($scope ,restApi){
+        //var jobs = restApi.Job.getAll().success(function(data){
+        //    console.log(data);
+        //});
+        $scope.data = restApi.Job.query();
+        console.log($scope.data);
+        
+        //$scope.data = jobs.getAll();
+        //console.log(jobs.getAll());
+        
+        
+    })
+
     .controller('HomeController', [ '$scope', '$state', function($scope, $state) {
         $scope.navTitle = 'Tab Page';
         console.log(12);
