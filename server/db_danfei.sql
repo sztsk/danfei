@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 09 月 17 日 06:41
+-- 生成日期: 2014 年 09 月 18 日 10:09
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `tb_events` (
 DROP TABLE IF EXISTS `tb_jobs`;
 CREATE TABLE IF NOT EXISTS `tb_jobs` (
   `jobs_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '工作ID',
-  `jobs_add_time` datetime NOT NULL COMMENT '添加时间',
+  `jobs_add_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '添加时间',
   `jobs_company_id` int(11) NOT NULL COMMENT '公司ID',
   `jobs_city` varchar(10) CHARACTER SET utf8 NOT NULL COMMENT '工作城市',
   `jobs_title` varchar(200) CHARACTER SET utf8 NOT NULL COMMENT '工作职位',
@@ -78,8 +78,19 @@ CREATE TABLE IF NOT EXISTS `tb_jobs` (
   `jobs_users_num` int(11) NOT NULL COMMENT '该职位的招聘人数',
   `jobs_detail` text CHARACTER SET utf8 NOT NULL COMMENT '职位详细信息',
   `jobs_zan` int(11) NOT NULL COMMENT '多少个赞',
+  `jobs_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1是正常，0是删除',
   PRIMARY KEY (`jobs_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- 转存表中的数据 `tb_jobs`
+--
+
+INSERT INTO `tb_jobs` (`jobs_id`, `jobs_add_time`, `jobs_company_id`, `jobs_city`, `jobs_title`, `jobs_salary_start`, `jobs_salary_end`, `jobs_intro`, `jobs_experience`, `jobs_education`, `jobs_users_num`, `jobs_detail`, `jobs_zan`, `jobs_state`) VALUES
+(1, '0000-00-00 00:00:00', 1, '上海', '前端开发', 127, 127, '介绍一下', 4, 1, 10, '介绍一下介绍一下', 10, 1),
+(2, '2014-09-18 08:58:45', 1, '', '', 0, 0, '', 0, 0, 0, '', 0, 1),
+(3, '2014-09-18 09:00:30', 1, '', '', 0, 0, '', 0, 0, 0, '', 0, 1),
+(4, '2014-09-18 09:36:55', 3, '', '', 0, 0, '', 0, 0, 0, '', 0, 0);
 
 -- --------------------------------------------------------
 

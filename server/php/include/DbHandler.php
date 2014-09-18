@@ -91,8 +91,98 @@ class DbHandler {
         }else{
             return USER_ALREADY_EXISTED;
         }
-
     }
+
+    /**
+     * 判断是否登录
+     * @param $phone
+     * @param $password
+     */
+    public function checkLogin($phone,$password){
+        $sql = "SELECT user_password FROM tb_users WHERE user_phone = $phone";
+        $passwordHash = $this->conn->get_var($sql);
+        if($passwordHash && PassHash::check_password($passwordHash,$password)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /***
+     * 获取用户信息
+     * @param $phone
+     * @return mixed
+     */
+    public function getUserByPhone($phone){
+        $sql = "SELECT user_name, user_email, user_qq, user_jobs_time FROM tb_users WHERE user_phone = $phone";
+        $user = $this->conn->get_row($sql);
+        return $user;
+    }
+
+    public function getApiKeyById($userId){
+        $sql = "SELECT user_api_key FROM tb_users WHERE user_id = $userId";
+        $key = $this->conn->get_var($sql);
+        return $key;
+    }
+
+
+    /* ------------- `tb_jobs` table method ------------------ */
+    /**
+     * 获取职位信息列表 不包含详细信息
+     * @param $start
+     * @param $num
+     */
+    public function getJobs($start,$num = 30){
+        $sql = "SELECT * FROM  `tb_jobs` WHERE jobs_state = 1 LIMIT $start , $num";
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
+
+    /**
+     * 获取职位详细信息
+     * @param $id
+     */
+    public function getJobById($id){
+        $sql = "SELECT * FROM  `tb_jobs` WHERE jobs_id = $id";
+        $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+    public function createJobs($data){
+        $sql = $this->buildSqlInsert("tb_jobs",$data);
+        $this->conn->query($sql);
+        $id = $this->conn->insert_id;
+        if($id){
+            $data['jobs_id'] = $id;
+            return $data;
+        } else{
+            return null;
+        }
+    }
+
+    public function updateJobsById($data){
+//        var_dump($data);
+        if(!isset($data['jobs_id'])){
+            return null;
+        }
+        $where = '`jobs_id` =' . $data['jobs_id'];
+        $sql = $this->buildSqlUpdate("tb_jobs",$data,$where);
+        $result = $this->conn->query($sql);
+
+        if($result){
+            return $data;
+        }else{
+            return null;
+        }
+    }
+
+    public function delJobsById($id){
+        $sql = "UPDATE  tb_jobs SET jobs_state = 0 WHERE jobs_id = $id";
+        $result = $this->conn->query($sql);
+        return $result;
+    }
+
+
 
 }
 

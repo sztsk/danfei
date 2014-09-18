@@ -35,6 +35,87 @@ $app->post(
     }
 );
 
+$app->post(
+    '/login',
+    function () use ($app){
+        $phone = $app->request()->post('user_phone');
+        $password = $app->request()->post('user_password');
+//        $response = array();
+        $db = new DbHandler();
+        if($db->checkLogin($phone,$password)){
+            $user = $db->getUserByPhone($phone);
+            $db = null;
+            return $user;
+        }else{
+            return NULL;
+        }
+    }
+);
+
+
+/******************jobs*********************/
+
+$app->get(
+    '/jobs(/:start)(:/num)',
+    function ($start = 0,$num  = 30){
+        $db = new DbHandler();
+        $data = $db->getJobs($start,$num);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+$app->get(
+    '/jobs/:id',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getJobById($id);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+$app->post(
+    '/jobs',
+    function () use ($app){
+        $data = $app->request->post();
+        $db = new DbHandler();
+        $jobData = $db->createJobs($data);
+        echoRespnse(201,$jobData);
+    }
+);
+
+$app->patch(
+    '/jobs',
+    function () use ($app){
+        $data = $app->request->patch();
+        $db = new DbHandler();
+        $jobData = $db->updateJobsById($data);
+        $db = null;
+        echoRespnse(200,$jobData);
+    }
+);
+
+$app->delete(
+    '/jobs/:id',
+    function ($id){
+        $db = new DbHandler();
+        $result = $db->delJobsById($id);
+        if ($result) {
+            // task deleted successfully
+            $response["error"] = false;
+            $response["message"] = "Task deleted succesfully";
+        } else {
+            // task failed to delete
+            $response["error"] = true;
+            $response["message"] = "Task failed to delete. Please try again!";
+        }
+        echoRespnse(200, $response);
+    }
+);
+
+
+
 
 /**
  * Echoing json response to client
@@ -43,6 +124,14 @@ $app->post(
  */
 function echoRespnse($status_code, $response) {
     $app = \Slim\Slim::getInstance();
+    if(!$response){
+        $response = array(
+            'error' =>true,
+            'message' => "The requested resource doesn't exists"
+        );
+        $status_code = 404;
+    }
+
     // Http response code
     $app->status($status_code);
 
@@ -52,10 +141,5 @@ function echoRespnse($status_code, $response) {
     echo json_encode($response);
 }
 
-/**
- * Step 4: Run the Slim application
- *
- * This method should be called last. This executes the Slim application
- * and returns the HTTP response to the HTTP client.
- */
+
 $app->run();
