@@ -107,11 +107,24 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 }
             })
 
-            .state('app.tabs.partner', {
-                url: "/partner",
+            //服务 - 职业机会 - 公司详情
+            .state('app.tabs.company', {
+                url: "/company",
                 views: {
-                    'partnerContent': {
-                        templateUrl: "templates/partner.html"
+                    'workingContent': {
+                        templateUrl: "templates/company.html",
+                        controller: 'DetailCtrl'
+                    }
+                }
+            })
+
+            //vip
+            .state('app.tabs.vip', {
+                url: "/vip",
+                views: {
+                    'moreContent': {
+                        templateUrl: "templates/vip.html",
+                        controller: 'DetailCtrl'
                     }
                 }
             })
