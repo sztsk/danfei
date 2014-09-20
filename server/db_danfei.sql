@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2014 年 09 月 18 日 10:09
+-- 生成日期: 2014 年 09 月 20 日 03:22
 -- 服务器版本: 5.5.24-log
 -- PHP 版本: 5.3.13
 
@@ -29,10 +29,11 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `tb_company`;
 CREATE TABLE IF NOT EXISTS `tb_company` (
   `company_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '公司ID',
-  `company_size` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '公司规模',
-  `company_intro` text CHARACTER SET utf8 COMMENT '公司简介',
+  `company_size` varchar(200) DEFAULT NULL COMMENT '公司规模',
+  `company_intro` text COMMENT '公司简介',
+  `company_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1是正常，0是删除',
   PRIMARY KEY (`company_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -54,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `tb_events` (
   `events_users_num` int(11) NOT NULL COMMENT '报名人数',
   `events_detail` text NOT NULL COMMENT '活动详情',
   `events_zan` int(11) NOT NULL COMMENT '赞的个数',
+  `events_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1是正常，0是删除',
   PRIMARY KEY (`events_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -68,19 +70,19 @@ CREATE TABLE IF NOT EXISTS `tb_jobs` (
   `jobs_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '工作ID',
   `jobs_add_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '添加时间',
   `jobs_company_id` int(11) NOT NULL COMMENT '公司ID',
-  `jobs_city` varchar(10) CHARACTER SET utf8 NOT NULL COMMENT '工作城市',
-  `jobs_title` varchar(200) CHARACTER SET utf8 NOT NULL COMMENT '工作职位',
+  `jobs_city` varchar(10) NOT NULL COMMENT '工作城市',
+  `jobs_title` varchar(200) NOT NULL COMMENT '工作职位',
   `jobs_salary_start` tinyint(4) NOT NULL COMMENT '薪酬范围-最低',
   `jobs_salary_end` tinyint(4) NOT NULL COMMENT '薪酬范围-最高',
-  `jobs_intro` text CHARACTER SET utf8 NOT NULL COMMENT '一句话介绍',
+  `jobs_intro` text NOT NULL COMMENT '一句话介绍',
   `jobs_experience` int(11) NOT NULL COMMENT '最低工作经验',
   `jobs_education` int(11) NOT NULL COMMENT '最低学历',
   `jobs_users_num` int(11) NOT NULL COMMENT '该职位的招聘人数',
-  `jobs_detail` text CHARACTER SET utf8 NOT NULL COMMENT '职位详细信息',
+  `jobs_detail` text NOT NULL COMMENT '职位详细信息',
   `jobs_zan` int(11) NOT NULL COMMENT '多少个赞',
   `jobs_state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1是正常，0是删除',
   PRIMARY KEY (`jobs_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- 转存表中的数据 `tb_jobs`
@@ -149,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `tb_zan` (
   `zan_company_id` int(11) DEFAULT NULL,
   `zan_project_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`zan_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

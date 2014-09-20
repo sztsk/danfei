@@ -115,6 +115,67 @@ $app->delete(
 );
 
 
+/******************events*********************/
+
+$app->get(
+    '/events(/:start)(:/num)',
+    function ($start = 0,$num  = 30){
+        $db = new DbHandler();
+        $data = $db->getJobs($start,$num);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+$app->get(
+    '/events/:id',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getJobById($id);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+$app->post(
+    '/events',
+    function () use ($app){
+        $data = $app->request->post();
+        $db = new DbHandler();
+        $jobData = $db->createJobs($data);
+        echoRespnse(201,$jobData);
+    }
+);
+
+$app->patch(
+    '/events',
+    function () use ($app){
+        $data = $app->request->patch();
+        $db = new DbHandler();
+        $jobData = $db->updateJobsById($data);
+        $db = null;
+        echoRespnse(200,$jobData);
+    }
+);
+
+$app->delete(
+    '/events/:id',
+    function ($id){
+        $db = new DbHandler();
+        $result = $db->delJobsById($id);
+        if ($result) {
+            // task deleted successfully
+            $response["error"] = false;
+            $response["message"] = "Task deleted succesfully";
+        } else {
+            // task failed to delete
+            $response["error"] = true;
+            $response["message"] = "Task failed to delete. Please try again!";
+        }
+        echoRespnse(200, $response);
+    }
+);
+
 
 
 /**
