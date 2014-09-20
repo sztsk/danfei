@@ -154,7 +154,8 @@ class DbHandler {
      * @param $id
      */
     public function getJobById($id){
-        $sql = "SELECT * FROM  `tb_jobs` WHERE jobs_id = $id";
+        $sql = "SELECT * FROM `tb_jobs` LEFT JOIN tb_company on tb_jobs.`jobs_company_id` = tb_company.company_id where jobs_state = 1 AND jobs_id = $id";
+//        echo $sql;
         $data = $this->conn->get_row($sql);
         return $data;
     }

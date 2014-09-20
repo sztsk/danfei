@@ -30,6 +30,23 @@
         <!--筛选 E-->
 
         <ion-list class="mod_list">
+            <ion-item class="mod_item" ng-repeat="item in data" href="#/app/tabs/jobs/{{item.jobs_id}}">
+                <div class="jobs_hd">
+                    <h1 class="jobs_tit positive">{{item.jobs_title}}</h1>
+                    <time class="jobs_time">{{item.jobs_add_time}}</time>
+                </div>
+                <div class="jobs_bd">
+                    <div class="jobs_info">
+                        <span>{{item.jobs_city}}</span> | <span>移动互联网</span> | <span>100-500人</span>
+                    </div>
+                    <div class="jobs_info jobs_info2">
+                        <span>薪酬：{{item.jobs_salary}}</span> | <span>经验：{{item.experience}}</span> <span>最低学历：本科</span>
+                    </div>
+                    <div class="jobs_intro">
+                        职业诱惑：{{item.jobs_attraction}}
+                    </div>
+                </div>
+            </ion-item>
             <ion-item class="mod_item" href="#/app/tabs/jobs/1">
                 <div class="jobs_hd">
                     <h1 class="jobs_tit positive">岗位名称</h1>

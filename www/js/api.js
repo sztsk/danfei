@@ -6,8 +6,9 @@ angular.module('app.services', ['ngResource'])
         var RestApi  = {},
             BATEURL = 'http://localhost/github/danfei/server/php/';
 
-        RestApi.Job = $resource(BATEURL + 'jobs',{},{
+        RestApi.Job = $resource(BATEURL + 'jobs/:id',{},{
             'query': { method: 'GET',isArray:true},
+            'getOne':{method:'GET',params:{}},
             'update':{method:'PATCH'},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}

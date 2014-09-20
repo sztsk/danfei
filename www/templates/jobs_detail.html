@@ -1,22 +1,22 @@
-<ion-view title="{{data.title}}" class="mod_detail">
+<ion-view title="{{data.jobs_title}}" class="mod_detail">
     <ion-content class="has-header">
         <section class="mod_detail_hd">
-            <h1>岗位名称</h1>
+            <h1>{{data.jobs_title}}</h1>
             <div class="row">
-                <div class="col">公司名称</div>
-                <div class="col">2014-08-14发布</div>
+                <div class="col">{{data.company_name}}</div>
+                <div class="col">{{data.jobs_add_time}}发布</div>
             </div>
             <div class="row">
-                <div class="col">月薪：2000-4000元/月</div>
-                <div class="col">工作地点：武汉</div>
+                <div class="col">月薪：{{data.jobs_salary_start}}K - {{data.jobs_salary_end}}K</div>
+                <div class="col">工作地点：{{data.jobs_city}}</div>
             </div>
             <div class="row">
-                <div class="col">工作经验：一年以上</div>
-                <div class="col">最低学历：大专</div>
+                <div class="col">工作经验：{{data.jobs_experience}}</div>
+                <div class="col">学历要求：{{data.jobs_education}}</div>
             </div>
             <div class="row">
-                <div class="col">招聘人数：10人</div>
-                <div class="col">工作性质：全职</div>
+                <div class="col">招聘人数：{{data.jobs_users_num}}</div>
+                <div class="col">工作性质：{{data.jobs_profile}}</div>
             </div>
         </section>
         <section class="mod_detail_bd">
@@ -29,13 +29,13 @@
             <div class="mod_detail_part">
                 <h1 class="positive">职位要求</h1>
                 <div class="mod_detail_info">
-                    分享内容内容，分享内容内容，分享内容内容，分享内容内容
+                    {{data.jobs_detail}}
                 </div>
             </div>
             <div class="mod_detail_part">
                 <h1 class="positive">公司简介</h1>
                 <div class="mod_detail_info">
-                    分享内容内容，分享内容内容，分享内容内容，分享内容内容
+                    {{data.company_intro}}
                 </div>
                 <a href="##">查看该公司正在招聘的所有岗位>></a>
             </div>

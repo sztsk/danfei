@@ -56,20 +56,20 @@ $app->post(
 /******************jobs*********************/
 
 $app->get(
-    '/jobs(/:start)(:/num)',
-    function ($start = 0,$num  = 30){
+    '/jobs/:id',
+    function ($id){
         $db = new DbHandler();
-        $data = $db->getJobs($start,$num);
+        $data = $db->getJobById($id);
         $db = null;
         echoRespnse(200,$data);
     }
 );
 
 $app->get(
-    '/jobs/:id',
-    function ($id){
+    '/jobs(/:start)(:/num)',
+    function ($start = 0,$num  = 30){
         $db = new DbHandler();
-        $data = $db->getJobById($id);
+        $data = $db->getJobs($start,$num);
         $db = null;
         echoRespnse(200,$data);
     }
