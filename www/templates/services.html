@@ -1,10 +1,10 @@
-<ion-view title="职业机会">
+<ion-view title="创业服务">
     <ion-content class="has-header">
         <!--筛选 S-->
         <div class="row mod_filter">
             <div class="col">
                 <select name="J_industry" id="J_industry">
-                    <option value="1">按岗位</option>
+                    <option value="1">按领域</option>
                     <option value="1">互联网</option>
                     <option value="1">移动端</option>
                     <option value="1">按行业</option>
@@ -20,7 +20,7 @@
             </div>
             <div class="col">
                 <select name="stage" id="J_stage">
-                    <option value="1">按工作年限</option>
+                    <option value="1">按人气</option>
                     <option value="1">天使</option>
                     <option value="1">A轮</option>
                     <option value="1">B轮</option>
@@ -30,20 +30,20 @@
         <!--筛选 E-->
 
         <ion-list class="mod_list">
-            <ion-item class="mod_item" ng-repeat="item in data" href="#/app/tabs/jobs/{{item.jobs_id}}">
-                <div class="jobs_hd">
-                    <h1 class="jobs_tit positive">{{item.jobs_name}}</h1>
-                    <time class="jobs_time">{{item.jobs_add_time}}</time>
-                </div>
-                <div class="jobs_bd">
-                    <div class="jobs_info">
-                        <span>{{item.jobs_city}}</span> | <span>{{item.company_type}}</span> | <span>{{item.company_size}}</span>
+            <ion-item class="item mod_item" ng-repeat="item in data" href="#/app/tabs/services/{{item.services_id}}">
+                <div class="mod_item_info">
+                    <div class="mod_item_col1">
+                        <img class="mod_item_img" src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
+                        <button class="button button-small button-positive">收藏</button>
                     </div>
-                    <div class="jobs_info jobs_info2">
-                        <span>月薪：{{item.jobs_salary_start}}K - {{item.jobs_salary_end}}K</span> | <span>经验：{{item.experience}}</span> <span>最低学历：本科</span>
-                    </div>
-                    <div class="jobs_intro">
-                        职业诱惑：{{item.jobs_intro}}
+                    <div class="mod_item_col2">
+                        <h2 class="positive mod_item_tit">{{item.company_name}} </h2>
+                        <div class="mod_item_tags">
+                            <span>{{item.company_city}}</span> | <span>{{item.conpany_type}}</span>
+                        </div>
+                        <div class="mod_item_cnt">
+                            {{item.services_detail}}
+                        </div>
                     </div>
                 </div>
             </ion-item>

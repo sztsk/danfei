@@ -1,9 +1,9 @@
-<ion-view title="{{data.title}}" class="mod_detail company">
+<ion-view title="{{companyData.company_name}}" class="mod_detail company">
     <ion-content class="has-header">
         <section class="mod_detail_hd">
-            <h1>公司名称</h1>
+            <h1>{{companyData.company_name}}</h1>
             <div class="company_intro">
-                XX投资由XXX于2007年创立。作为一家天使投资公司，主要集中于互联网、无线、互动娱乐等高科技领域，是一家快速成长中的投资公司。
+                {{companyData.company_intro}}
             </div>
 
             <div class="company_jobs">
@@ -12,17 +12,9 @@
                 </div>
                 <div class="company_jobs_bd">
                     <div class="list company_jobs_list">
-                        <a class="item" href="#">
-                            前端开发
-                            <time>2014-09-20</time>
-                        </a>
-                        <a class="item" href="#">
-                            设计师
-                            <time>2014-09-20</time>
-                        </a>
-                        <a class="item" href="#">
-                            高级产品经理高级产
-                            <time>2014-09-20</time>
+                        <a class="item" href="#/app/tabs/jobs/{{item.jobs_id}}" ng-repeat="item in jobsData">
+                            {{item.jobs_name}}
+                            <time>{{item.jobs_push_date}}</time>
                         </a>
                     </div>
                 </div>

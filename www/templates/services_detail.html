@@ -1,28 +1,35 @@
-<ion-view title="{{data.title}}" class="mod_detail">
+<ion-view title="{{data.company_name}}" class="mod_detail">
     <ion-content class="has-header">
         <section class="mod_detail_hd">
-            <h1>XX投资公司</h1>
+            <h1>{{data.company_name}}</h1>
             <div class="row">
-                <div class="col">活动发起人：<span>单飞企鹅</span></div>
-                <div class="col">2014-08-14</div>
+                <div class="col">领域：<span>{{data.company_type}}</span></div>
+                <div class="col">地点：<span>{{data.company_city}}</span></div>
             </div>
             <div class="row">
-                <div class="col">名额：200人</div>
-                <div class="col">城市：深圳</div>
-            </div>
-            <div class="row">
-                <div class="col">投资国的项目：迅雷、酷狗、火石</div>
+                <div class="col">规模：{{data.company_size}}</div>
+                <div class="col">成立时间：{{data.company_start_day}}</div>
             </div>
         </section>
         <section class="mod_detail_bd">
             <div class="mod_detail_part">
+                <h1 class="positive">服务详情</h1>
+                <div class="mod_detail_info">
+                    {{data.services_detail}}
+                </div>
+            </div>
+            <div class="mod_detail_part">
                 <h1 class="positive">公司简介</h1>
                 <div class="mod_detail_info">
-                    分享内容内容，分享内容内容，分享内容内容，分享内容内容
+                    {{data.company_intro}}
                 </div>
             </div>
             <div class="mod_detail_part">
                 <h1 class="positive">联系我们</h1>
+                <div class="mod_detail_info">
+                    <p>Email：{{data.company_email}}</p>
+                    <p>手机：{{data.company_phone}}</p>
+                </div>
             </div>
         </section>
 

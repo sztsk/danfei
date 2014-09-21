@@ -51,7 +51,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 url: "/events",
                 views: {
                     'eventsContent': {
-                        templateUrl: "templates/events.html"
+                        templateUrl: "templates/events.html",
+                        controller: 'EventsCtrl'
                     }
                 }
             })
@@ -60,27 +61,29 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 url: "/events/:eventsid",
                 views: {
                     'eventsContent': {
-                        templateUrl: "templates/events_detail.html"
+                        templateUrl: "templates/events_detail.html",
+                        controller: 'EventsDetailCtrl'
                     }
                 }
             })
 
             //服务 - 创业服务
-            .state('app.tabs.working', {
-                url: "/working",
+            .state('app.tabs.services', {
+                url: "/services",
                 views: {
-                    'workingContent': {
-                        templateUrl: "templates/working.html"
+                    'servicesContent': {
+                        templateUrl: "templates/services.html",
+                        controller: 'ServicesCtrl'
                     }
                 }
             })
             //服务 - 创业服务 - 创业详情页
-            .state('app.tabs.detail', {
-                url: "/working/:workingId",
+            .state('app.tabs.sdetail', {
+                url: "/services/:servicesId",
                 views: {
-                    'workingContent': {
-                        templateUrl: "templates/working_detail.html",
-                        controller: 'DetailCtrl'
+                    'servicesContent': {
+                        templateUrl: "templates/services_detail.html",
+                        controller: 'ServicesDetailCtrl'
                     }
                 }
             })
@@ -89,7 +92,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
             .state('app.tabs.jobs', {
                 url: "/jobs",
                 views: {
-                    'workingContent': {
+                    'servicesContent': {
                         templateUrl: "templates/jobs.html",
                         controller: 'JobsCtrl'
                     }
@@ -100,7 +103,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
             .state('app.tabs.jdetail', {
                 url: "/jobs/:jobsId",
                 views: {
-                    'workingContent': {
+                    'servicesContent': {
                         templateUrl: "templates/jobs_detail.html",
                         controller: 'JobsDetailCtrl'
                     }
@@ -109,11 +112,11 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
 
             //服务 - 职业机会 - 公司详情
             .state('app.tabs.company', {
-                url: "/company",
+                url: "/company/:companyId",
                 views: {
-                    'workingContent': {
+                    'servicesContent': {
                         templateUrl: "templates/company.html",
-                        controller: 'DetailCtrl'
+                        controller: 'CompanyCtrl'
                     }
                 }
             })
@@ -158,6 +161,6 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
 //            });
         // if none of the above states are matched, use this as the fallback
         // 当没有被匹配时 跳转到app/home
-        $urlRouterProvider.otherwise('/app/tabs/home');
+        $urlRouterProvider.otherwise('/app/tabs/events');
     });
 

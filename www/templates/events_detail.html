@@ -1,32 +1,41 @@
-<ion-view title="{{data.title}}" class="mod_detail">
+<ion-view title="{{data.events_title}}" class="mod_detail">
     <ion-content class="has-header">
         <section class="mod_detail_hd">
-            <h1>“散是满天繁星，聚是火红太阳”，11个城市聚会之深圳报名开始</h1>
+            <h1>{{data.events_title}}</h1>
             <div class="row">
-                <div class="col">活动发起人：<span>单飞企鹅</span></div>
-                <div class="col">2014-08-14</div>
+                <div class="col">
+                    活动发起人：<span>{{data.events_organizer}}</span>
+                </div>
             </div>
             <div class="row">
-                <div class="col">名额：200人</div>
-                <div class="col">城市：深圳</div>
+                <div class="col">名额：{{data.events_users_num}}人</div>
+                <div class="col">城市：{{data.events_city}}</div>
             </div>
             <div class="row">
-                <div class="col">时间：2014-08-14</div>
-                <div class="col">报名截止：2014-08-14</div>
+                <div class="col">活动时间：{{data.events_start_time}}</div>
+            </div>
+            <div class="row">
+                <div class="col">报名截止：{{data.events_end_time}}</div>
             </div>
         </section>
         <section class="mod_detail_bd">
             <div class="mod_detail_part">
                 <h1 class="positive">分享嘉宾</h1>
                 <div class="mod_detail_info">
-                    分享内容内容，分享内容内容，分享内容内容，分享内容内容
+                    {{data.events_guests}}
                 </div>
             </div>
             <div class="mod_detail_part">
                 <h1 class="positive">活动简介</h1>
+                <div class="mod_detail_info">
+                    {{data.events_detail}}
+                </div>
             </div>
             <div class="mod_detail_part">
                 <h1 class="positive">地址与交通指引</h1>
+                <div class="mod_detail_info">
+                    {{data.events_address}}
+                </div>
             </div>
         </section>
 
@@ -35,10 +44,9 @@
             <button class="button button-full button-positive">
                 我要报名
             </button>
-            <!--<a class="detail_fund" href="##">我要投资</a>-->
             <div class="row mod_share">
                 <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-heart-outline"></i>已赞</a>
+                    <a href="javascript:;"><i class="ion-ios7-heart-outline"></i><span>{{data.events_zan}}</span> 已赞</a>
                 </div>
                 <div class="col">
                     <a href="javascript:;"><i class="ion-ios7-redo-outline"></i>分享</a>

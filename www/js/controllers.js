@@ -70,6 +70,34 @@ angular.module('app.controllers', [])
         console.log($scope.data);
     })
 
+    //events
+    .controller('EventsCtrl',function($scope ,restApi){
+        $scope.data = restApi.Events.query();
+        console.log($scope.data);
+    })
+
+    .controller('EventsDetailCtrl',function($scope ,restApi){
+        $scope.data = restApi.Events.getOne({id:1});
+        console.log($scope.data);
+    })
+
+    //services
+    .controller('ServicesCtrl',function($scope ,restApi){
+        $scope.data = restApi.Services.query();
+        console.log($scope.data);
+    })
+
+    .controller('ServicesDetailCtrl',function($scope ,restApi){
+        $scope.data = restApi.Services.getOne({id:1});
+        console.log($scope.data);
+    })
+
+    .controller('CompanyCtrl',function($scope ,restApi){
+        $scope.companyData = restApi.Company.getOne({id:1});
+        $scope.jobsData = restApi.Job.queryByComId({id:1});
+    })
+
+
 
     .controller('HomeController', [ '$scope', '$state', function($scope, $state) {
         $scope.navTitle = 'Tab Page';

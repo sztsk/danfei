@@ -133,7 +133,7 @@ class DbHandler {
      * @param $num
      */
     public function getJobs($start,$num = 30){
-        $sql = "SELECT * FROM  `tb_jobs` WHERE jobs_state = 1 LIMIT $start , $num";
+        $sql = "SELECT * FROM  `tb_jobs` LEFT JOIN tb_company on tb_jobs.`jobs_company_id` = tb_company.company_id WHERE jobs_state = 1 LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -144,7 +144,7 @@ class DbHandler {
      * @param $num
      */
     public function getJobsByComId(){
-        $sql = "SELECT jobs_id,jobs_title,jobs_add_time FROM  `tb_jobs` WHERE jobs_state = 1";
+        $sql = "SELECT jobs_id,jobs_name,jobs_push_date FROM  `tb_jobs` WHERE jobs_state = 1";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -201,7 +201,7 @@ class DbHandler {
      * @param $num
      */
     public function getEvents($start,$num = 30){
-        $sql = "SELECT events_id,events_title,events_detail FROM  `tb_events` WHERE events_state = 1 LIMIT $start , $num";
+        $sql = "SELECT events_id,events_title,events_detail,events_start_time FROM  `tb_events` WHERE events_state = 1 LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -330,6 +330,79 @@ class DbHandler {
      */
     public function delCompanyById($id){
         $sql = "UPDATE  tb_company SET company_state = 0 WHERE company_id = $id";
+        $result = $this->conn->query($sql);
+        return $result;
+    }
+
+
+
+
+    /* ------------- `tb_services` table method ------------------ */
+    /**
+     * 获取服务列表
+     * @param $start
+     * @param $num
+     */
+    public function getServices($start = 0,$num = 30){
+        $sql = "SELECT services_id,services_detail,company_name,company_city,company_type FROM  `tb_services` LEFT JOIN tb_company ON tb_services.services_id = tb_company.company_id WHERE services_state = 1 LIMIT $start , $num";
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
+
+    /**
+     * 获取活动详细信息
+     * @param $id
+     */
+    public function getServicesById($id){
+        $sql = "SELECT * FROM  `tb_services` LEFT JOIN tb_company ON tb_services.services_id = tb_company.company_id WHERE company_id = $id";
+        $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+    /**
+     * 创建活动
+     * @param $data
+     * @return null
+     */
+    public function createServices($data){
+        $sql = $this->buildSqlInsert("tb_services",$data);
+        $this->conn->query($sql);
+        $id = $this->conn->insert_id;
+        if($id){
+            $data['services_id'] = $id;
+            return $data;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * 更新公司信息
+     * @param $data
+     * @return null
+     */
+    public function updateServicesById($data){
+        if(!isset($data['services_id'])){
+            return null;
+        }
+        $where = '`services_id` =' . $data['services_id'];
+        $sql = $this->buildSqlUpdate("tb_services",$data,$where);
+        $result = $this->conn->query($sql);
+
+        if($result){
+            return $data;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 删除公司
+     * @param $id
+     * @return mixed
+     */
+    public function delServicesById($id){
+        $sql = "UPDATE  tb_services SET services_state = 0 WHERE services_id = $id";
         $result = $this->conn->query($sql);
         return $result;
     }

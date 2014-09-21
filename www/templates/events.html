@@ -38,66 +38,19 @@
         <!--筛选 E-->
 
         <ion-list class="events_list">
-            <ion-item href="#/app/tabs/events/1">
-                <h2 class="positive">创业电视传媒创业电视传媒创业电视传媒创业电视传媒创 </h2>
+            <ion-item ng-repeat="item in data" href="#/app/tabs/events/{{item.events_id}}">
+                <h2 class="positive">{{item.events_title}} </h2>
                 <div class="events_info">
                     <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
                     <div class="events_info_cnt">
-                        <time>2014-08-14 10:10:10</time>
+                        <time>{{item.events_start_time}}</time>
                         <div class="events_detail">
-                            创业电视传媒创业电视传媒创业电视传媒创业电视传媒创创业电视传媒
+                            {{item.events_detail}}
                         </div>
                     </div>
                 </div>
             </ion-item>
-            <ion-item href="#/app/tabs/events/1">
-                <h2 class="positive">创业电视传媒创业电视传媒创业电视传媒创业电视传媒创 </h2>
-                <div class="events_info">
-                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
-                    <div class="events_info_cnt">
-                        <time>2014-08-14 10:10:10</time>
-                        <div class="events_detail">
-                            创业电视传媒创业电视传媒创业电视传媒创业电视传媒创创业电视传媒
-                        </div>
-                    </div>
-                </div>
-            </ion-item>
-            <ion-item href="#/app/tabs/events/1">
-                <h2 class="positive">创业电视传媒创业电视传媒创业电视传媒创业电视传媒创 </h2>
-                <div class="events_info">
-                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
-                    <div class="events_info_cnt">
-                        <time>2014-08-14 10:10:10</time>
-                        <div class="events_detail">
-                            创业电视传媒创业电视传媒创业电视传媒创业电视传媒创创业电视传媒
-                        </div>
-                    </div>
-                </div>
-            </ion-item>
-            <ion-item href="#/app/tabs/events/1">
-                <h2 class="positive">创业电视传媒创业电视传媒创业电视传媒创业电视传媒创 </h2>
-                <div class="events_info">
-                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
-                    <div class="events_info_cnt">
-                        <time>2014-08-14 10:10:10</time>
-                        <div class="events_detail">
-                            创业电视传媒创业电视传媒创业电视传媒创业电视传媒创创业电视传媒
-                        </div>
-                    </div>
-                </div>
-            </ion-item>
-            <ion-item href="#/app/tabs/events/1">
-                <h2 class="positive">创业电视传媒创业电视传媒创业电视传媒创业电视传媒创 </h2>
-                <div class="events_info">
-                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
-                    <div class="events_info_cnt">
-                        <time>2014-08-14 10:10:10</time>
-                        <div class="events_detail">
-                            创业电视传媒创业电视传媒创业电视传媒创业电视传媒创创业电视传媒
-                        </div>
-                    </div>
-                </div>
-            </ion-item>
+
         </ion-list>
 
 

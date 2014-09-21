@@ -65,6 +65,17 @@ $app->get(
     }
 );
 
+//获取该公司下的所有职位
+$app->get(
+    '/jobs/company/:id',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getJobsByComId($id);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
 $app->get(
     '/jobs(/:start)(:/num)',
     function ($start = 0,$num  = 30){
@@ -118,20 +129,21 @@ $app->delete(
 /******************events*********************/
 
 $app->get(
-    '/events(/:start)(:/num)',
-    function ($start = 0,$num  = 30){
+    '/events/:id',
+    function ($id){
         $db = new DbHandler();
-        $data = $db->getJobs($start,$num);
+        $data = $db->getEventsById($id);
         $db = null;
         echoRespnse(200,$data);
     }
 );
 
+
 $app->get(
-    '/events/:id',
-    function ($id){
+    '/events(/:start)(:/num)',
+    function ($start = 0,$num  = 30){
         $db = new DbHandler();
-        $data = $db->getJobById($id);
+        $data = $db->getEvents($start,$num);
         $db = null;
         echoRespnse(200,$data);
     }
@@ -142,7 +154,7 @@ $app->post(
     function () use ($app){
         $data = $app->request->post();
         $db = new DbHandler();
-        $jobData = $db->createJobs($data);
+        $jobData = $db->createEvents($data);
         echoRespnse(201,$jobData);
     }
 );
@@ -152,7 +164,7 @@ $app->patch(
     function () use ($app){
         $data = $app->request->patch();
         $db = new DbHandler();
-        $jobData = $db->updateJobsById($data);
+        $jobData = $db->updateEventsById($data);
         $db = null;
         echoRespnse(200,$jobData);
     }
@@ -162,7 +174,7 @@ $app->delete(
     '/events/:id',
     function ($id){
         $db = new DbHandler();
-        $result = $db->delJobsById($id);
+        $result = $db->delEventsById($id);
         if ($result) {
             // task deleted successfully
             $response["error"] = false;
@@ -175,6 +187,84 @@ $app->delete(
         echoRespnse(200, $response);
     }
 );
+
+
+
+/******************services*********************/
+
+$app->get(
+    '/services/:id',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getServicesById($id);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+
+$app->get(
+    '/services(/:start)(:/num)',
+    function ($start = 0,$num  = 30){
+        $db = new DbHandler();
+        $data = $db->getServices($start,$num);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+$app->post(
+    '/services',
+    function () use ($app){
+        $data = $app->request->post();
+        $db = new DbHandler();
+        $jobData = $db->createEvents($data);
+        echoRespnse(201,$jobData);
+    }
+);
+
+$app->patch(
+    '/services',
+    function () use ($app){
+        $data = $app->request->patch();
+        $db = new DbHandler();
+        $jobData = $db->updateServicesById($data);
+        $db = null;
+        echoRespnse(200,$jobData);
+    }
+);
+
+$app->delete(
+    '/services/:id',
+    function ($id){
+        $db = new DbHandler();
+        $result = $db->delServicesById($id);
+        if ($result) {
+            // task deleted successfully
+            $response["error"] = false;
+            $response["message"] = "Task deleted succesfully";
+        } else {
+            // task failed to delete
+            $response["error"] = true;
+            $response["message"] = "Task failed to delete. Please try again!";
+        }
+        echoRespnse(200, $response);
+    }
+);
+
+
+/******************services*********************/
+
+$app->get(
+    '/company/:id',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getCompanyById($id);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
 
 
 

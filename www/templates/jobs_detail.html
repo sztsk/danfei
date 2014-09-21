@@ -1,7 +1,7 @@
-<ion-view title="{{data.jobs_title}}" class="mod_detail">
+<ion-view title="{{data.jobs_name}}" class="mod_detail">
     <ion-content class="has-header">
         <section class="mod_detail_hd">
-            <h1>{{data.jobs_title}}</h1>
+            <h1>{{data.jobs_name}}</h1>
             <div class="row">
                 <div class="col">{{data.company_name}}</div>
                 <div class="col">{{data.jobs_add_time}}发布</div>
@@ -15,7 +15,7 @@
                 <div class="col">学历要求：{{data.jobs_education}}</div>
             </div>
             <div class="row">
-                <div class="col">招聘人数：{{data.jobs_users_num}}</div>
+                <div class="col">行业：{{data.conpany_type}}</div>
                 <div class="col">工作性质：{{data.jobs_profile}}</div>
             </div>
         </section>
@@ -23,13 +23,13 @@
             <div class="mod_detail_part">
                 <h1 class="positive">职位描述</h1>
                 <div class="mod_detail_info">
-                    分享内容内容，分享内容内容，分享内容内容，分享内容内容
+                    {{data.jobs_detail}}
                 </div>
             </div>
             <div class="mod_detail_part">
                 <h1 class="positive">职位要求</h1>
                 <div class="mod_detail_info">
-                    {{data.jobs_detail}}
+                    {{data.jobs_requirements}}
                 </div>
             </div>
             <div class="mod_detail_part">
@@ -44,12 +44,12 @@
         <div class="mod_detail_action">
 
             <button class="button button-full button-positive">
-                提交项目
+                提交简历
             </button>
             <!--<a class="detail_fund" href="##">我要投资</a>-->
             <div class="row mod_share">
                 <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-heart-outline"></i>已赞</a>
+                    <a href="javascript:;"><i class="ion-ios7-heart-outline"></i><span>{{data.jobs_zan}} </span>已赞</a>
                 </div>
                 <div class="col">
                     <a href="javascript:;"><i class="ion-ios7-redo-outline"></i>分享</a>
