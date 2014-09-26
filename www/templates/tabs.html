@@ -17,10 +17,15 @@
         <!-- Tab 2 content -->
     </ion-tab>
 
-    <ion-tab href="#/app/tabs/more" title="更多" icon-on="ion-ios7-people" icon-off="ion-ios7-people-outline">
+    <ion-tab title="更多" icon-on="ion-ios7-people" icon-off="ion-ios7-people-outline" ng-click="moreClick()">
         <ion-nav-view name="moreContent"></ion-nav-view>
         <!-- Tab 3 content -->
     </ion-tab>
 
+    <div id="J_morePop" class="more_pop ng-hide" ng-show="isShowPop">
+        <a href="##">创业项目</a>
+        <a href="##">人才展示</a>
+        <a href="##">关于我们</a>
+    </div>
 
 </ion-tabs>

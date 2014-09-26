@@ -89,3 +89,8 @@
 .vip_bd .item{ border: 1px solid #dedede;border-left: 0 ; border-right: 0;font-size: 12px; padding: 10px 15px;}
 .vip_bd .item:first-child{border-top: 0;}
 .vip_bd .icon{position: absolute; top: 18px; right: 10px;}
+
+
+/*浮层*/
+.more_pop{ position: absolute; padding: 2px; border-radius: 5px; right: 10px; bottom: 55px; width: 70px; height: 100px; background: #f2f2f2; }
+.more_pop a{display: block; height: 30px; line-height: 30px; text-align: center; color: #000; font-size: 12px; border-bottom: 1px solid #ccc;}

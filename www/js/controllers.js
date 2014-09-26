@@ -120,5 +120,14 @@ angular.module('app.controllers', [])
     })
 
 
+    .controller('TabsController', function ($scope, $stateParams) {
+        $scope.isShowPop = false;
+
+        $scope.moreClick = function(){
+            $scope.isShowPop = $scope.isShowPop === false;
+
+        }
+    })
+
     .controller('PlaylistCtrl', function ($scope, $stateParams) {
     });

@@ -33,7 +33,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
             .state('app.tabs', {
                 url: "/tabs",
                 abstract: true,
-                templateUrl: "templates/tabs.html"
+                templateUrl: "templates/tabs.html",
+                controller: 'TabsController'
             })
 
             //首页
