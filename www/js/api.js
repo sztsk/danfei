@@ -38,6 +38,28 @@ angular.module('app.services', ['ngResource'])
         });
 
         /**
+         * 创业项目
+         */
+        RestApi.Project = $resource(BATEURL + 'project/:id',{},{
+            'query': { method: 'GET',isArray:true},
+            'getOne':{method:'GET',params:{}},
+            'update':{method:'PATCH'},
+            'save':{method:'POST'},
+            'delete':{method:'DELETE'}
+        });
+
+        /**
+         * 用户信息
+         */
+        RestApi.Users = $resource(BATEURL + 'users/:id',{},{
+            'query': { method: 'GET',isArray:true},
+            'getOne':{method:'GET',params:{}},
+            'update':{method:'PATCH'},
+            'save':{method:'POST'},
+            'delete':{method:'DELETE'}
+        });
+
+        /**
          * 公司信息
          */
         RestApi.Company = $resource(BATEURL + 'company/:id',{},{
@@ -50,4 +72,10 @@ angular.module('app.services', ['ngResource'])
 
 
         return RestApi;
+    })
+    .service('morePop',function(){
+
+        this.isShowPop = false;
+        this.data = {value: false};
+
     });

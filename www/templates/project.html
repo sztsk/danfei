@@ -1,0 +1,63 @@
+<ion-view title="创业项目">
+    <ion-content class="has-header">
+        <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+                <input type="text" placeholder="Email">
+            </label>
+            <button class="button button-small">
+                搜索
+            </button>
+        </div>
+        <!--筛选 S-->
+        <div class="row events_row">
+            <div class="col">
+                <select name="J_industry" id="J_industry">
+                    <option value="1">按行业</option>
+                    <option value="1">互联网</option>
+                    <option value="1">移动端</option>
+                    <option value="1">按行业</option>
+                </select>
+            </div>
+            <div class="col">
+                <select name="city" id="J_city">
+                    <option value="1">按地区</option>
+                    <option value="1">北京</option>
+                    <option value="1">上海</option>
+                    <option value="1">广州</option>
+                </select>
+            </div>
+            <div class="col">
+                <select name="stage" id="J_stage">
+                    <option value="1">按融资阶段</option>
+                    <option value="1">天使</option>
+                    <option value="1">A轮</option>
+                    <option value="1">B轮</option>
+                </select>
+            </div>
+        </div>
+        <!--筛选 E-->
+
+        <ion-list class="project_list">
+            <ion-item ng-repeat="item in data" href="#/app/tabs/project/{{item.project_id}}">
+                <h2 class="positive">{{item.project_name}}</h2>
+                <div class="project_info">
+                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
+                    <div class="project_info_cnt">
+                        <time>{{item.events_start_time}}</time>
+                        <div class="project_detail">
+                            {{item.project_intro}}
+                        </div>
+                    </div>
+                </div>
+                <div class="project_extra">
+                    <span class="project_financing positive">融资:<span>{{item.project_financing}}</span></span>
+                    <span>{{item.project_city}}</span> |
+                    <span>{{item.project_type}}</span>
+                </div>
+            </ion-item>
+
+        </ion-list>
+
+
+    </ion-content>
+</ion-view>

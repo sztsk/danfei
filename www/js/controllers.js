@@ -71,12 +71,14 @@ angular.module('app.controllers', [])
     })
 
     //events
-    .controller('EventsCtrl',function($scope ,restApi){
+    .controller('EventsCtrl',function($scope ,restApi,morePop){
+        morePop.data.value = false;
+
         $scope.data = restApi.Events.query();
-        console.log($scope.data);
     })
 
-    .controller('EventsDetailCtrl',function($scope ,restApi){
+    .controller('EventsDetailCtrl',function($scope ,restApi,morePop){
+        morePop.data.value = false;
         $scope.data = restApi.Events.getOne({id:1});
         console.log($scope.data);
     })
@@ -96,6 +98,30 @@ angular.module('app.controllers', [])
         $scope.companyData = restApi.Company.getOne({id:1});
         $scope.jobsData = restApi.Job.queryByComId({id:1});
     })
+
+    //创业项目
+    .controller('ProjectCtrl',function($scope ,restApi){
+        $scope.data = restApi.Project.query();
+        console.log($scope.data);
+    })
+
+    .controller('ProjectDetailCtrl',function($scope ,restApi){
+        $scope.data = restApi.Project.getOne({id:1});
+        console.log($scope.data);
+    })
+
+    //人才展示
+    .controller('TalentCtrl',function($scope ,restApi){
+
+        $scope.data = restApi.Users.query();
+        console.log($scope.data);
+    })
+
+    .controller('TalentDetailCtrl',function($scope ,restApi){
+        $scope.data = restApi.Users.getOne({id:1});
+        console.log($scope.data);
+    })
+
 
 
 
@@ -120,12 +146,21 @@ angular.module('app.controllers', [])
     })
 
 
-    .controller('TabsController', function ($scope, $stateParams) {
-        $scope.isShowPop = false;
-
+    .controller('TabsController', function ($scope,morePop) {
+        //$scope.isShowPop = morePop.isShowPop;
+        $scope.data = morePop.data;
+        
         $scope.moreClick = function(){
-            $scope.isShowPop = $scope.isShowPop === false;
+            morePop.data.value = morePop.data.value === false;
+            console.log(morePop.isShowPop,$scope.isShowPop,$scope.data);
+        };
 
+        $scope.hideShowPop = function(){
+            morePop.data.value = false;
+        };
+        //跳转到家园页面
+        $scope.goHome = function(){
+           window.location.href = 'http://www.baidu.com';
         }
     })
 

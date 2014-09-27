@@ -8,7 +8,7 @@
         <ion-nav-view name="eventsContent"></ion-nav-view>
         <!-- Tab 3 content -->
     </ion-tab>
-    <ion-tab href="http://wsq.qq.com/" title="家园" icon-on="ion-ios7-home" icon-off="ion-ios7-home-outline">
+    <ion-tab href="http://wsq.qq.com/" title="家园" icon-on="ion-ios7-home" icon-off="ion-ios7-home-outline" ng-click="goHome()">
         <ion-nav-view name="houseContent"></ion-nav-view>
         <!-- Tab 2 content -->
     </ion-tab>
@@ -22,10 +22,10 @@
         <!-- Tab 3 content -->
     </ion-tab>
 
-    <div id="J_morePop" class="more_pop ng-hide" ng-show="isShowPop">
-        <a href="##">创业项目</a>
-        <a href="##">人才展示</a>
-        <a href="##">关于我们</a>
+    <div id="J_morePop" class="more_pop ng-hide" ng-show="data.value">
+        <a href="#/app/tabs/project" ng-click="hideShowPop()">创业项目</a>
+        <a href="#/app/tabs/talent" ng-click="hideShowPop()">人才展示</a>
+        <a href="#/app/tabs/about" ng-click="hideShowPop()">关于我们</a>
     </div>
 
 </ion-tabs>

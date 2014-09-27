@@ -1,0 +1,61 @@
+<ion-view title="{{data.project_name}}" class="mod_detail">
+    <ion-content class="has-header">
+        <section class="mod_detail_hd">
+            <h1>{{data.project_name}}</h1>
+            <div class="row">
+                <div class="col">
+                    <span>{{data.company_name}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">行业：{{data.project_type}}人</div>
+                <div class="col">城市：{{data.events_city}}</div>
+            </div>
+            <div class="row">
+                <div class="col">融资阶段：{{data.project_stage}}</div>
+            </div>
+            <div class="row">
+                <div class="col">团队规模：{{data.company_size}}</div>
+            </div>
+        </section>
+        <section class="mod_detail_bd">
+            <div class="mod_detail_part">
+                <h1 class="positive">项目介绍</h1>
+                <div class="mod_detail_info">
+                    {{data.project_intro}}
+                </div>
+            </div>
+            <div class="mod_detail_part">
+                <h1 class="positive">创始人介绍</h1>
+                <div class="mod_detail_info">
+                    {{data.project_founder}}
+                </div>
+            </div>
+            <div class="mod_detail_part">
+                <h1 class="positive">商业计划书</h1>
+                <div class="mod_detail_info">
+                    {{data.project_detail}}
+                </div>
+            </div>
+
+        </section>
+
+        <div class="mod_detail_action">
+
+            <button class="button button-full button-positive">
+                我有意向
+            </button>
+            <div class="row mod_share">
+                <div class="col">
+                    <a href="javascript:;"><i class="ion-ios7-heart-outline"></i><span>{{data.project_zan}}</span> 已赞</a>
+                </div>
+                <div class="col">
+                    <a href="javascript:;"><i class="ion-ios7-redo-outline"></i>分享</a>
+                </div>
+                <div class="col">
+                    <a href="javascript:;"><i class="ion-ios7-star-outline"></i>收藏</a>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,59 @@
+<ion-view title="创业服务">
+    <ion-content class="has-header">
+        <!--<div class="button-bar">-->
+        <!--<a class="button">创业服务</a>-->
+        <!--<a class="button">职业机会</a>-->
+        <!--</div>-->
+
+        <!--筛选 S-->
+        <div class="row mod_filter">
+            <div class="col">
+                <select name="J_industry" id="J_industry">
+                    <option value="1">按领域</option>
+                    <option value="1">互联网</option>
+                    <option value="1">移动端</option>
+                    <option value="1">按行业</option>
+                </select>
+            </div>
+            <div class="col">
+                <select name="city" id="J_city">
+                    <option value="1">按城市</option>
+                    <option value="1">北京</option>
+                    <option value="1">上海</option>
+                    <option value="1">广州</option>
+                </select>
+            </div>
+            <div class="col">
+                <select name="stage" id="J_stage">
+                    <option value="1">按人气</option>
+                    <option value="1">天使</option>
+                    <option value="1">A轮</option>
+                    <option value="1">B轮</option>
+                </select>
+            </div>
+        </div>
+        <!--筛选 E-->
+
+        <ion-list class="mod_list">
+            <ion-item class="item mod_item" ng-repeat="item in data" href="#/app/tabs/talent/{{item.user_id}}">
+                <div class="mod_item_info">
+                    <div class="mod_item_col1">
+                        <img class="mod_item_img" src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
+                        <button class="button button-small button-positive">收藏</button>
+                    </div>
+                    <div class="mod_item_col2">
+                        <h2 class="positive mod_item_tit">{{item.user_name}} </h2>
+                        <div class="mod_item_tags">
+                            <span>{{item.user_city}}</span> | <span>{{item.user_title}}</span> | <span>{{item.user_jobs_years}}年</span>
+                        </div>
+                        <div class="mod_item_cnt">
+                            {{item.user_intro}}
+                        </div>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+
+
+    </ion-content>
+</ion-view>

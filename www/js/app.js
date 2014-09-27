@@ -133,6 +133,62 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 }
             })
 
+            //创业项目
+            .state('app.tabs.project', {
+                url: "/project",
+                views: {
+                    'moreContent': {
+                        templateUrl: "templates/project.html",
+                        controller: 'ProjectCtrl'
+                    }
+                }
+            })
+
+            //创业项目 详情
+            .state('app.tabs.pdetail', {
+                url: "/project/:projectId",
+                views: {
+                    'moreContent': {
+                        templateUrl: "templates/project_detail.html",
+                        controller: 'ProjectDetailCtrl'
+                    }
+                }
+            })
+
+            //人才展示
+            .state('app.tabs.talent', {
+                url: "/talent",
+                views: {
+                    'moreContent': {
+                        templateUrl: "templates/talent.html",
+                        controller: 'TalentCtrl'
+                    }
+                }
+            })
+
+            //人才展示 详情
+            .state('app.tabs.tdetail', {
+                url: "/talent/:userId",
+                views: {
+                    'moreContent': {
+                        templateUrl: "templates/talent_detail.html",
+                        controller: 'TalentDetailCtrl'
+                    }
+                }
+            })
+
+            //人才展示 详情
+            .state('app.tabs.about', {
+                url: "/about",
+                views: {
+                    'moreContent': {
+                        templateUrl: "templates/about.html"
+                    }
+                }
+            })
+
+            ;
+
 
 //            .state('app.browse', {
 //                url: "/browse",

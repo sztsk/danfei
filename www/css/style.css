@@ -93,4 +93,26 @@
 
 /*浮层*/
 .more_pop{ position: absolute; padding: 2px; border-radius: 5px; right: 10px; bottom: 55px; width: 70px; height: 100px; background: #f2f2f2; }
-.more_pop a{display: block; height: 30px; line-height: 30px; text-align: center; color: #000; font-size: 12px; border-bottom: 1px solid #ccc;}
+.more_pop a{display: block; height: 30px; line-height: 30px; text-align: center; color: #000; font-size: 12px; border-bottom: 1px solid #ccc; text-decoration: none;}
+.more_pop a:last-child{border-bottom: 0;}
+
+/*创业项目*/
+.project_list .list{ margin: 0 15px; font-size: 14px;}
+.project_list .item{border-top: 2px solid #4a87ee; margin-bottom: 10px;}
+.project_list .item-content{ padding-right: 16px;}
+.project_list h2{font-weight: 700; white-space: normal;}
+.project_info{position: relative; padding: 0 0 0 80px;}
+.project_info img{ position: absolute; top: 0; left: 0; width: 70px; height: 70px;}
+.project_info_cnt{white-space: normal; min-height: 70px;}
+.project_detail{height: 70px;overflow: hidden; margin-bottom: 5px; text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 4; -webkit-box-orient: vertical; font-size: 12px; line-height: 18px;}
+.project_extra span{display:inline-block; vertical-align: middle; font-size: 12px}
+    .project_financing{font-size: 14px; width: 70px; margin-right: 5px;}
+    .project_financing span{font-size: 16px; font-weight: 700}
+
+/*人才展示*/
+.user_info{ position: relative;}
+.user_info img{ width: 75px; height: 75px; position: absolute; top: 15px; left: 15px;}
+.user_info_list{ margin-left: 105px; min-height: 100px; padding: 13px 0;}
+
+/*关于我们*/
+.about_cnt{padding: 15px;}

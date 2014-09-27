@@ -408,6 +408,148 @@ class DbHandler {
     }
 
 
+    /* ------------- `tb_project` table method ------------------ */
+    /**
+     * 获取创业服务列表
+     * @param $start
+     * @param $num
+     */
+    public function getProject($start = 0,$num = 30){
+        $sql = "SELECT project_id,project_name,project_thum,project_push_date,project_financing,project_stage,project_intro,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 LIMIT $start , $num";
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
+
+    /**
+     * 获取活动详细信息
+     * @param $id
+     */
+    public function getProjectById($id){
+        $sql = "SELECT * FROM  `tb_project` LEFT JOIN tb_company ON tb_project.project_id = tb_company.company_id WHERE company_id = $id";
+        $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+    /**
+     * 创建活动
+     * @param $data
+     * @return null
+     */
+    public function createProject($data){
+        $sql = $this->buildSqlInsert("tb_project",$data);
+        $this->conn->query($sql);
+        $id = $this->conn->insert_id;
+        if($id){
+            $data['services_id'] = $id;
+            return $data;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * 更新创业服务信息
+     * @param $data
+     * @return null
+     */
+    public function updateProjectById($data){
+        if(!isset($data['project_id'])){
+            return null;
+        }
+        $where = '`project_id` =' . $data['project_id'];
+        $sql = $this->buildSqlUpdate("tb_project",$data,$where);
+        $result = $this->conn->query($sql);
+
+        if($result){
+            return $data;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 删除公司
+     * @param $id
+     * @return mixed
+     */
+    public function delProjectById($id){
+        $sql = "UPDATE  tb_project SET project_state = 0 WHERE project_id = $id";
+        $result = $this->conn->query($sql);
+        return $result;
+    }
+
+
+    /* ------------- `tb_users` table method ------------------ */
+    /**
+     * 获取服务列表
+     * @param $start
+     * @param $num
+     */
+    public function getUsers($start = 0,$num = 30){
+        $sql = "SELECT user_id,user_name,user_jobs_years,user_education,user_title,user_intro,user_thum,user_city FROM `tb_users` WHERE user_state = 2 LIMIT $start , $num";
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
+
+    /**
+     * 获取活动详细信息
+     * @param $id
+     */
+    public function getUsersById($id){
+        $sql = "SELECT * FROM  `tb_users` WHERE user_id = $id";
+        $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+    /**
+     * 创建活动
+     * @param $data
+     * @return null
+     */
+    public function createUsers($data){
+        $sql = $this->buildSqlInsert("tb_users",$data);
+        $this->conn->query($sql);
+        $id = $this->conn->insert_id;
+        if($id){
+            $data['user_id'] = $id;
+            return $data;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * 更新公司信息
+     * @param $data
+     * @return null
+     */
+    public function updateUsersById($data){
+        if(!isset($data['user_id'])){
+            return null;
+        }
+        $where = '`user_id` =' . $data['user_id'];
+        $sql = $this->buildSqlUpdate("tb_users",$data,$where);
+        $result = $this->conn->query($sql);
+
+        if($result){
+            return $data;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 删除公司
+     * @param $id
+     * @return mixed
+     */
+    public function delUsersById($id){
+        $sql = "UPDATE tb_users SET user_state = 0 WHERE user_id = $id";
+        $result = $this->conn->query($sql);
+        return $result;
+    }
+
+
 
 }
 
