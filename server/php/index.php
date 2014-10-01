@@ -40,14 +40,16 @@ $app->post(
     function () use ($app){
         $phone = $app->request()->post('user_phone');
         $password = $app->request()->post('user_password');
-//        $response = array();
+        $response = array();
         $db = new DbHandler();
         if($db->checkLogin($phone,$password)){
             $user = $db->getUserByPhone($phone);
             $db = null;
-            return $user;
+            echoRespnse(201,$user);
         }else{
-            return NULL;
+            $response["error"] = true;
+            $response["message"] = "抱歉，手机号码 或 密码 不对，请重新登录！";
+            echoRespnse(201,$response);
         }
     }
 );
@@ -344,7 +346,7 @@ $app->post(
     function () use ($app){
         $data = $app->request->post();
         $db = new DbHandler();
-        $jobData = $db->createUsers($data);
+        $jobData = $db->createUser($data);
         $db = null;
         echoRespnse(201,$jobData);
     }

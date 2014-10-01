@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.services', ['ngResource'])
+angular.module('app.services', ['ngResource','ngStorage'])
     .factory('restApi', function ($resource) {
 
         var RestApi  = {},
@@ -59,6 +59,8 @@ angular.module('app.services', ['ngResource'])
             'delete':{method:'DELETE'}
         });
 
+        RestApi.CheckLogin = $resource(BATEURL + 'login',{});
+
         /**
          * 公司信息
          */
@@ -73,9 +75,45 @@ angular.module('app.services', ['ngResource'])
 
         return RestApi;
     })
+    //设置post header
+    .config(function ($httpProvider) {
+        $httpProvider.defaults.transformRequest = function (data) {
+            var str = [];
+            for (var p in data) {
+                data[p] !== undefined && str.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]));
+            }
+            return str.join('&');
+        };
+        $httpProvider.defaults.headers.put['Content-Type'] =
+            $httpProvider.defaults.headers.post['Content-Type'] =
+                'application/x-www-form-urlencoded; charset=UTF-8';
+    })
+    /**
+     * share cate data
+     */
     .service('morePop',function(){
-
         this.isShowPop = false;
         this.data = {value: false};
-
+    })
+    /**
+     * share login data
+     */
+    .service('loginData',function($localStorage){
+        var _losData = $localStorage.loginData,
+            _loginData = _losData || {};
+        return {
+            set : function(data){
+                _loginData.user_name = data.user_name;
+                _loginData.user_rtx = data.user_rtx;
+                //cache
+                $localStorage.loginData = _loginData;
+            },
+            get : function(){
+                return _loginData;
+            },
+            reset : function () {
+                _loginData = {};
+                delete $localStorage.loginData;
+            }
+        }
     });

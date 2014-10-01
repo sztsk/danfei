@@ -53,7 +53,8 @@ class DbHandler {
      * @return boolean
      */
     private function isUserExists($phone) {
-        $result = $this->conn->get_var("SELECT user_id from tb_users WHERE user_phone = $phone");
+        $phone = (int)$phone;
+        $result = $this->conn->get_var("SELECT user_id from tb_users WHERE user_phone = '$phone'");
 //        echo $result . "SELECT user_id from tb_users WHERE user_phone = $phone";
 
         return $result > 0;
@@ -69,7 +70,6 @@ class DbHandler {
         require_once 'PassHash.php';
         //手机号码
         $phone = $userData['user_phone'];
-
         //判断用户是否存在
         if(!$this->isUserExists($phone)){
             $password = $userData['user_password'];
@@ -81,15 +81,20 @@ class DbHandler {
             $userData['user_api_key'] = $apiKey;
 
             $sql = $this->buildSqlInsert('tb_users',$userData);
-
             $result = $this->conn->query($sql);
             if($result){
-                return USER_CREATED_SUCCESSFULLY;
+                return array(
+                    'error' => false,
+                    'message' => "注册成功！请等待管理员审核!"
+                );
             } else{
-                return USER_CREATE_FAILED;
+                return null;
             }
         }else{
-            return USER_ALREADY_EXISTED;
+            return array(
+                'error' => true,
+                'message' => "该手机号码已经注册过！"
+            );
         }
     }
 
@@ -99,7 +104,7 @@ class DbHandler {
      * @param $password
      */
     public function checkLogin($phone,$password){
-        $sql = "SELECT user_password FROM tb_users WHERE user_phone = $phone";
+        $sql = "SELECT user_password FROM tb_users WHERE user_phone = '$phone'";
         $passwordHash = $this->conn->get_var($sql);
         if($passwordHash && PassHash::check_password($passwordHash,$password)){
             return true;
@@ -114,7 +119,7 @@ class DbHandler {
      * @return mixed
      */
     public function getUserByPhone($phone){
-        $sql = "SELECT user_name, user_email, user_qq, user_jobs_time FROM tb_users WHERE user_phone = $phone";
+        $sql = "SELECT user_name, user_email, user_qq, user_jobs_years FROM tb_users WHERE user_phone = '$phone'";
         $user = $this->conn->get_row($sql);
         return $user;
     }
@@ -123,6 +128,77 @@ class DbHandler {
         $sql = "SELECT user_api_key FROM tb_users WHERE user_id = $userId";
         $key = $this->conn->get_var($sql);
         return $key;
+    }
+
+    /* ------------- `tb_users` table method ------------------ */
+    /**
+     * 获取服务列表
+     * @param $start
+     * @param $num
+     */
+    public function getUsers($start = 0,$num = 30){
+        $sql = "SELECT user_id,user_name,user_jobs_years,user_education,user_title,user_intro,user_thum,user_city FROM `tb_users` WHERE user_state = 2 LIMIT $start , $num";
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
+
+    /**
+     * 获取活动详细信息
+     * @param $id
+     */
+    public function getUsersById($id){
+        $sql = "SELECT * FROM  `tb_users` WHERE user_id = $id";
+        $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+    /**
+     * 创建活动
+     * @param $data
+     * @return null
+     */
+//    public function createUsers($data){
+////        var_dump($data);
+//        $sql = $this->buildSqlInsert("tb_users",$data);
+//        $this->conn->query($sql);
+//        $id = $this->conn->insert_id;
+//        if($id){
+//            $data['user_id'] = $id;
+//            return $data;
+//        } else{
+//            return null;
+//        }
+//    }
+
+    /**
+     * 更新公司信息
+     * @param $data
+     * @return null
+     */
+    public function updateUsersById($data){
+        if(!isset($data['user_id'])){
+            return null;
+        }
+        $where = '`user_id` =' . $data['user_id'];
+        $sql = $this->buildSqlUpdate("tb_users",$data,$where);
+        $result = $this->conn->query($sql);
+
+        if($result){
+            return $data;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 删除公司
+     * @param $id
+     * @return mixed
+     */
+    public function delUsersById($id){
+        $sql = "UPDATE tb_users SET user_state = 0 WHERE user_id = $id";
+        $result = $this->conn->query($sql);
+        return $result;
     }
 
 
@@ -479,75 +555,7 @@ class DbHandler {
     }
 
 
-    /* ------------- `tb_users` table method ------------------ */
-    /**
-     * 获取服务列表
-     * @param $start
-     * @param $num
-     */
-    public function getUsers($start = 0,$num = 30){
-        $sql = "SELECT user_id,user_name,user_jobs_years,user_education,user_title,user_intro,user_thum,user_city FROM `tb_users` WHERE user_state = 2 LIMIT $start , $num";
-        $data = $this->conn->get_results($sql);
-        return $data;
-    }
 
-    /**
-     * 获取活动详细信息
-     * @param $id
-     */
-    public function getUsersById($id){
-        $sql = "SELECT * FROM  `tb_users` WHERE user_id = $id";
-        $data = $this->conn->get_row($sql);
-        return $data;
-    }
-
-    /**
-     * 创建活动
-     * @param $data
-     * @return null
-     */
-    public function createUsers($data){
-        $sql = $this->buildSqlInsert("tb_users",$data);
-        $this->conn->query($sql);
-        $id = $this->conn->insert_id;
-        if($id){
-            $data['user_id'] = $id;
-            return $data;
-        } else{
-            return null;
-        }
-    }
-
-    /**
-     * 更新公司信息
-     * @param $data
-     * @return null
-     */
-    public function updateUsersById($data){
-        if(!isset($data['user_id'])){
-            return null;
-        }
-        $where = '`user_id` =' . $data['user_id'];
-        $sql = $this->buildSqlUpdate("tb_users",$data,$where);
-        $result = $this->conn->query($sql);
-
-        if($result){
-            return $data;
-        }else{
-            return null;
-        }
-    }
-
-    /**
-     * 删除公司
-     * @param $id
-     * @return mixed
-     */
-    public function delUsersById($id){
-        $sql = "UPDATE tb_users SET user_state = 0 WHERE user_id = $id";
-        $result = $this->conn->query($sql);
-        return $result;
-    }
 
 
 

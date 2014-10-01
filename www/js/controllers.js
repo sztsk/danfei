@@ -1,17 +1,7 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers',[])
 
-    .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
-        // Form data for the login modal
-        $scope.loginData = {};
-
-//        $scope.leftButtons = [{
-//            type: 'button-icon button-clear ion-navicon',
-//            tap: function(e) {
-//                $ionicSideMenuDelegate.toggleLeft($scope.$$childHead);
-//            }
-//        }];
-
-        // Create the login modal that we will use later
+    .controller('AppCtrl', function ($scope,$ionicModal,restApi,loginData) {
+// Create the login modal that we will use later
         //http://ionicframework.com/docs/api/service/$ionicModal/
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope
@@ -30,14 +20,17 @@ angular.module('app.controllers', [])
         };
 
         // Perform the login action when the user submits the login form
+        $scope.data = {};
         $scope.doLogin = function () {
-            console.log('Doing login', $scope.loginData);
-
-            // Simulate a login delay. Remove this and replace with your login
-            // code if using a login system
-            $timeout(function () {
-                $scope.closeLogin();
-            }, 1000);
+            console.log('Doing login', $scope.data);
+            restApi.CheckLogin.save($scope.data,function(data){
+                if(data.error){
+                    alert(data.message);
+                }else{
+                    loginData.set(data);
+                    $scope.closeLogin();
+                }
+            });
         };
 
     })
@@ -136,13 +129,22 @@ angular.module('app.controllers', [])
 //        }];
     }])
 
-    .controller('NavController',function($scope,$ionicSideMenuDelegate){
+    .controller('NavController',function($scope,$ionicSideMenuDelegate,$ionicModal,loginData,restApi){
         $scope.showMenu = function () {
             $ionicSideMenuDelegate.toggleLeft();
         };
         $scope.showRightMenu = function () {
             $ionicSideMenuDelegate.toggleRight();
         };
+
+        $scope.loginData =loginData.get();
+
+        $scope.logout = function () {
+            loginData.reset();
+            $scope.loginData = {};
+        };
+
+
     })
 
 
@@ -160,9 +162,35 @@ angular.module('app.controllers', [])
         };
         //跳转到家园页面
         $scope.goHome = function(){
-           window.location.href = 'http://www.baidu.com';
+            $window.location.href = 'http://www.baidu.com';
         }
     })
 
-    .controller('PlaylistCtrl', function ($scope, $stateParams) {
+    .controller('RegisterCtrl', function ($scope, $location,restApi,loginData) {
+        $scope.data = {};
+        //loginData.set({
+        //    user_name :'hugo'
+        //})
+        //注册用户
+        $scope.registerUser = function(signup_form){
+            //表单验证
+            // TODO 详细验证信息需要设置
+            if(signup_form.$valid){
+                restApi.Users.save($scope.data,function(data){
+                    if(data && data.error === false){
+                        loginData.set($scope.data);
+                        alert(data.message);
+                        $location.path('/app/tabs/events');
+                    }else{
+                        alert(data.message);
+                    }
+
+                })
+            }
+        };
+
+        //关闭注册页面
+        $scope.closeReg = function(){
+            $location.path('/app/tabs/events');
+        }
     });

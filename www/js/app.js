@@ -30,6 +30,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 controller: 'AppCtrl'
             })
 
+
             .state('app.tabs', {
                 url: "/tabs",
                 abstract: true,
@@ -185,6 +186,27 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                         templateUrl: "templates/about.html"
                     }
                 }
+            })
+
+            //注册
+            .state('app.register', {
+                url : '/register',
+                templateUrl : 'templates/register.html',
+                controller : 'RegisterCtrl'
+            })
+
+            //注册
+            .state('app.register_user', {
+                url : '/register_user',
+                templateUrl : 'templates/register_user.html',
+                controller : 'RegisterCtrl'
+            })
+
+            //注册
+            .state('app.register_company', {
+                url : '/register_company',
+                templateUrl : 'templates/register_company.html',
+                controller : 'RegisterCtrl'
             })
 
             ;

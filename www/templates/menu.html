@@ -1,6 +1,6 @@
-<ion-side-menus>
+<ion-side-menus ng-controller="NavController">
 
-    <ion-side-menu-content ng-controller="NavController">
+    <ion-side-menu-content>
 
         <ion-nav-bar class="bar-stable bar-positive nav-title-slide-ios7">
             <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> 返回
@@ -11,28 +11,55 @@
             <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
         </ion-nav-buttons>
 
-        <ion-nav-view animation="slide-left-right"></ion-nav-view>
+        <ion-nav-view></ion-nav-view>
 
     </ion-side-menu-content>
 
     <ion-side-menu side="left">
         <header class="bar bar-header bar-stable">
-            <h1 class="title">更多</h1>
+            <h1 class="title">个人中心</h1>
         </header>
         <ion-content class="has-header">
             <ion-list>
-                <ion-item nav-clear menu-close ng-click="login()">
+                <ion-item nav-clear menu-close ng-click="login()" ng-hide="loginData.user_name">
                     登录
                 </ion-item>
-                <!--<ion-item nav-clear menu-close href="#/app/search">-->
-                <!--Search-->
-                <!--</ion-item>-->
-                <!--<ion-item nav-clear menu-close href="#/app/browse">-->
-                <!--Browse-->
-                <!--</ion-item>-->
-                <!--<ion-item nav-clear menu-close href="#/app/playlists">-->
-                <!--Playlists-->
-                <!--</ion-item>-->
+                <ion-item nav-clear menu-close href="#/app/register" ng-hide="loginData.user_name">
+                    注册
+                </ion-item>
+                <ion-item nav-clear class="item-icon-left item-divider" ng-show="loginData.user_name">
+                    <i class="icon ion-person-stalker"></i> {{loginData.user_name}}
+                </ion-item>
+                <ion-item nav-clear class="item-divider">
+                    用户资料
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    我的活动
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    我的收藏
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    完善个人资料
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    完善公司信息
+                </ion-item>
+                <ion-item nav-clear class="item-divider">
+                    发布信息
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    发布创业项目
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    发布创业服务
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    发布活动
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="logout()" ng-show="loginData.user_name">
+                    <span class="assertive">退出登录</span>
+                </ion-item>
             </ion-list>
         </ion-content>
     </ion-side-menu>
