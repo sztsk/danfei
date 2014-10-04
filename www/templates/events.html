@@ -1,4 +1,4 @@
-<ion-view title="活动">
+<ion-view title="{{event_title}}">
     <ion-content class="has-header">
         <div class="item item-input-inset">
             <label class="item-input-wrapper">
@@ -37,6 +37,7 @@
         </div>
         <!--筛选 E-->
 
+
         <ion-list class="events_list">
             <ion-item ng-repeat="item in data" href="#/app/tabs/events/{{item.events_id}}">
                 <h2 class="positive">{{item.events_title}} </h2>
@@ -44,8 +45,16 @@
                     <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
                     <div class="events_info_cnt">
                         <time>{{item.events_start_time}}</time>
-                        <div class="events_detail">
+                        <div class="events_detail" ng-show="item.events_detail">
                             {{item.events_detail}}
+                        </div>
+                        <div class="events_detail" ng-show="item.events_users_num">
+                            <div class="events_detail_item">
+                                报名人数：<strong>{{item.events_users_num}}</strong>
+                            </div>
+                            <div class="events_detail_item">
+                                已有<strong>{{item.events_zan}}</strong>人点赞
+                            </div>
                         </div>
                     </div>
                 </div>

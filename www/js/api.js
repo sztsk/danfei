@@ -18,9 +18,10 @@ angular.module('app.services', ['ngResource','ngStorage'])
         /**
          * 活动url
          */
-        RestApi.Events = $resource(BATEURL + 'events/:id',{},{
+        RestApi.Events = $resource(BATEURL + 'events/:cmd/:id',{},{
             'query': { method: 'GET',isArray:true},
-            'getOne':{method:'GET',params:{}},
+            'userQuery': { method: 'GET',isArray:true,params:{ cmd:'user' }},
+            'getOne':{method:'GET'},
             'update':{method:'PATCH'},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}
@@ -105,11 +106,16 @@ angular.module('app.services', ['ngResource','ngStorage'])
             set : function(data){
                 _loginData.user_name = data.user_name;
                 _loginData.user_rtx = data.user_rtx;
+                _loginData.user_id = data.user_id;
                 //cache
                 $localStorage.loginData = _loginData;
             },
             get : function(){
                 return _loginData;
+            },
+            getUserId : function(){
+                //TODO TEST
+               return _loginData.user_id || 1;
             },
             reset : function () {
                 _loginData = {};

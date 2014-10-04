@@ -69,6 +69,28 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 }
             })
 
+            //我的活动
+            .state('app.tabs.eventsmy', {
+                url: "/events_my",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/events.html",
+                        controller: 'EventsMyCtrl'
+                    }
+                }
+            })
+
+            //我的活动
+            .state('app.tabs.eventsedit', {
+                url: "/events_edit",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/events_form.html",
+                        controller: 'EventsFormCtrl'
+                    }
+                }
+            })
+
             //服务 - 创业服务
             .state('app.tabs.services', {
                 url: "/services",

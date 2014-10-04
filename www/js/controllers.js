@@ -1,6 +1,6 @@
-angular.module('app.controllers',[])
+angular.module('app.controllers', [])
 
-    .controller('AppCtrl', function ($scope,$ionicModal,restApi,loginData) {
+    .controller('AppCtrl', function ($scope, $ionicModal, restApi, loginData) {
 // Create the login modal that we will use later
         //http://ionicframework.com/docs/api/service/$ionicModal/
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -23,10 +23,10 @@ angular.module('app.controllers',[])
         $scope.data = {};
         $scope.doLogin = function () {
             console.log('Doing login', $scope.data);
-            restApi.CheckLogin.save($scope.data,function(data){
-                if(data.error){
+            restApi.CheckLogin.save($scope.data, function (data) {
+                if (data.error) {
                     alert(data.message);
-                }else{
+                } else {
                     loginData.set(data);
                     $scope.closeLogin();
                 }
@@ -37,88 +37,109 @@ angular.module('app.controllers',[])
 
     .controller('PlaylistsCtrl', function ($scope) {
         $scope.playlists = [
-            { title: 'Reggae', id: 1 },
-            { title: 'Chill', id: 2 },
-            { title: 'Dubstep', id: 3 },
-            { title: 'Indie', id: 4 },
-            { title: 'Rap', id: 5 },
-            { title: 'Cowbell', id: 6 }
+            {title: 'Reggae', id: 1},
+            {title: 'Chill', id: 2},
+            {title: 'Dubstep', id: 3},
+            {title: 'Indie', id: 4},
+            {title: 'Rap', id: 5},
+            {title: 'Cowbell', id: 6}
         ];
     })
 
-    .controller('DetailCtrl',function($scope ,workServer){
-        workServer.getWorkById(1).then(function(data){
+    .controller('DetailCtrl', function ($scope, workServer) {
+        workServer.getWorkById(1).then(function (data) {
             $scope.data = data;
-            console.log(data,'123');
+            console.log(data, '123');
         })
     })
 
-    .controller('JobsCtrl',function($scope ,restApi){
+    .controller('JobsCtrl', function ($scope, restApi) {
         $scope.data = restApi.Job.query();
         console.log($scope.data);
     })
 
-    .controller('JobsDetailCtrl',function($scope ,restApi){
-        $scope.data = restApi.Job.getOne({id:1});
+    .controller('JobsDetailCtrl', function ($scope, restApi) {
+        $scope.data = restApi.Job.getOne({id: 1});
         console.log($scope.data);
     })
 
     //events
-    .controller('EventsCtrl',function($scope ,restApi,morePop){
+    .controller('EventsCtrl', function ($scope, restApi, morePop) {
         morePop.data.value = false;
-
+        $scope.event_title = "活动列表";
+        $scope.event_type = 'alllist';
         $scope.data = restApi.Events.query();
     })
 
-    .controller('EventsDetailCtrl',function($scope ,restApi,morePop){
+    .controller('EventsDetailCtrl', function ($scope, restApi, morePop, loginData) {
         morePop.data.value = false;
-        $scope.data = restApi.Events.getOne({id:1});
-        console.log($scope.data);
+        $scope.data = restApi.Events.getOne({id: 1}, function (data) {
+            //判断用户是否登录，且是自己创建的活动
+            var userId = loginData.getUserId();
+            if (userId && data.events_user_id == userId) {
+                //可以控制
+                $scope.control = true;
+            }
+        });
+
     })
 
+    .controller('EventsMyCtrl', function ($scope, restApi, loginData, $ionicTabsDelegate) {
+        var id = loginData.getUserId() || 1;
+        if (id) {
+            $scope.event_title = "我的活动";
+            $scope.event_type = 'userlist';
+            $scope.data = restApi.Events.userQuery({id: id});
+        }
+    })
+
+    //活动表格修改
+    .controller('EventsFormCtrl', function ($scope, restApi, loginData, $ionicTabsDelegate) {
+
+    })
+
+
     //services
-    .controller('ServicesCtrl',function($scope ,restApi){
+    .controller('ServicesCtrl', function ($scope, restApi) {
         $scope.data = restApi.Services.query();
         console.log($scope.data);
     })
 
-    .controller('ServicesDetailCtrl',function($scope ,restApi){
-        $scope.data = restApi.Services.getOne({id:1});
+    .controller('ServicesDetailCtrl', function ($scope, restApi) {
+        $scope.data = restApi.Services.getOne({id: 1});
         console.log($scope.data);
     })
 
-    .controller('CompanyCtrl',function($scope ,restApi){
-        $scope.companyData = restApi.Company.getOne({id:1});
-        $scope.jobsData = restApi.Job.queryByComId({id:1});
+    .controller('CompanyCtrl', function ($scope, restApi) {
+        $scope.companyData = restApi.Company.getOne({id: 1});
+        $scope.jobsData = restApi.Job.queryByComId({id: 1});
     })
 
     //创业项目
-    .controller('ProjectCtrl',function($scope ,restApi){
+    .controller('ProjectCtrl', function ($scope, restApi) {
         $scope.data = restApi.Project.query();
         console.log($scope.data);
     })
 
-    .controller('ProjectDetailCtrl',function($scope ,restApi){
-        $scope.data = restApi.Project.getOne({id:1});
+    .controller('ProjectDetailCtrl', function ($scope, restApi) {
+        $scope.data = restApi.Project.getOne({id: 1});
         console.log($scope.data);
     })
 
     //人才展示
-    .controller('TalentCtrl',function($scope ,restApi){
+    .controller('TalentCtrl', function ($scope, restApi) {
 
         $scope.data = restApi.Users.query();
         console.log($scope.data);
     })
 
-    .controller('TalentDetailCtrl',function($scope ,restApi){
-        $scope.data = restApi.Users.getOne({id:1});
+    .controller('TalentDetailCtrl', function ($scope, restApi) {
+        $scope.data = restApi.Users.getOne({id: 1});
         console.log($scope.data);
     })
 
 
-
-
-    .controller('HomeController', [ '$scope', '$state', function($scope, $state) {
+    .controller('HomeController', ['$scope', '$state', function ($scope, $state) {
         $scope.navTitle = 'Tab Page';
         console.log(12);
 //        $scope.leftButtons = [{
@@ -129,7 +150,7 @@ angular.module('app.controllers',[])
 //        }];
     }])
 
-    .controller('NavController',function($scope,$ionicSideMenuDelegate,$ionicModal,loginData,restApi){
+    .controller('NavController', function ($scope, $ionicSideMenuDelegate, $ionicModal, loginData, restApi) {
         $scope.showMenu = function () {
             $ionicSideMenuDelegate.toggleLeft();
         };
@@ -137,7 +158,7 @@ angular.module('app.controllers',[])
             $ionicSideMenuDelegate.toggleRight();
         };
 
-        $scope.loginData =loginData.get();
+        $scope.loginData = loginData.get();
 
         $scope.logout = function () {
             loginData.reset();
@@ -148,40 +169,40 @@ angular.module('app.controllers',[])
     })
 
 
-    .controller('TabsController', function ($scope,morePop) {
+    .controller('TabsController', function ($scope, morePop) {
         //$scope.isShowPop = morePop.isShowPop;
         $scope.data = morePop.data;
-        
-        $scope.moreClick = function(){
+
+        $scope.moreClick = function () {
             morePop.data.value = morePop.data.value === false;
-            console.log(morePop.isShowPop,$scope.isShowPop,$scope.data);
+            console.log(morePop.isShowPop, $scope.isShowPop, $scope.data);
         };
 
-        $scope.hideShowPop = function(){
+        $scope.hideShowPop = function () {
             morePop.data.value = false;
         };
         //跳转到家园页面
-        $scope.goHome = function(){
+        $scope.goHome = function () {
             $window.location.href = 'http://www.baidu.com';
         }
     })
 
-    .controller('RegisterCtrl', function ($scope, $location,restApi,loginData) {
+    .controller('RegisterCtrl', function ($scope, $location, restApi, loginData) {
         $scope.data = {};
         //loginData.set({
         //    user_name :'hugo'
         //})
         //注册用户
-        $scope.registerUser = function(signup_form){
+        $scope.registerUser = function (signup_form) {
             //表单验证
             // TODO 详细验证信息需要设置
-            if(signup_form.$valid){
-                restApi.Users.save($scope.data,function(data){
-                    if(data && data.error === false){
+            if (signup_form.$valid) {
+                restApi.Users.save($scope.data, function (data) {
+                    if (data && data.error === false) {
                         loginData.set($scope.data);
                         alert(data.message);
                         $location.path('/app/tabs/events');
-                    }else{
+                    } else {
                         alert(data.message);
                     }
 
@@ -190,7 +211,7 @@ angular.module('app.controllers',[])
         };
 
         //关闭注册页面
-        $scope.closeReg = function(){
+        $scope.closeReg = function () {
             $location.path('/app/tabs/events');
         }
     });

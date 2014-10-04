@@ -1,9 +1,5 @@
 <ion-tabs class="tabs-stable tabs-icon-top">
 
-    <!--<ion-tab href="#/app/tabs/home" title="首页" icon-on="ion-ios7-home" icon-off="ion-ios7-home-outline">-->
-        <!--<ion-nav-view name="indexContent"></ion-nav-view>-->
-        <!--&lt;!&ndash; Tab 1 content &ndash;&gt;-->
-    <!--</ion-tab>-->
     <ion-tab href="#/app/tabs/events" title="活动" icon-on="ion-ios7-calendar" icon-off="ion-ios7-calendar-outline">
         <ion-nav-view name="eventsContent"></ion-nav-view>
         <!-- Tab 3 content -->
@@ -20,6 +16,11 @@
     <ion-tab title="更多" icon-on="ion-ios7-people" icon-off="ion-ios7-people-outline" ng-click="moreClick()">
         <ion-nav-view name="moreContent"></ion-nav-view>
         <!-- Tab 3 content -->
+    </ion-tab>
+
+    <ion-tab class="ng-hide" title="其他" icon-on="ion-ios7-home" icon-off="ion-ios7-home-outline">
+        <ion-nav-view name="otherContent"></ion-nav-view>
+        <!-- Tab 1 content -->
     </ion-tab>
 
     <div id="J_morePop" class="more_pop ng-hide" ng-show="data.value">

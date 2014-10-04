@@ -1,6 +1,6 @@
 
 /*===== 公共模块 =====*/
-
+.hide{display: none;}
 /*分享*/
 .mod_share a{color: #5a5a5a; text-decoration: none; display: block; height: 26px; line-height: 26px;}
 .mod_share i{font-size: 20px; vertical-align: middle; margin-right: 5px;}
@@ -15,6 +15,10 @@
         .mod_item_cnt{white-space: normal; max-height: 60px; margin-top: 10px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3; -webkit-box-orient: vertical;}
 /*select*/
 .mod_filter select{ width: 100%;}
+
+/*报名人数*/
+.mod_user_list{margin: 15px;}
+    .mod_user_list_hd{font-size: 14px; font-weight: 700; margin-bottom: 5px;}
 
 
 .home_list h2{font-weight: 700; white-space: normal;}

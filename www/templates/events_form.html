@@ -1,0 +1,64 @@
+<ion-header-bar class="bar-stable bar-positive">
+    <h1 class="title">活动修改</h1>
+    <div class="buttons">
+        <button class="button button-clear" ng-click="closeReg()">关闭</button>
+    </div>
+</ion-header-bar>
+<ion-content>
+    <!--<form name="myForm" class="my-form">-->
+        <!--userType: <input name="input" ng-model="userType" required>-->
+        <!--<span class="error" ng-show="myForm.input.$error.required">Required!</span><br>-->
+        <!--<tt>userType = {{userType}}</tt><br>-->
+        <!--<tt>myForm.input.$valid = {{myForm.input.$valid}}</tt><br>-->
+        <!--<tt>myForm.input.$error = {{myForm.input.$error}}</tt><br>-->
+        <!--<tt>myForm.$valid = {{myForm.$valid}}</tt><br>-->
+        <!--<tt>myForm.$error.required = {{!!myForm.$error.required}}</tt><br>-->
+    <!--</form>-->
+    <form name="events_form"  ng-submit="eventsSubmit(events_form)">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">活动标题</span>
+                <input type="text" name="user_rtx" placeholder="活动简短标题" ng-model="data.user_rtx" required ng-minlength="5" ng-maxlength="20">
+                <input type="hidden" value="{{item.events_id}}"/>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">城市</span>
+                <select name="city" id="J_city">
+                    <option value="上海">上海</option>
+                </select>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">活动开始时间</span>
+                <input type="date"/>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">活动结束时间</span>
+                <input type="date"/>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">报名结束时间</span>
+                <input type="date"/>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">活动名额</span>
+                <input type="number"/>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">分享嘉宾</span>
+                <textarea>
+
+                </textarea>
+            </label>
+            <label class="item item-text-wrap">
+                <span class="input-label">活动详情</span>
+                <textarea rows="3">
+
+                </textarea>
+            </label>
+        </div>
+        <div class="padding">
+            <button class="button button-block button-positive" type="submit">注册</button>
+        </div>
+    </form>
+</ion-content>
+
