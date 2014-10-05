@@ -60,7 +60,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
             })
             //活动详情
             .state('app.tabs.edetail', {
-                url: "/events/:eventsid",
+                url: "/events/:id",
                 views: {
                     'eventsContent': {
                         templateUrl: "templates/events_detail.html",
@@ -80,13 +80,24 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 }
             })
 
-            //我的活动
-            .state('app.tabs.eventsedit', {
-                url: "/events_edit",
+            //我的活动 - 新增
+            .state('app.tabs.eventsadd', {
+                url: "/events_add",
                 views: {
                     'otherContent': {
                         templateUrl: "templates/events_form.html",
-                        controller: 'EventsFormCtrl'
+                        controller: 'EventsAddFormCtrl'
+                    }
+                }
+            })
+
+            //我的活动 - 修改
+            .state('app.tabs.eventsedit', {
+                url: "/events_edit/:id",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/events_form.html",
+                        controller: 'EventsEditFormCtrl'
                     }
                 }
             })
@@ -103,11 +114,22 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
             })
             //服务 - 创业服务 - 创业详情页
             .state('app.tabs.sdetail', {
-                url: "/services/:servicesId",
+                url: "/services/:id",
                 views: {
                     'servicesContent': {
                         templateUrl: "templates/services_detail.html",
                         controller: 'ServicesDetailCtrl'
+                    }
+                }
+            })
+
+            //我的服务
+            .state('app.tabs.servicesmy', {
+                url: "/services_my",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/services.html",
+                        controller: 'ServicesMyCtrl'
                     }
                 }
             })
@@ -125,7 +147,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
 
             //服务 - 职业机会 - 职业详情页
             .state('app.tabs.jdetail', {
-                url: "/jobs/:jobsId",
+                url: "/jobs/:id",
                 views: {
                     'servicesContent': {
                         templateUrl: "templates/jobs_detail.html",
@@ -136,7 +158,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
 
             //服务 - 职业机会 - 公司详情
             .state('app.tabs.company', {
-                url: "/company/:companyId",
+                url: "/company/:id",
                 views: {
                     'servicesContent': {
                         templateUrl: "templates/company.html",
@@ -169,7 +191,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
 
             //创业项目 详情
             .state('app.tabs.pdetail', {
-                url: "/project/:projectId",
+                url: "/project/:id",
                 views: {
                     'moreContent': {
                         templateUrl: "templates/project_detail.html",
@@ -191,7 +213,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
 
             //人才展示 详情
             .state('app.tabs.tdetail', {
-                url: "/talent/:userId",
+                url: "/talent/:id",
                 views: {
                     'moreContent': {
                         templateUrl: "templates/talent_detail.html",

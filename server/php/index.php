@@ -140,9 +140,49 @@ $app->get(
     }
 );
 
+$app->get(
+    '/events/user/:id',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getEventsByUserId($id);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+/**
+ * 根据地区 获取 活动列表
+ */
+$app->get(
+    '/events/city/:city',
+    function ($city){
+        $db = new DbHandler();
+        $data = $db->getEventsByCity($city);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+/**
+ * 根据地区 获取 活动列表
+ */
+$app->get(
+    '/events/search/:keyword',
+    function ($keyword){
+        $db = new DbHandler();
+        $data = $db->searchEvents($keyword);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+
+
+
+
 
 $app->get(
-    '/events(/:start)(:/num)',
+    '/events(/:start)(/:num)',
     function ($start = 0,$num  = 30){
         $db = new DbHandler();
         $data = $db->getEvents($start,$num);
@@ -161,10 +201,10 @@ $app->post(
     }
 );
 
-$app->patch(
+$app->put(
     '/events',
     function () use ($app){
-        $data = $app->request->patch();
+        $data = $app->request->put();
         $db = new DbHandler();
         $jobData = $db->updateEventsById($data);
         $db = null;
@@ -204,12 +244,42 @@ $app->get(
     }
 );
 
+$app->get(
+    '/services/user/:userId',
+    function ($userId){
+        $db = new DbHandler();
+        $where = " AND services_user_id = '$userId'";
+        $data = $db->getServices($where,0,30);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
 
 $app->get(
-    '/services(/:start)(:/num)',
+    '/services/:city/:industry(/:start)(/:num)',
+    function ($city,$industry,$start = 0,$num  = 30){
+        $db = new DbHandler();
+        $where = '';
+        if($city != '全部地区'){
+            $where .= " AND user_city = '$city'";
+        };
+        if($industry != '全部领域'){
+            $where .= " AND services_industry = '$industry'";
+        }
+        $data = $db->getServices($where,$start,$num);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+
+
+$app->get(
+    '/services(/:start)(/:num)',
     function ($start = 0,$num  = 30){
         $db = new DbHandler();
-        $data = $db->getServices($start,$num);
+        $data = $db->getServices('',$start,$num);
         $db = null;
         echoRespnse(200,$data);
     }
@@ -254,6 +324,16 @@ $app->delete(
     }
 );
 
+$app->post(
+    '/services_project',
+    function () use ($app){
+        $data = $app->request->post();
+        $db = new DbHandler();
+        $jobData = $db->submitServicesProject($data['sid'],$data['pid']);
+        echoRespnse(201,$jobData);
+    }
+);
+
 
 /******************project*********************/
 
@@ -266,6 +346,18 @@ $app->get(
         echoRespnse(200,$data);
     }
 );
+
+$app->get(
+    '/project/user/:id',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getProjectByUserId($id);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+
 
 
 $app->get(
@@ -419,7 +511,12 @@ function echoRespnse($status_code, $response) {
     // setting response content type to json
     $app->contentType('application/json');
 
-    echo json_encode($response);
+    if(is_array($response)){
+        echo json_encode($response);
+    }else{
+        echo '{"data":'. json_encode($response) .'}';
+    }
+
 }
 
 

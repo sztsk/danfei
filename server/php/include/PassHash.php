@@ -16,7 +16,7 @@ class PassHash {
     // this will be used to generate a hash
     public static function hash($password) {
         $salt = self::$algo . self::$cost . '$' . self::unique_salt();
-        echo $salt;
+//        echo $salt;
         return crypt($password, $salt);
     }
 

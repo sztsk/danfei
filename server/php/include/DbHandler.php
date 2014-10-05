@@ -41,6 +41,15 @@ class DbHandler {
     }
 
     /**
+     * 移除多余的post put 字段
+     * TODO 需要研究cline端的数据
+     * @param $data
+     */
+    private function clearData($data){
+
+    }
+
+    /**
      * Generating random Unique MD5 String for user Api key
      */
     private function generateApiKey() {
@@ -81,8 +90,10 @@ class DbHandler {
             $userData['user_api_key'] = $apiKey;
 
             $sql = $this->buildSqlInsert('tb_users',$userData);
-            $result = $this->conn->query($sql);
-            if($result){
+            $this->conn->query($sql);
+            $userId = $this->conn->insert_id;
+            if($userId){
+                $userData['user_id'] = $userId;
                 return array(
                     'error' => false,
                     'message' => "注册成功！请等待管理员审核!"
@@ -287,8 +298,30 @@ class DbHandler {
      * @param $id
      */
     public function getEventsById($id){
-        $sql = "SELECT * FROM  `tb_events` WHERE events_id = $id";
+        $sql = "SELECT * FROM  `tb_events` WHERE events_state = 1 AND events_id = $id";
         $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+    /**
+     * 获取活动列表
+     * @param $start
+     * @param $num
+     */
+    public function getEventsByUserId($userId){
+        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = " . $userId;
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
+
+    /**
+     * 根据地区 获取活动列表
+     * @param $start
+     * @param $num
+     */
+    public function searchEvents($search){
+        $sql = "SELECT events_id,events_title,events_detail,events_start_time FROM  `tb_events` WHERE events_state = 1 AND events_detail LIKE '%$search%'";
+        $data = $this->conn->get_results($sql);
         return $data;
     }
 
@@ -320,13 +353,8 @@ class DbHandler {
         }
         $where = '`events_id` =' . $data['events_id'];
         $sql = $this->buildSqlUpdate("tb_events",$data,$where);
-        $result = $this->conn->query($sql);
-
-        if($result){
-            return $data;
-        }else{
-            return null;
-        }
+        $this->conn->query($sql);
+        return $data;
     }
 
     /**
@@ -419,24 +447,25 @@ class DbHandler {
      * @param $start
      * @param $num
      */
-    public function getServices($start = 0,$num = 30){
-        $sql = "SELECT services_id,services_detail,company_name,company_city,company_type FROM  `tb_services` LEFT JOIN tb_company ON tb_services.services_id = tb_company.company_id WHERE services_state = 1 LIMIT $start , $num";
+    public function getServices($where = '',$start = 0,$num = 30){
+        $sql = "SELECT services_id,services_detail,services_industry,company_name,user_city FROM  `tb_services` JOIN tb_users ON tb_services.services_user_id = tb_users.user_id WHERE services_state = 1 $where LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
 
+
     /**
-     * 获取活动详细信息
+     * 获取创业服务详情详细信息
      * @param $id
      */
     public function getServicesById($id){
-        $sql = "SELECT * FROM  `tb_services` LEFT JOIN tb_company ON tb_services.services_id = tb_company.company_id WHERE company_id = $id";
+        $sql = "SELECT * FROM  `tb_services` LEFT JOIN tb_users ON tb_services.services_user_id = tb_users.user_id WHERE services_state = 1 AND services_id = $id";
         $data = $this->conn->get_row($sql);
         return $data;
     }
 
     /**
-     * 创建活动
+     * 创建 创业服务
      * @param $data
      * @return null
      */
@@ -453,7 +482,7 @@ class DbHandler {
     }
 
     /**
-     * 更新公司信息
+     * 更新创业无法信息
      * @param $data
      * @return null
      */
@@ -473,7 +502,7 @@ class DbHandler {
     }
 
     /**
-     * 删除公司
+     * 删除创业服务
      * @param $id
      * @return mixed
      */
@@ -481,6 +510,21 @@ class DbHandler {
         $sql = "UPDATE  tb_services SET services_state = 0 WHERE services_id = $id";
         $result = $this->conn->query($sql);
         return $result;
+    }
+
+    /**
+     * 提交项目
+     */
+    public function submitServicesProject($servicesId,$projectId){
+        $sql = "INSERT INTO `tb_services_project` (`services_id`, `project_id`) VALUES ('$servicesId', '$projectId');";
+        $this->conn->query($sql);
+        $id = $this->conn->insert_id;
+        if($id){
+            $data['id'] = $id;
+            return $data;
+        } else{
+            return null;
+        }
     }
 
 
@@ -495,6 +539,19 @@ class DbHandler {
         $data = $this->conn->get_results($sql);
         return $data;
     }
+
+    /**
+     * 获取服务列表
+     * @param $start
+     * @param $num
+     */
+    public function getProjectByUserId($userId,$start = 0,$num = 30){
+        $sql = "SELECT project_id,project_name,project_thum,project_push_date,project_financing,project_stage,project_intro,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 AND project_user_id = '$userId' LIMIT $start , $num";
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
+
+
 
     /**
      * 获取活动详细信息

@@ -16,19 +16,25 @@
     </ion-side-menu-content>
 
     <ion-side-menu side="left">
-        <header class="bar bar-header bar-stable">
+        <header class="bar bar-header bar-dark">
             <h1 class="title">个人中心</h1>
         </header>
         <ion-content class="has-header">
+            <!--用户信息-->
+            <div class="menu_user" ng-show="loginData.user_name">
+                <img src="http://img.qian-duan-she-ji.us/150" alt="图片名称" />
+                <div class="menu_user_info">
+                    <p class="menu_user_name positive">{{loginData.user_name}}</p>
+                    <p class="menu_user_vip">VIP</p>
+                    <p class="menu_user_phone">{{loginData.user_phone}}</p>
+                </div>
+            </div>
             <ion-list>
                 <ion-item nav-clear menu-close ng-click="login()" ng-hide="loginData.user_name">
                     登录
                 </ion-item>
                 <ion-item nav-clear menu-close href="#/app/register" ng-hide="loginData.user_name">
                     注册
-                </ion-item>
-                <ion-item nav-clear class="item-icon-left item-divider" ng-show="loginData.user_name">
-                    <i class="icon ion-person-stalker"></i> {{loginData.user_name}}
                 </ion-item>
                 <ion-item nav-clear class="item-divider">
                     用户资料
@@ -37,26 +43,29 @@
                     我的活动
                 </ion-item>
                 <ion-item nav-clear menu-close ng-click="login()">
+                    我的微项目
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/tabs/services_my">
+                    我的微简历
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
+                    我的服务
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="login()">
                     我的收藏
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="login()">
-                    完善个人资料
-                </ion-item>
-                <ion-item nav-clear menu-close ng-click="login()">
-                    完善公司信息
-                </ion-item>
-                <ion-item nav-clear class="item-divider">
-                    发布信息
-                </ion-item>
-                <ion-item nav-clear menu-close ng-click="login()">
-                    发布创业项目
-                </ion-item>
-                <ion-item nav-clear menu-close ng-click="login()">
-                    发布创业服务
-                </ion-item>
-                <ion-item nav-clear menu-close ng-click="login()">
-                    发布活动
-                </ion-item>
+                <!--<ion-item nav-clear class="item-divider">-->
+                    <!--发布信息-->
+                <!--</ion-item>-->
+                <!--<ion-item nav-clear menu-close ng-click="login()">-->
+                    <!--发布创业项目-->
+                <!--</ion-item>-->
+                <!--<ion-item nav-clear menu-close ng-click="login()">-->
+                    <!--发布创业服务-->
+                <!--</ion-item>-->
+                <!--<ion-item nav-clear menu-close ng-click="login()">-->
+                    <!--发布活动-->
+                <!--</ion-item>-->
                 <ion-item nav-clear menu-close ng-click="logout()" ng-show="loginData.user_name">
                     <span class="assertive">退出登录</span>
                 </ion-item>

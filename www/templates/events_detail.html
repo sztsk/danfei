@@ -69,10 +69,10 @@
                 我要报名
             </button>
 
-            <button class="button button-full button-positive" ng-show="control">
+            <a href="#/app/tabs/events_edit/{{data.events_id}}" class="button button-full button-positive" ng-show="control">
                 修改活动
-            </button>
-            <button class="button button-full button-assertive" ng-show="control">
+            </a>
+            <button class="button button-full button-assertive" ng-show="control" ng-click="removeEvents()">
                 删除活动
             </button>
 

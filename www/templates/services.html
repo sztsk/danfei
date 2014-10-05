@@ -6,35 +6,25 @@
         <!--</div>-->
 
         <!--筛选 S-->
-        <div class="row mod_filter">
-            <div class="col">
-                <select name="J_industry" id="J_industry">
-                    <option value="1">按领域</option>
-                    <option value="1">互联网</option>
-                    <option value="1">移动端</option>
-                    <option value="1">按行业</option>
+        <div class="row mod_filter" ng-hide="uselist">
+            <label class="col">
+                <select ng-options="m.name for m in industryData"
+                        ng-model="selectedIndustry"
+                        ng-init="selectedIndustry = industryData[0]"
+                        ng-change="changeIndustry(selectedIndustry)">
                 </select>
-            </div>
-            <div class="col">
-                <select name="city" id="J_city">
-                    <option value="1">按城市</option>
-                    <option value="1">北京</option>
-                    <option value="1">上海</option>
-                    <option value="1">广州</option>
+            </label>
+            <label class="col">
+                <select ng-options="m.name for m in cityData"
+                        ng-model="selectedCity"
+                        ng-init="selectedCity = cityData[0]"
+                        ng-change="changeCity(selectedCity)">
                 </select>
-            </div>
-            <div class="col">
-                <select name="stage" id="J_stage">
-                    <option value="1">按人气</option>
-                    <option value="1">天使</option>
-                    <option value="1">A轮</option>
-                    <option value="1">B轮</option>
-                </select>
-            </div>
+            </label>
         </div>
         <!--筛选 E-->
 
-        <ion-list class="mod_list">
+        <ion-list class="mod_list" ng-class="{only_list: 'uselist'}">
             <ion-item class="item mod_item" ng-repeat="item in data" href="#/app/tabs/services/{{item.services_id}}">
                 <div class="mod_item_info">
                     <div class="mod_item_col1">
@@ -44,7 +34,7 @@
                     <div class="mod_item_col2">
                         <h2 class="positive mod_item_tit">{{item.company_name}} </h2>
                         <div class="mod_item_tags">
-                            <span>{{item.company_city}}</span> | <span>{{item.conpany_type}}</span>
+                            <span>{{item.user_city}}</span> | <span>{{item.services_industry}}</span>
                         </div>
                         <div class="mod_item_cnt">
                             {{item.services_detail}}
@@ -52,6 +42,9 @@
                     </div>
                 </div>
             </ion-item>
+            <div class="no_data" ng-hide="data.length">
+                暂时没有相关数据！
+            </div>
         </ion-list>
 
 
