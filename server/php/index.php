@@ -178,9 +178,6 @@ $app->get(
 
 
 
-
-
-
 $app->get(
     '/events(/:start)(/:num)',
     function ($start = 0,$num  = 30){

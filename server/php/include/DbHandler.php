@@ -41,15 +41,6 @@ class DbHandler {
     }
 
     /**
-     * 移除多余的post put 字段
-     * TODO 需要研究cline端的数据
-     * @param $data
-     */
-    private function clearData($data){
-
-    }
-
-    /**
      * Generating random Unique MD5 String for user Api key
      */
     private function generateApiKey() {
@@ -143,7 +134,7 @@ class DbHandler {
 
     /* ------------- `tb_users` table method ------------------ */
     /**
-     * 获取服务列表
+     * 获取人才列表
      * @param $start
      * @param $num
      */
@@ -164,25 +155,29 @@ class DbHandler {
     }
 
     /**
-     * 创建活动
-     * @param $data
-     * @return null
+     * 获取公司列表
+     * @param $start
+     * @param $num
      */
-//    public function createUsers($data){
-////        var_dump($data);
-//        $sql = $this->buildSqlInsert("tb_users",$data);
-//        $this->conn->query($sql);
-//        $id = $this->conn->insert_id;
-//        if($id){
-//            $data['user_id'] = $id;
-//            return $data;
-//        } else{
-//            return null;
-//        }
-//    }
+    public function getCompany($start = 0,$num = 30){
+        $sql = "SELECT company_name,company_intro FROM  `tb_users` WHERE user_state = 1 LIMIT $start , $num";
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
 
     /**
-     * 更新公司信息
+     * 获取活动详细信息
+     * @param $id
+     */
+    public function getCompanyById($id){
+        $sql = "SELECT * FROM  `tb_users` WHERE user_id = $id";
+        $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+
+    /**
+     * 更新用户信息
      * @param $data
      * @return null
      */
@@ -192,17 +187,12 @@ class DbHandler {
         }
         $where = '`user_id` =' . $data['user_id'];
         $sql = $this->buildSqlUpdate("tb_users",$data,$where);
-        $result = $this->conn->query($sql);
-
-        if($result){
-            return $data;
-        }else{
-            return null;
-        }
+        $this->conn->query($sql);
+        return $data;
     }
 
     /**
-     * 删除公司
+     * 删除用户
      * @param $id
      * @return mixed
      */
@@ -219,19 +209,19 @@ class DbHandler {
      * @param $start
      * @param $num
      */
-    public function getJobs($start,$num = 30){
-        $sql = "SELECT * FROM  `tb_jobs` LEFT JOIN tb_company on tb_jobs.`jobs_company_id` = tb_company.company_id WHERE jobs_state = 1 LIMIT $start , $num";
+    public function getJobs($start = 0,$num = 30){
+        $sql = "SELECT * FROM  `tb_jobs` LEFT JOIN tb_users on tb_jobs.`jobs_user_id` = tb_users.user_id WHERE jobs_state = 1 LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
 
     /**
-     * 根据公司名称获取职位信息列表
+     * 根据公司用户ID获取职位信息列表
      * @param $start
      * @param $num
      */
-    public function getJobsByComId(){
-        $sql = "SELECT jobs_id,jobs_name,jobs_push_date FROM  `tb_jobs` WHERE jobs_state = 1";
+    public function getJobsByComId($userId){
+        $sql = "SELECT jobs_id,jobs_name,jobs_push_date FROM  `tb_jobs` WHERE jobs_state = 1 AND jobs_user_id = '$userId'";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -241,8 +231,7 @@ class DbHandler {
      * @param $id
      */
     public function getJobById($id){
-        $sql = "SELECT * FROM `tb_jobs` LEFT JOIN tb_company on tb_jobs.`jobs_company_id` = tb_company.company_id where jobs_state = 1 AND jobs_id = $id";
-//        echo $sql;
+        $sql = "SELECT * FROM `tb_jobs` LEFT JOIN tb_users on tb_jobs.`jobs_user_id` = tb_users.user_id where jobs_state = 1 AND jobs_id = $id";
         $data = $this->conn->get_row($sql);
         return $data;
     }
@@ -368,78 +357,6 @@ class DbHandler {
         return $result;
     }
 
-    /* ------------- `tb_company` table method ------------------ */
-    /**
-     * 获取公司列表
-     * @param $start
-     * @param $num
-     */
-    public function getCompany($start = 0,$num = 30){
-        $sql = "SELECT company_id,company_intro FROM  `tb_company` WHERE company_state = 1 LIMIT $start , $num";
-        $data = $this->conn->get_results($sql);
-        return $data;
-    }
-
-    /**
-     * 获取活动详细信息
-     * @param $id
-     */
-    public function getCompanyById($id){
-        $sql = "SELECT * FROM  `tb_company` WHERE company_id = $id";
-        $data = $this->conn->get_row($sql);
-        return $data;
-    }
-
-    /**
-     * 创建活动
-     * @param $data
-     * @return null
-     */
-    public function createCompany($data){
-        $sql = $this->buildSqlInsert("tb_company",$data);
-        $this->conn->query($sql);
-        $id = $this->conn->insert_id;
-        if($id){
-            $data['company_id'] = $id;
-            return $data;
-        } else{
-            return null;
-        }
-    }
-
-    /**
-     * 更新公司信息
-     * @param $data
-     * @return null
-     */
-    public function updateCompanyById($data){
-        if(!isset($data['company_id'])){
-            return null;
-        }
-        $where = '`company_id` =' . $data['company_id'];
-        $sql = $this->buildSqlUpdate("tb_company",$data,$where);
-        $result = $this->conn->query($sql);
-
-        if($result){
-            return $data;
-        }else{
-            return null;
-        }
-    }
-
-    /**
-     * 删除公司
-     * @param $id
-     * @return mixed
-     */
-    public function delCompanyById($id){
-        $sql = "UPDATE  tb_company SET company_state = 0 WHERE company_id = $id";
-        $result = $this->conn->query($sql);
-        return $result;
-    }
-
-
-
 
     /* ------------- `tb_services` table method ------------------ */
     /**
@@ -482,7 +399,7 @@ class DbHandler {
     }
 
     /**
-     * 更新创业无法信息
+     * 更新创业服务信息
      * @param $data
      * @return null
      */
@@ -513,7 +430,7 @@ class DbHandler {
     }
 
     /**
-     * 提交项目
+     * 提交创业服务
      */
     public function submitServicesProject($servicesId,$projectId){
         $sql = "INSERT INTO `tb_services_project` (`services_id`, `project_id`) VALUES ('$servicesId', '$projectId');";
@@ -558,7 +475,7 @@ class DbHandler {
      * @param $id
      */
     public function getProjectById($id){
-        $sql = "SELECT * FROM  `tb_project` LEFT JOIN tb_company ON tb_project.project_id = tb_company.company_id WHERE company_id = $id";
+        $sql = "SELECT * FROM  `tb_project` LEFT JOIN tb_users ON tb_project.project_user_id = tb_users.user_id WHERE user_id = $id";
         $data = $this->conn->get_row($sql);
         return $data;
     }
@@ -601,7 +518,7 @@ class DbHandler {
     }
 
     /**
-     * 删除公司
+     * 删除创业项目
      * @param $id
      * @return mixed
      */

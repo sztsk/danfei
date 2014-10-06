@@ -59,8 +59,12 @@ angular.module('app.controllers', [])
     })
 
     .controller('JobsDetailCtrl', function ($scope, $stateParams,restApi) {
-        $scope.data = restApi.Job.getOne({id: $stateParams.id});
-        console.log($scope.data);
+        restApi.Job.getOne($stateParams,function(ajax){
+            $scope.data = ajax.data;
+        },function(){
+            //错误则直接退出
+            $state.go('app.tabs.jobs');
+        });
     })
 
     //events
@@ -269,16 +273,17 @@ angular.module('app.controllers', [])
         console.log($scope.data);
     })
 
-    .controller('ProjectDetailCtrl', function ($scope, restApi) {
-        $scope.data = restApi.Project.getOne({id: 1});
-        console.log($scope.data);
+    .controller('ProjectDetailCtrl', function ($scope, $state,$stateParams, restApi) {
+        restApi.Project.getOne($stateParams,function(ajax){
+            $scope.data = ajax.data;
+        },function(){
+            $state.go('app.tabs.project')
+        });
     })
 
     //人才展示
     .controller('TalentCtrl', function ($scope, restApi) {
-
         $scope.data = restApi.Users.query();
-        console.log($scope.data);
     })
 
     .controller('TalentDetailCtrl', function ($scope, restApi) {
