@@ -2,7 +2,7 @@
     <ion-content class="has-header">
         <div class="item item-input-inset">
             <label class="item-input-wrapper">
-                <input type="text" placeholder="搜索活动" ng-model="keyword">
+                <input type="search" placeholder="搜索活动" ng-model="keyword">
             </label>
             <button class="button button-small" ng-click="searchEvents(keyword)">
                 搜索
@@ -15,7 +15,7 @@
                 <div class="events_info">
                     <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
                     <div class="events_info_cnt">
-                        <time>{{item.events_start_time}}</time>
+                        <div>已报名人数:<span>{{item.events_users_num}}人</span> <time>{{item.events_start_time}}</time></div>
                         <div class="events_detail" ng-show="item.events_detail">
                             {{item.events_detail}}
                         </div>
@@ -30,6 +30,10 @@
                     </div>
                 </div>
             </ion-item>
+            <div class="no_data" ng-hide="data.length">
+                暂时没有相关数据！
+                <p><a class="button button-positive" href="#/app/tabs/events_add">发布活动</a></p>
+            </div>
         </ion-list>
 
         <!--<ion-infinite-scroll-->

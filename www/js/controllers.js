@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
 
-    .controller('AppCtrl', function ($scope, $ionicModal, restApi, loginData) {
+    .controller('AppCtrl', function ($scope, $state,$ionicModal, restApi, loginData) {
 // Create the login modal that we will use later
         //http://ionicframework.com/docs/api/service/$ionicModal/
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -18,15 +18,30 @@ angular.module('app.controllers', [])
         $scope.login = function () {
             $scope.modal.show();
         };
+        /**
+         * 判断用户是否登录
+         * @param url
+         */
+        $scope.checkLogin = function(url){
+            var userId = loginData.getUserId();
+            console.log(userId,loginData);
+            $scope.userId = userId;
+            if(userId){
+                $state.go(url)
+            }else{
+                $scope.modal.show();
+            }
+        };
 
         // Perform the login action when the user submits the login form
         $scope.data = {};
         $scope.doLogin = function () {
-            console.log('Doing login', $scope.data);
-            restApi.CheckLogin.save($scope.data, function (data) {
+            restApi.CheckLogin.save($scope.data, function (ajax) {
+                var data = ajax.data;
                 if (data.error) {
                     alert(data.message);
                 } else {
+                    $scope.loginData = data;
                     loginData.set(data);
                     $scope.closeLogin();
                 }
@@ -35,7 +50,9 @@ angular.module('app.controllers', [])
 
     })
 
-    .controller('PlaylistsCtrl', function ($scope) {
+
+
+    .controller('LoginCtrl', function ($scope) {
         $scope.playlists = [
             {title: 'Reggae', id: 1},
             {title: 'Chill', id: 2},
@@ -72,17 +89,17 @@ angular.module('app.controllers', [])
         var start = 0,
             num = 30,
             page = 1;
-        morePop.data.value = false;
+        morePop.pop.value = false;
         $scope.event_title = "活动列表";
         $scope.event_type = 'alllist';
         $scope.noMoreItemsAvailable = false;
         $scope.data = restApi.Events.query({cmd:start,id:num},function(){
             //$scope.noMoreItemsAvailable = true;
         });
-        //$scope.searchEvents = function(keyword){
-        //    $scope.data = restApi.Events.searchQuery({id:keyword})
-        //
-        //};
+        $scope.searchEvents = function(keyword){
+            $scope.data = restApi.Events.searchQuery({id:keyword})
+
+        };
         ////翻页
         //$scope.loadMore = function(){
         //    page++;
@@ -96,12 +113,14 @@ angular.module('app.controllers', [])
     })
 
     .controller('EventsDetailCtrl', function ($scope,$state, $location,$stateParams,$ionicPopup,restApi, morePop, loginData) {
-        morePop.data.value = false;
+        var userId = loginData.getUserId(),
+            join = {uid:userId,eid:$stateParams.id};
+        morePop.pop.value = false;
+
         restApi.Events.getOne($stateParams, function (data) {
             data = data.data;
             $scope.data = data;
             //判断用户是否登录，且是自己创建的活动
-            var userId = loginData.getUserId();
             if (userId && data.events_user_id == userId) {
                 //可以控制
                 $scope.control = true;
@@ -111,8 +130,10 @@ angular.module('app.controllers', [])
             $state.go('app.tabs.events');
         });
 
+        /**
+         * 删除活动
+         */
         $scope.removeEvents = function(){
-
             $ionicPopup.confirm({
                 title: '提醒',
                 template: '该活动删除后无法恢复，确定要删除该活动吗？',
@@ -128,36 +149,95 @@ angular.module('app.controllers', [])
                         }
                     }]
             });
+        };
+
+
+        if(userId){
+            //判断是否已经报名
+            restApi.CheckIsJoin.query(join,function(data){
+                $scope.isjoin = data.data;
+                $scope.joinBtnName = '已报名'
+            });
+            //获取报名列表
+            $scope.joinData = restApi.EventsJoin.query($stateParams);
+        }
+        
+
+        /**
+         * 报名
+         */
+        $scope.joinEvents = function(){
+            if(userId){
+                restApi.EventsJoin.save(join);
+                $ionicPopup.alert({
+                    title: '提示',
+                    template: '报名成功！'
+                });
+            }else{
+                $scope.modal.show();
+            }
         }
 
     })
 
-    .controller('EventsMyCtrl', function ($scope, restApi, loginData) {
-        var id = loginData.getUserId() || 1;
+    .controller('EventsMyCtrl', function ($scope, restApi, loginData,$ionicModal) {
+        var id = loginData.getUserId();
         if (id) {
             $scope.event_title = "我的活动";
             $scope.event_type = 'userlist';
             $scope.data = restApi.Events.userQuery({id: id});
+        }else{
+
         }
     })
 
     //活动表格 新增
-    .controller('EventsAddFormCtrl', function ($scope, restApi, loginData, $stateParams) {
-        console.log($stateParams);
+    .controller('EventsAddFormCtrl', function ($scope, restApi, $state, $ionicPopup,cityData,loginData) {
+        $scope.data = {};
+        $scope.events_title = "发布活动";
+        $scope.events_btn = '发布活动';
+        cityData.shift();
+        $scope.cityData = cityData;
+        console.log($scope.userId,'123');
+        //提交表单
+        $scope.eventsSubmit = function(events_form){
+            if (events_form.$valid) {
+                //userId 在外层control
+                $scope.data.events_user_id = loginData.getUserId();
+                restApi.Events.save($scope.data, function (data) {
+                    if (data && !data.error) {
+                        $ionicPopup.alert({
+                            title: '提示!',
+                            template: '活动发布成功！'
+                        }).then(function (res) {
+                            $state.go('app.tabs.eventsmy');
+                        });
+
+                    } else {
+                        alert(data.message);
+                    }
+                })
+            }
+        };
     })
 
-    //活动表格 新增
-    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup) {
-        //var eventsId = $stateParams.id;
+    //活动表格 修改
+    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData) {
+        cityData.shift();
+        console.log($stateParams);
+        
+        $scope.cityData = cityData;
         $scope.events_title = '修改活动';
         $scope.events_btn = '修改活动';
-        restApi.Events.getOne($stateParams,function(data){
-            $scope.data = data.data;
+        restApi.Events.getOne($stateParams,function(ajax){
+            $scope.data = ajax.data;
         });
 
         //提交表单
         $scope.eventsSubmit = function(events_form){
             if (events_form.$valid) {
+                //删除用户名 因为提交的时候不需要username
+                delete  $scope.data.user_name;
                 restApi.Events.update($scope.data, function (data) {
                     if (data && !data.error) {
                         $ionicPopup.alert({
@@ -303,7 +383,7 @@ angular.module('app.controllers', [])
 //        }];
     }])
 
-    .controller('NavController', function ($scope, $ionicSideMenuDelegate, $ionicModal, loginData, restApi) {
+    .controller('NavController', function ($scope, $state,$ionicSideMenuDelegate, $ionicModal, loginData) {
         $scope.showMenu = function () {
             $ionicSideMenuDelegate.toggleLeft();
         };
@@ -316,6 +396,7 @@ angular.module('app.controllers', [])
         $scope.logout = function () {
             loginData.reset();
             $scope.loginData = {};
+            $state.go('app.tabs.events');
         };
 
 
@@ -324,7 +405,7 @@ angular.module('app.controllers', [])
 
     .controller('TabsController', function ($scope, morePop,$location,$window) {
         //$scope.isShowPop = morePop.isShowPop;
-        $scope.data = morePop.data;
+        $scope.pop = morePop.pop;
         //设置二级菜单位置信息
         var tabWidth = $window.innerWidth/4;
         $scope.sLeft = tabWidth * 2 + (tabWidth/2 - 50) + 'px';
@@ -333,36 +414,35 @@ angular.module('app.controllers', [])
         
 
         $scope.moreClick = function () {
-            morePop.data.mvalue = morePop.data.mvalue === false;
-            morePop.data.svalue = false;
+            morePop.pop.mvalue = morePop.pop.mvalue === false;
+            morePop.pop.svalue = false;
         };
 
         $scope.servicesClick = function(){
-            morePop.data.svalue = morePop.data.svalue === false;
-            morePop.data.mvalue = false;
+            morePop.pop.svalue = morePop.pop.svalue === false;
+            morePop.pop.mvalue = false;
         };
 
         $scope.hideShowPop = function () {
-            morePop.data.svalue = false;
-            morePop.data.mvalue = false;
+            morePop.pop.svalue = false;
+            morePop.pop.mvalue = false;
         };
         //跳转到家园页面
         $scope.goHome = function () {
             window.location.href = 'http://wsq.qq.com/reflow/263237005';
-            //$location.href = 'http://www.baidu.com';
         }
     })
 
-    .controller('RegisterCtrl', function ($scope, $location, restApi, loginData) {
+    .controller('RegisterCtrl', function ($scope, $location, $state, restApi, loginData,cityData) {
         $scope.data = {};
-        //loginData.set({
-        //    user_name :'hugo'
-        //})
+        cityData.shift();
+        $scope.cityData = cityData;
         //注册用户
         $scope.registerUser = function (signup_form) {
             //表单验证
             // TODO 详细验证信息需要设置
             if (signup_form.$valid) {
+                $scope.data.user_type = 1;//个人
                 restApi.Users.save($scope.data, function (data) {
                     if (data && data.error === false) {
                         loginData.set($scope.data);
@@ -376,8 +456,29 @@ angular.module('app.controllers', [])
             }
         };
 
+        $scope.registerCompany = function (signup_form) {
+            console.log($scope.data);
+            
+            //表单验证
+            // TODO 详细验证信息需要设置
+            if (signup_form.$valid) {
+                $scope.data.user_type = 2;//创业者
+                restApi.Users.save($scope.data, function (data) {
+                    if (data && data.error === false) {
+                        loginData.set($scope.data);
+                        alert(data.message);
+                        $location.path('/app/tabs/events');
+                    } else {
+                        alert(data.message);
+                    }
+                })
+            }
+        };
+
+
+
         //关闭注册页面
         $scope.closeReg = function () {
-            $location.path('/app/tabs/events');
+            $state.go('app.tabs.events');
         }
     });

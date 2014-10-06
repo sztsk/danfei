@@ -121,7 +121,7 @@ class DbHandler {
      * @return mixed
      */
     public function getUserByPhone($phone){
-        $sql = "SELECT user_name, user_email, user_qq, user_jobs_years FROM tb_users WHERE user_phone = '$phone'";
+        $sql = "SELECT user_id,user_name,user_type, user_phone FROM tb_users WHERE user_phone = '$phone'";
         $user = $this->conn->get_row($sql);
         return $user;
     }
@@ -161,7 +161,7 @@ class DbHandler {
      * @param $num
      */
     public function getCompany($start = 0,$num = 30){
-        $sql = "SELECT company_name,company_intro FROM  `tb_users` WHERE user_state = 1 LIMIT $start , $num";
+        $sql = "SELECT user_name,company_intro FROM  `tb_users` WHERE user_state = 1 LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -278,7 +278,7 @@ class DbHandler {
      * @param $num
      */
     public function getEvents($start,$num = 30){
-        $sql = "SELECT events_id,events_title,events_detail,events_start_time FROM  `tb_events` WHERE events_state = 1 LIMIT $start , $num";
+        $sql = "SELECT events_id,events_title,events_detail,events_start_time,events_users_num FROM  `tb_events` WHERE events_state = 1 ORDER BY events_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -288,7 +288,7 @@ class DbHandler {
      * @param $id
      */
     public function getEventsById($id){
-        $sql = "SELECT * FROM  `tb_events` WHERE events_state = 1 AND events_id = $id";
+        $sql = "SELECT events_id,user_name,events_title,events_user_id,events_users_num,events_city,events_start_time,events_end_time,events_guests,events_quota,events_detail,events_address FROM  `tb_events` LEFT JOIN tb_users ON tb_events.events_user_id = tb_users.user_id WHERE events_state = 1 AND events_id = $id";
         $data = $this->conn->get_row($sql);
         return $data;
     }
@@ -299,7 +299,8 @@ class DbHandler {
      * @param $num
      */
     public function getEventsByUserId($userId){
-        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = " . $userId;
+        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,events_detail,
+events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId ORDER BY events_id DESC ";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -357,6 +358,45 @@ class DbHandler {
         $result = $this->conn->query($sql);
         return $result;
     }
+
+    /**
+     * 获取报名人数
+     * @param $start
+     * @param $num
+     */
+    public function getJoinEventsById($eventsId){
+        $sql = "SELECT events_id,tb_events_users.user_id,user_name,user_phone FROM  `tb_events_users` LEFT JOIN tb_users ON tb_events_users.user_id = tb_users.user_id WHERE events_id = '$eventsId'";
+        $data = $this->conn->get_results($sql);
+        return $data;
+    }
+
+    /**
+     * 我要报名
+     */
+    public function joinEvents($eventsId,$userId){
+        $sql = "INSERT INTO `tb_events_users` (`events_id`, `user_id`) VALUES ('$eventsId', '$userId');";
+        $this->conn->query($sql);
+        $id = $this->conn->insert_id;
+        if($id){
+            $data['id'] = $id;
+            return $data;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * 判断是否已报名
+     * @param $start
+     * @param $num
+     */
+    public function checkUserJoin($eventsId,$userId){
+        $sql = "SELECT id FROM  `tb_events_users` WHERE events_id = '$eventsId' AND user_id = '$userId'";
+        $result = $this->conn->get_var($sql);
+        return $result > 0;
+    }
+
+
 
 
     /* ------------- `tb_services` table method ------------------ */

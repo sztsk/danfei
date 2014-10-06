@@ -178,7 +178,6 @@ $app->get(
 );
 
 
-
 $app->get(
     '/events(/:start)(/:num)',
     function ($start = 0,$num  = 30){
@@ -485,6 +484,45 @@ $app->get(
     }
 );
 
+/**
+ * 获取报名人数
+ */
+$app->get(
+    '/join/events/:eventsid',
+    function ($eventsId){
+        $db = new DbHandler();
+        $data = $db->getJoinEventsById($eventsId);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+/**
+ * 判断是否已报名
+ */
+$app->get(
+    '/check/events/:eventsid/user/:userid',
+    function ($eventsId,$userId){
+        $db = new DbHandler();
+        $data = $db->checkUserJoin($eventsId,$userId);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+/**
+ * 我要报名
+ */
+$app->post(
+    '/join/events',
+    function () use ($app){
+        $data = $app->request->post();
+        $db = new DbHandler();
+        $jobData = $db->joinEvents($data['eid'],$data['uid']);
+        echoRespnse(201,$jobData);
+    }
+);
+
 
 
 
@@ -495,13 +533,13 @@ $app->get(
  */
 function echoRespnse($status_code, $response) {
     $app = \Slim\Slim::getInstance();
-    if(!$response){
-        $response = array(
-            'error' =>true,
-            'message' => "The requested resource doesn't exists"
-        );
-        $status_code = 404;
-    }
+//    if(!$response){
+//        $response = array(
+//            'error' =>true,
+//            'message' => "The requested resource doesn't exists"
+//        );
+//        $status_code = 404;
+//    }
 
     // Http response code
     $app->status($status_code);

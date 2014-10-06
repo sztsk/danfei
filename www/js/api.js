@@ -6,6 +6,10 @@ angular.module('app.services', ['ngResource','ngStorage'])
         var RestApi  = {},
             BATEURL = 'http://121.40.146.123/danfei/server/php/';
 
+        if(window.location.host.indexOf('localhost') !== -1){
+            BATEURL = 'http://localhost/github/danfei/server/php/index.php/';
+        }
+
         RestApi.Job = $resource(BATEURL + 'jobs/:cmd/:id',{},{
             'query': { method: 'GET',isArray:true},
             'queryByComId':{method:'GET',isArray:true,params:{ cmd:'company' }},
@@ -88,6 +92,19 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'delete':{method:'DELETE'}
         });
 
+        /**
+         * 报名信息
+         */
+        RestApi.EventsJoin = $resource(BATEURL + 'join/events/:id',{},{
+            'query': { method: 'GET',isArray:true}
+        });
+        /**
+         * 判断是否已经报名
+         */
+        RestApi.CheckIsJoin = $resource(BATEURL + 'check/events/:eid/user/:uid',{},{
+            'query': { method: 'GET'}
+        });
+
 
         return RestApi;
     })
@@ -109,7 +126,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
      */
     .service('morePop',function(){
         this.isShowPop = false;
-        this.data = {mvalue: false,svalue: false};
+        this.pop = {mvalue: false,svalue: false};
     })
     /**
      * share login data
@@ -119,10 +136,12 @@ angular.module('app.services', ['ngResource','ngStorage'])
             _loginData = _losData || {};
         return {
             set : function(data){
-                _loginData.user_name = data.user_name;
-                _loginData.user_rtx = data.user_rtx;
+                console.log('set',data);
                 _loginData.user_id = data.user_id;
+                _loginData.user_type = data.user_type;
+                _loginData.user_name = data.user_name;
                 _loginData.user_phone = data.user_phone;
+
                 //cache
                 $localStorage.loginData = _loginData;
             },
@@ -131,7 +150,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
             },
             getUserId : function(){
                 //TODO TEST
-               return _loginData.user_id || 1;
+               return _loginData.user_id;
             },
             reset : function () {
                 _loginData = {};
@@ -192,4 +211,5 @@ angular.module('app.services', ['ngResource','ngStorage'])
                 name : '广州'
             }
         ]
-    });
+    })
+

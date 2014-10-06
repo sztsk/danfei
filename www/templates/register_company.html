@@ -1,13 +1,56 @@
 <ion-header-bar class="bar-stable bar-positive">
-    <h1 class="title">选择注册类型</h1>
+    <h1 class="title">企业、创业者注册</h1>
     <div class="buttons">
-        <button class="button button-clear" ng-click="closeLogin()">关闭</button>
+        <button class="button button-clear" ng-click="closeReg()">关闭</button>
     </div>
 </ion-header-bar>
 <ion-content>
-    <div class="register">
-        <a class="register_item" href="#/app/register_user">单飞企鹅注册</a>
-        <a class="register_item" href="#/app/register_comp">公司 创业者注册</a>
-    </div>
+    <form name="signup_form"  ng-submit="registerCompany(signup_form)">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">手机号码</span>
+                <input type="tel" placeholder="用于登录或找回密码" ng-model="data.user_phone" requiredrequired>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">密码</span>
+                <input type="password" placeholder="登录网站的密码" ng-model="data.user_password" requiredrequired>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">真实姓名</span>
+                <input type="text" placeholder="真实姓名" ng-model="data.user_name" requiredrequired>
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">所在城市</span>
+                <select ng-options="m.name as m.name for m in cityData"
+                        ng-model="data.user_city">
+                </select>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">公司名</span>
+                <input type="text" placeholder="公司名称 或 团队名称" ng-model="data.company_name" requiredrequired>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">担任职位</span>
+                <input type="text" placeholder="您在公司担任的职位，如CEO" ng-model="data.company_jobs" requiredrequired>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">合作意向</span>
+                <select>
+                    <option ng-model="data" value="投资项目">投资项目</option>
+                    <option value="活动合作">活动合作</option>
+                    <option value="人才招聘">人才招聘</option>
+                    <option value="其他">其他</option>
+                </select>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">网址</span>
+                <input type="url" placeholder="公司网址" ng-model="data.company_web">
+            </label>
+        </div>
+        <div class="padding">
+            <button class="button button-block button-positive" type="submit">注册</button>
+        </div>
+    </form>
 </ion-content>
 

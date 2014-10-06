@@ -5,25 +5,18 @@
     </div>
 </ion-header-bar>
 <ion-content>
-    <!--<form name="myForm" class="my-form">-->
-        <!--userType: <input name="input" ng-model="userType" required>-->
-        <!--<span class="error" ng-show="myForm.input.$error.required">Required!</span><br>-->
-        <!--<tt>userType = {{userType}}</tt><br>-->
-        <!--<tt>myForm.input.$valid = {{myForm.input.$valid}}</tt><br>-->
-        <!--<tt>myForm.input.$error = {{myForm.input.$error}}</tt><br>-->
-        <!--<tt>myForm.$valid = {{myForm.$valid}}</tt><br>-->
-        <!--<tt>myForm.$error.required = {{!!myForm.$error.required}}</tt><br>-->
-    <!--</form>-->
     <form name="events_form"  ng-submit="eventsSubmit(events_form)">
         <div class="list">
             <label class="item item-input">
                 <span class="input-label">活动标题</span>
-                <input type="text" name="events_title" placeholder="活动简短标题" ng-model="data.events_title" required ng-minlength="5">
+                <input type="text" name="events_title" placeholder="活动简短标题" ng-model="data.events_title" requiredrequired ng-minlength="5">
                 <input type="hidden" name="events_id" value="{{data.events_id}}"/>
             </label>
             <label class="item item-input">
                 <span class="input-label">城市</span>
-                <input name="events_city" type="text" ng-model="data.events_city"/>
+                <select ng-options="m.name as m.name for m in cityData"
+                        ng-model="data.events_city">
+                </select>
             </label>
             <label class="item item-input">
                 <span class="input-label">活动开始时间</span>
@@ -35,20 +28,25 @@
             </label>
             <label class="item item-input">
                 <span class="input-label">活动名额</span>
-                <input type="text" name="events_quota" ng-model="data.events_quota" required />
+                <input type="text" name="events_quota" ng-model="data.events_quota" requiredrequired />
             </label>
             <label class="item item-input">
                 <span class="input-label">分享嘉宾</span>
-                <input type="text" name="events_guests" ng-model="data.events_guests" required />
+                <input type="text" name="events_guests" ng-model="data.events_guests" requiredrequired />
 
                 </textarea>
             </label>
             <label class="item item-text-wrap">
                 <span class="input-label">活动详情</span>
-                <textarea rows="3" ng-model="data.events_detail" required>
-
+                <textarea rows="3" ng-model="data.events_detail" requiredrequired>
                 </textarea>
             </label>
+            <label class="item item-text-wrap">
+                <span class="input-label">地址及交通</span>
+                <textarea rows="3" ng-model="data.events_address" requiredrequired>
+                </textarea>
+            </label>
+
         </div>
         <div class="padding">
             <button class="button button-block button-positive" type="submit">{{events_btn}}</button>

@@ -4,11 +4,12 @@
             <h1>{{data.events_title}}</h1>
             <div class="row">
                 <div class="col">
-                    活动发起人：<span>{{data.events_organizer}}</span>
+                    活动发起人：<span>{{data.user_name}}</span>
                 </div>
+                <div class="col">已报名人数：{{data.events_users_num}}人</div>
             </div>
             <div class="row">
-                <div class="col">名额：{{data.events_users_num}}人</div>
+                <div class="col">名额：{{data.events_quota}}人</div>
                 <div class="col">城市：{{data.events_city}}</div>
             </div>
             <div class="row">
@@ -41,23 +42,15 @@
 
 
         <!--报名人数-->
-        <div class="mod_user_list">
+        <div class="mod_user_list" ng-show="joinData.length">
             <div class="mod_user_list_hd positive">
                 已报名人员
             </div>
             <div class="mod_user_list_bd">
                 <ul class="list">
-                    <li class="item">
-                        华宇果
-                        <span class="item-note">13528822552</span>
-                    </li>
-                    <li class="item">
-                        华宇果
-                        <span class="item-note">13528822552</span>
-                    </li>
-                    <li class="item">
-                        华宇果
-                        <span class="item-note">13528822552</span>
+                    <li class="item" ng-repeat="item in joinData">
+                        {{item.user_name}}
+                        <span class="item-note">{{item.user_phone}}</span>
                     </li>
                 </ul>
             </div>
@@ -65,8 +58,8 @@
 
         <div class="mod_detail_action">
 
-            <button class="button button-full button-positive" ng-hide="control">
-                我要报名
+            <button ng-disabled="isjoin" class="button button-full button-positive" ng-hide="control" ng-click="joinEvents()">
+                {{joinBtnName || '我要报名'}}
             </button>
 
             <a href="#/app/tabs/events_edit/{{data.events_id}}" class="button button-full button-positive" ng-show="control">
