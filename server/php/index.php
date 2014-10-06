@@ -1,7 +1,7 @@
 <?php
 
-require_once 'include/DBHandler.php';
-require_once 'include/PassHash.php';
+require_once 'inc/DBHandler.php';
+require_once 'inc/PassHash.php';
 require 'libs/Slim/Slim.php';
 
 
