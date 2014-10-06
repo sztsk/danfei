@@ -1,5 +1,6 @@
 <?php
 
+//http://code.tutsplus.com/tutorials/understanding-hash-functions-and-keeping-passwords-safe--net-17577
 class PassHash {
 
     // blowfish
@@ -14,10 +15,9 @@ class PassHash {
 
     // this will be used to generate a hash
     public static function hash($password) {
-
-        return crypt($password, self::$algo .
-                self::$cost .
-                '$' . self::unique_salt());
+        $salt = self::$algo . self::$cost . '$' . self::unique_salt();
+//        echo $salt;
+        return crypt($password, $salt);
     }
 
     // this will be used to compare a password against a hash

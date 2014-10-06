@@ -4,7 +4,7 @@
             <h1>{{data.company_name}}</h1>
             <div class="row">
                 <div class="col">领域：<span>{{data.company_type}}</span></div>
-                <div class="col">地点：<span>{{data.company_city}}</span></div>
+                <div class="col">地点：<span>{{data.user_city}}</span></div>
             </div>
             <div class="row">
                 <div class="col">规模：{{data.company_size}}</div>
@@ -35,7 +35,7 @@
 
         <div class="mod_detail_action">
 
-            <button class="button button-full button-positive">
+            <button class="button button-full button-positive" ng-click="submitProject()">
                 提交项目
             </button>
             <!--<a class="detail_fund" href="##">我要投资</a>-->

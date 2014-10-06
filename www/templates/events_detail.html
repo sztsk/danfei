@@ -39,11 +39,43 @@
             </div>
         </section>
 
+
+        <!--报名人数-->
+        <div class="mod_user_list">
+            <div class="mod_user_list_hd positive">
+                已报名人员
+            </div>
+            <div class="mod_user_list_bd">
+                <ul class="list">
+                    <li class="item">
+                        华宇果
+                        <span class="item-note">13528822552</span>
+                    </li>
+                    <li class="item">
+                        华宇果
+                        <span class="item-note">13528822552</span>
+                    </li>
+                    <li class="item">
+                        华宇果
+                        <span class="item-note">13528822552</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <div class="mod_detail_action">
 
-            <button class="button button-full button-positive">
+            <button class="button button-full button-positive" ng-hide="control">
                 我要报名
             </button>
+
+            <a href="#/app/tabs/events_edit/{{data.events_id}}" class="button button-full button-positive" ng-show="control">
+                修改活动
+            </a>
+            <button class="button button-full button-assertive" ng-show="control" ng-click="removeEvents()">
+                删除活动
+            </button>
+
             <div class="row mod_share">
                 <div class="col">
                     <a href="javascript:;"><i class="ion-ios7-heart-outline"></i><span>{{data.events_zan}}</span> 已赞</a>
@@ -56,5 +88,6 @@
                 </div>
             </div>
         </div>
+
     </ion-content>
 </ion-view>

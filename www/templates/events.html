@@ -1,41 +1,13 @@
-<ion-view title="活动">
+<ion-view title="{{event_title}}">
     <ion-content class="has-header">
         <div class="item item-input-inset">
             <label class="item-input-wrapper">
-                <input type="text" placeholder="Email">
+                <input type="text" placeholder="搜索活动" ng-model="keyword">
             </label>
-            <button class="button button-small">
+            <button class="button button-small" ng-click="searchEvents(keyword)">
                 搜索
             </button>
         </div>
-        <!--筛选 S-->
-        <div class="row events_row">
-            <div class="col">
-                <select name="J_industry" id="J_industry">
-                    <option value="1">按行业</option>
-                    <option value="1">互联网</option>
-                    <option value="1">移动端</option>
-                    <option value="1">按行业</option>
-                </select>
-            </div>
-            <div class="col">
-                <select name="city" id="J_city">
-                    <option value="1">按地区</option>
-                    <option value="1">北京</option>
-                    <option value="1">上海</option>
-                    <option value="1">广州</option>
-                </select>
-            </div>
-            <div class="col">
-                <select name="stage" id="J_stage">
-                    <option value="1">按融资阶段</option>
-                    <option value="1">天使</option>
-                    <option value="1">A轮</option>
-                    <option value="1">B轮</option>
-                </select>
-            </div>
-        </div>
-        <!--筛选 E-->
 
         <ion-list class="events_list">
             <ion-item ng-repeat="item in data" href="#/app/tabs/events/{{item.events_id}}">
@@ -44,15 +16,27 @@
                     <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
                     <div class="events_info_cnt">
                         <time>{{item.events_start_time}}</time>
-                        <div class="events_detail">
+                        <div class="events_detail" ng-show="item.events_detail">
                             {{item.events_detail}}
+                        </div>
+                        <div class="events_detail" ng-show="item.events_users_num">
+                            <div class="events_detail_item">
+                                报名人数：<strong>{{item.events_users_num}}</strong>
+                            </div>
+                            <div class="events_detail_item">
+                                已有<strong>{{item.events_zan}}</strong>人点赞
+                            </div>
                         </div>
                     </div>
                 </div>
             </ion-item>
-
         </ion-list>
 
+        <!--<ion-infinite-scroll-->
+                <!--ng-if="!noMoreItemsAvailable"-->
+                <!--on-infinite="loadMore()"-->
+                <!--distance="10%">-->
+                <!--</ion-infinite-scroll>-->
 
     </ion-content>
 </ion-view>

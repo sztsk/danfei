@@ -1,0 +1,54 @@
+<ion-header-bar class="bar-stable bar-positive">
+    <h1 class="title">单飞企鹅注册</h1>
+    <div class="buttons">
+        <button class="button button-clear" ng-click="closeReg()">关闭</button>
+    </div>
+</ion-header-bar>
+<ion-content>
+    <!--<form name="myForm" class="my-form">-->
+        <!--userType: <input name="input" ng-model="userType" required>-->
+        <!--<span class="error" ng-show="myForm.input.$error.required">Required!</span><br>-->
+        <!--<tt>userType = {{userType}}</tt><br>-->
+        <!--<tt>myForm.input.$valid = {{myForm.input.$valid}}</tt><br>-->
+        <!--<tt>myForm.input.$error = {{myForm.input.$error}}</tt><br>-->
+        <!--<tt>myForm.$valid = {{myForm.$valid}}</tt><br>-->
+        <!--<tt>myForm.$error.required = {{!!myForm.$error.required}}</tt><br>-->
+    <!--</form>-->
+    <form name="signup_form"  ng-submit="registerUser(signup_form)">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">RTX英文名</span>
+                <input type="text" name="user_rtx" placeholder="入职时候的rtx名字" ng-model="data.user_rtx" required ng-minlength="5" ng-maxlength="20">
+
+            </label>
+            <label class="item item-input">
+                <span class="input-label">真实姓名</span>
+                <input type="text" placeholder="真实姓名" ng-model="data.user_name" required>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">密码</span>
+                <input type="password" placeholder="登录网站的密码" ng-model="data.user_password" required>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">手机号码</span>
+                <input type="tel" placeholder="用于登录或找回密码" ng-model="data.user_phone" required>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">单飞时间</span>
+                <input type="date" placeholder="离职日期" ng-model="data.user_leave_time">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">单飞部门</span>
+                <input type="text" placeholder="离职时所在的部门" ng-model="data.user_leave_department" required>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">部门GM</span>
+                <input type="text" placeholder="离职时部门GM名字" ng-model="data.user_leader" required>
+            </label>
+        </div>
+        <div class="padding">
+            <button class="button button-block button-positive" type="submit">注册</button>
+        </div>
+    </form>
+</ion-content>
+
