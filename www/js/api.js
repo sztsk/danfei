@@ -4,7 +4,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
     .factory('restApi', function ($resource) {
 
         var RestApi  = {},
-            BATEURL = 'http://localhost/github/danfei/server/php/';
+            BATEURL = 'http://121.40.146.123/danfei/server/php/';
 
         RestApi.Job = $resource(BATEURL + 'jobs/:cmd/:id',{},{
             'query': { method: 'GET',isArray:true},

@@ -327,8 +327,8 @@ angular.module('app.controllers', [])
         $scope.data = morePop.data;
         //设置二级菜单位置信息
         var tabWidth = $window.innerWidth/4;
-        $scope.sLeft = tabWidth * 2 + (tabWidth/2 - 35) + 'px';
-        $scope.mLeft = tabWidth * 3 + (tabWidth/2 - 35) + 'px';
+        $scope.sLeft = tabWidth * 2 + (tabWidth/2 - 50) + 'px';
+        $scope.mLeft = tabWidth * 3 + (tabWidth/2 - 50) + 'px';
 
         
 
@@ -348,7 +348,8 @@ angular.module('app.controllers', [])
         };
         //跳转到家园页面
         $scope.goHome = function () {
-            $location.href = 'http://www.baidu.com';
+            window.location.href = 'http://wsq.qq.com/reflow/263237005';
+            //$location.href = 'http://www.baidu.com';
         }
     })
 

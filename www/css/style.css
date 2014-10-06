@@ -97,12 +97,12 @@
 
 
 /*浮层*/
-.mod_pop{ position: absolute; padding: 2px; border-radius: 5px;  bottom: 55px; width: 70px; height: 90px; background: #f2f2f2; }
-.mod_pop a{display: block; height: 30px; line-height: 30px; text-align: center; color: #000; font-size: 12px; border-bottom: 1px solid #ccc; text-decoration: none;}
+.mod_pop{ position: absolute; padding: 2px; border-radius: 5px;  bottom: 55px; width: 90px; height: 110px; background: #f2f2f2; }
+.mod_pop a{display: block; height: 36px; line-height: 36px; text-align: center; color: #000; font-size: 14px; border-bottom: 1px solid #ccc; text-decoration: none;}
 .mod_pop a:last-child{border-bottom: 0;}
 
 .more_pop{left: 80px;}
-.services_pop{ left: 65%; height: 60px; }
+.services_pop{ left: 65%; height: 75px; }
 
 /*创业项目*/
 .project_list .list{ margin: 0 15px; font-size: 14px;}

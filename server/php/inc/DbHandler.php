@@ -140,6 +140,7 @@ class DbHandler {
      */
     public function getUsers($start = 0,$num = 30){
         $sql = "SELECT user_id,user_name,user_jobs_years,user_education,user_title,user_intro,user_thum,user_city FROM `tb_users` WHERE user_state = 2 LIMIT $start , $num";
+//        echo $sql;
         $data = $this->conn->get_results($sql);
         return $data;
     }
