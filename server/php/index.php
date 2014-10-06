@@ -13,6 +13,7 @@ global $user_id;
 $app = new \Slim\Slim();
 
 
+
 $app->post(
     '/register',
     function () use ($app){
