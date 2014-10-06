@@ -366,9 +366,10 @@ angular.module('app.controllers', [])
         $scope.data = restApi.Users.query();
     })
 
-    .controller('TalentDetailCtrl', function ($scope, restApi) {
-        $scope.data = restApi.Users.getOne({id: 1});
-        console.log($scope.data);
+    .controller('TalentDetailCtrl', function ($scope,$stateParams, restApi) {
+        restApi.Users.getOne($stateParams,function(ajax){
+            $scope.data = ajax.data;
+        });
     })
 
 
@@ -439,6 +440,7 @@ angular.module('app.controllers', [])
         $scope.cityData = cityData;
         //注册用户
         $scope.registerUser = function (signup_form) {
+            console.log($scope.data);
             //表单验证
             // TODO 详细验证信息需要设置
             if (signup_form.$valid) {
