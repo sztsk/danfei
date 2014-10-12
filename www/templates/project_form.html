@@ -1,0 +1,102 @@
+<ion-header-bar class="bar-stable bar-positive">
+    <h1 class="title">{{form_title || '发布项目'}}</h1>
+    <div class="buttons">
+        <button class="button button-clear" ng-click="closePage()">关闭</button>
+    </div>
+</ion-header-bar>
+<ion-content>
+    <form name="project_form" class="mod_form"  ng-submit="submitForm(project_form)">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">项目名称</span>
+                <input type="tel" name="project_name" placeholder="项目名称" ng-model="data.project_name" required>
+                <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_name.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="project_form.project_name.$invalid && project_form.project_name.$dirty"></i>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">行业</span>
+                <select ng-options="m.name as m.name for m in industryData"
+                        ng-model="data.project_type"
+                        ng-init="data.project_type = industryData[0].name"
+                        ng-change="changeIndustry(data.project_type)">
+                </select>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">城市</span>
+                <select ng-options="m.name as m.name for m in cityData"
+                        ng-model="data.project_city"
+                        ng-init="data.project_city = cityData[0].name"
+                        ng-change="changeIndustry(data.project_city)">
+                </select>
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">融资金额</span>
+                <input type="number" name="project_financing" placeholder="融资金额" ng-model="data.project_financing" required>
+                <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_financing.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="project_form.project_financing.$invalid && project_form.project_financing.$dirty"></i>
+
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">融资阶段</span>
+
+                <select ng-options="m.name as m.name for m in stageData"
+                        ng-model="data.project_stage"
+                        ng-init="data.project_stage = stageData[0].name"
+                        ng-change="changeStage(data.project_stage)">
+                </select>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">创始人</span>
+                <input type="text" placeholder="创始人" ng-model="data.project_founder" name="project_founder" required>
+                <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_founder.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="project_form.project_founder.$invalid && project_form.project_founder.$dirty"></i>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">创始人介绍</span>
+                <input type="text" placeholder="创始人介绍" ng-model="data.project_founder_intro" name="project_founder_intro" required>
+                <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_founder_intro.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="project_form.project_founder_intro.$invalid && project_form.project_founder_intro.$dirty"></i>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">团队人数</span>
+                <input type="number" placeholder="团队人数 直接写数字" name="project_user_num" ng-model="data.project_user_num" required>
+                <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_user_num.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="project_form.project_user_num.$invalid && project_form.project_user_num.$dirty"></i>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">创业时间</span>
+                <input type="date" placeholder="创业时间" name="project_date" ng-model="data.project_date" required>
+                <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_date.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="project_form.project_date.$invalid && project_form.project_date.$dirty"></i>
+            </label>
+            <label class="item item-text-wrap">
+                <span class="input-label input-text-label">一句话描述创业项目</span>
+                <textarea rows="5" placeholder="面向谁，解决什么问题，用什么方法解决，定位或愿景" name="project_brief" ng-model="data.project_brief" required></textarea>
+                <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_brief.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="project_form.project_brief.$invalid && project_form.project_brief.$dirty"></i>
+            </label>
+            <label class="item item-text-wrap">
+                <span class="input-label">项目介绍</span>
+                <textarea rows="5" placeholder="详细介绍你的创业项目" name="project_intro" ng-model="data.project_intro" required></textarea>
+                <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_intro.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="project_form.project_intro.$invalid && project_form.project_intro.$dirty"></i>
+            </label>
+            <!--<label class="item item-input">-->
+                <!--<span class="input-label">详细商业计划书</span>-->
+                <!--<input type="text" placeholder="离职时部门GM名字" name="user_leader" ng-model="data.user_leader" required>-->
+                <!--<i class="icon ion-checkmark-circled balanced" ng-show="project_form.user_leader.$valid"></i>-->
+                <!--<i class="icon ion-close-circled assertive" ng-show="project_form.user_leader.$invalid && project_form.user_leader.$dirty"></i>-->
+            <!--</label>-->
+        </div>
+        <div class="padding">
+            <button class="button button-block button-positive" type="submit">{{ form_btn ||  '发布项目'}}</button>
+        </div>
+        <!--<div class="mod_form_error assertive"-->
+             <!--ng-show="project_form.$invalid">-->
+            <!--所有输入框 都必须填写内容！-->
+        <!--</div>-->
+    </form>
+</ion-content>
+

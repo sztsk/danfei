@@ -22,10 +22,17 @@
             </label>
             <label class="item item-input">
                 <span class="input-label">RTX英文名</span>
-                <input type="text" name="user_rtx" placeholder="入职时候的rtx名字" ng-model="data.user_rtx" required ng-pattern="/^([a-z])+$/">
+                <input type="text" name="user_rtx" placeholder="入职时候的rtx名字" ng-model="data.user_rtx" required ng-pattern="/^([a-zA-Z])+$/">
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_rtx.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_rtx.$invalid && signup_form.user_rtx.$dirty"></i>
 
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">用户昵称</span>
+                <input type="text" placeholder="勿写真实姓名 展示在人才库中" ng-model="data.user_nice_name" name="user_nice_name" required>
+                <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_nice_name.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="signup_form.user_nice_name.$invalid && signup_form.user_nice_name.$dirty"></i>
             </label>
             <label class="item item-input">
                 <span class="input-label">真实姓名</span>

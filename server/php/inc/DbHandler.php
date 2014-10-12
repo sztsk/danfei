@@ -85,10 +85,7 @@ class DbHandler {
             $userId = $this->conn->insert_id;
             if($userId){
                 $userData['user_id'] = $userId;
-                return array(
-                    'error' => false,
-                    'message' => "注册成功！请等待管理员审核!"
-                );
+                return $userData;
             } else{
                 return null;
             }
@@ -138,11 +135,14 @@ class DbHandler {
      * @param $start
      * @param $num
      */
-    public function getUsers($start = 0,$num = 30){
-        $sql = "SELECT user_id,user_name,user_jobs_years,user_education,user_title,user_intro,user_thum,user_city FROM `tb_users` WHERE user_state = 2 LIMIT $start , $num";
-//        echo $sql;
+    public function getUsers($where = '',$start = 0,$num = 30){
+        $sql = "SELECT user_id,user_nice_name,user_jobs_years,user_education,user_title,user_intro,user_thum,user_city FROM `tb_users` WHERE user_state = 2 $where LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
-        return $data;
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
     }
 
     /**
@@ -161,7 +161,7 @@ class DbHandler {
      * @param $num
      */
     public function getCompany($start = 0,$num = 30){
-        $sql = "SELECT user_name,company_intro FROM  `tb_users` WHERE user_state = 1 LIMIT $start , $num";
+        $sql = "SELECT user_name,company_intro FROM  `tb_users` WHERE user_state = 1  ORDER BY user_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -203,6 +203,32 @@ class DbHandler {
         return $result;
     }
 
+    /**
+     * 发出邀请
+     */
+    public function joinCompany($companyId,$userId){
+        $sql = "INSERT INTO `tb_company_users` (`company_id`, `user_id`) VALUES ('$companyId', '$userId');";
+        $this->conn->query($sql);
+        $id = $this->conn->insert_id;
+        if($id){
+            $data['id'] = $id;
+            return $data;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * 判断是否已邀请
+     * @param $start
+     * @param $num
+     */
+    public function checkCompanyJoin($companyId,$userId){
+        $sql = "SELECT id FROM  `tb_company_users` WHERE company_id = '$companyId' AND user_id = '$userId'";
+        $result = $this->conn->get_var($sql);
+        return $result > 0;
+    }
+
 
     /* ------------- `tb_jobs` table method ------------------ */
     /**
@@ -210,10 +236,14 @@ class DbHandler {
      * @param $start
      * @param $num
      */
-    public function getJobs($start = 0,$num = 30){
-        $sql = "SELECT * FROM  `tb_jobs` LEFT JOIN tb_users on tb_jobs.`jobs_user_id` = tb_users.user_id WHERE jobs_state = 1 LIMIT $start , $num";
+    public function getJobs($where = '',$start = 0,$num = 30){
+        $sql = "SELECT * FROM  `tb_jobs` LEFT JOIN tb_users on tb_jobs.`jobs_user_id` = tb_users.user_id WHERE jobs_state = 1  ORDER BY jobs_id DESC $where LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
-        return $data;
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
     }
 
     /**
@@ -222,9 +252,13 @@ class DbHandler {
      * @param $num
      */
     public function getJobsByComId($userId){
-        $sql = "SELECT jobs_id,jobs_name,jobs_push_date FROM  `tb_jobs` WHERE jobs_state = 1 AND jobs_user_id = '$userId'";
+        $sql = "SELECT jobs_id,jobs_name,jobs_push_date FROM  `tb_jobs` WHERE jobs_state = 1 AND jobs_user_id = '$userId'  ORDER BY jobs_id DESC";
         $data = $this->conn->get_results($sql);
-        return $data;
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
     }
 
     /**
@@ -246,6 +280,31 @@ class DbHandler {
             return $data;
         } else{
             return null;
+        }
+    }
+
+    /**
+     * 提交简历
+     */
+    public function joinJobs($jobId,$userId){
+        //先判断用户是否已完善简历
+        $checkSql = "SELECT user_id FROM tb_users WHERE user_jobs_years IS NOT NULL AND user_id = '$userId'";
+
+        $result = $this->conn->get_var($checkSql);
+        //简历ready
+        if($result){
+            $sql = "INSERT INTO `tb_jobs_users` (`jobs_id`, `user_id`) VALUES ('$jobId', '$userId');";
+            $this->conn->query($sql);
+            $id = $this->conn->insert_id;
+            if($id){
+                $data['id'] = $id;
+                return $data;
+            } else{
+                return null;
+            }
+        }else{
+            $data['error'] = "请先完善简历";
+            return $data;
         }
     }
 
@@ -278,7 +337,7 @@ class DbHandler {
      * @param $num
      */
     public function getEvents($start,$num = 30){
-        $sql = "SELECT events_id,events_title,events_detail,events_start_time,events_users_num FROM  `tb_events` WHERE events_state = 1 ORDER BY events_id DESC LIMIT $start , $num";
+        $sql = "SELECT events_id,events_title,events_detail,events_start_time FROM  `tb_events` WHERE events_state = 1 ORDER BY events_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -288,7 +347,7 @@ class DbHandler {
      * @param $id
      */
     public function getEventsById($id){
-        $sql = "SELECT events_id,user_name,events_title,events_user_id,events_users_num,events_city,events_start_time,events_end_time,events_guests,events_quota,events_detail,events_address FROM  `tb_events` LEFT JOIN tb_users ON tb_events.events_user_id = tb_users.user_id WHERE events_state = 1 AND events_id = $id";
+        $sql = "SELECT events_id,user_name,events_title,events_user_id,events_users_num,events_city,events_start_time,events_end_time,events_guests,events_quota,events_detail,events_address FROM  `tb_events` LEFT JOIN tb_users ON tb_events.events_user_id = tb_users.user_id WHERE events_state = 1 AND events_id = $id  ORDER BY events_id DESC";
         $data = $this->conn->get_row($sql);
         return $data;
     }
@@ -299,10 +358,14 @@ class DbHandler {
      * @param $num
      */
     public function getEventsByUserId($userId){
-        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,events_detail,
+        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,
 events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId ORDER BY events_id DESC ";
         $data = $this->conn->get_results($sql);
-        return $data;
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
     }
 
     /**
@@ -311,9 +374,13 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $num
      */
     public function searchEvents($search){
-        $sql = "SELECT events_id,events_title,events_detail,events_start_time FROM  `tb_events` WHERE events_state = 1 AND events_detail LIKE '%$search%'";
+        $sql = "SELECT events_id,events_title,events_detail,events_start_time FROM  `tb_events` WHERE events_state = 1 AND events_detail LIKE '%$search%'  ORDER BY events_id DESC";
         $data = $this->conn->get_results($sql);
-        return $data;
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
     }
 
     /**
@@ -396,6 +463,19 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
         return $result > 0;
     }
 
+    /**
+     * 判断是否已提交简历
+     * @param $start
+     * @param $num
+     */
+    public function checkUserJob($jobsId,$userId){
+        $sql = "SELECT id FROM  `tb_jobs_users` WHERE jobs_id = '$jobsId' AND user_id = '$userId'";
+        $result = $this->conn->get_var($sql);
+        return $result > 0;
+    }
+
+
+
 
 
 
@@ -406,9 +486,13 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $num
      */
     public function getServices($where = '',$start = 0,$num = 30){
-        $sql = "SELECT services_id,services_detail,services_industry,company_name,user_city FROM  `tb_services` JOIN tb_users ON tb_services.services_user_id = tb_users.user_id WHERE services_state = 1 $where LIMIT $start , $num";
+        $sql = "SELECT services_id,services_content,services_industry,services_organization_name,services_city FROM  `tb_services` WHERE services_state = 1 $where  ORDER BY services_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
-        return $data;
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
     }
 
 
@@ -417,7 +501,8 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $id
      */
     public function getServicesById($id){
-        $sql = "SELECT * FROM  `tb_services` LEFT JOIN tb_users ON tb_services.services_user_id = tb_users.user_id WHERE services_state = 1 AND services_id = $id";
+        // LEFT JOIN tb_users ON tb_services.services_user_id = tb_users.user_id
+        $sql = "SELECT * FROM  `tb_services` WHERE services_state = 1 AND services_id = $id";
         $data = $this->conn->get_row($sql);
         return $data;
     }
@@ -492,10 +577,14 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $start
      * @param $num
      */
-    public function getProject($start = 0,$num = 30){
-        $sql = "SELECT project_id,project_name,project_thum,project_push_date,project_financing,project_stage,project_intro,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 LIMIT $start , $num";
+    public function getProject($where = '',$start = 0,$num = 30){
+        $sql = "SELECT project_id,project_name,project_thum,project_push_date,project_financing,project_stage,project_intro,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 $where  ORDER BY project_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
-        return $data;
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
     }
 
     /**
@@ -504,9 +593,13 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $num
      */
     public function getProjectByUserId($userId,$start = 0,$num = 30){
-        $sql = "SELECT project_id,project_name,project_thum,project_push_date,project_financing,project_stage,project_intro,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 AND project_user_id = '$userId' LIMIT $start , $num";
+        $sql = "SELECT project_id,project_name,project_thum,project_date,project_financing,project_stage,project_brief,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 AND project_user_id = '$userId'  ORDER BY project_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
-        return $data;
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
     }
 
 
@@ -516,7 +609,7 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $id
      */
     public function getProjectById($id){
-        $sql = "SELECT * FROM  `tb_project` LEFT JOIN tb_users ON tb_project.project_user_id = tb_users.user_id WHERE user_id = $id";
+        $sql = "SELECT * FROM  `tb_project` WHERE project_id = $id";
         $data = $this->conn->get_row($sql);
         return $data;
     }
@@ -531,7 +624,7 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
         $this->conn->query($sql);
         $id = $this->conn->insert_id;
         if($id){
-            $data['services_id'] = $id;
+            $data['project_id'] = $id;
             return $data;
         } else{
             return null;

@@ -83,11 +83,45 @@ $app->get(
     '/jobs(/:start)(:/num)',
     function ($start = 0,$num  = 30){
         $db = new DbHandler();
-        $data = $db->getJobs($start,$num);
+        $data = $db->getJobs('',$start,$num);
         $db = null;
         echoRespnse(200,$data);
     }
 );
+
+$app->get(
+    '/jobs/:city/:salary/:jobs(/:start)(/:num)',
+    function ($city,$salary,$jobs,$start = 0,$num  = 30){
+        $db = new DbHandler();
+        $where = '';
+        if($city != '全部地区'){
+            $where .= " AND jobs_city = '$city'";
+        };
+        if($salary != '全部薪酬'){
+            $where .= " AND jobs_salary_start > '$salary'";
+        }
+        if($jobs != '全部岗位'){
+            $where .= " AND jobs_type = '$jobs'";
+        }
+        $data = $db->getJobs($where,$start,$num);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+/**
+ * 判断是否已报名
+ */
+$app->get(
+    '/check/jobs/:jobsid/user/:userid',
+    function ($jobsId,$userId){
+        $db = new DbHandler();
+        $data = $db->checkUserJob($jobsId,$userId);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
 
 $app->post(
     '/jobs',
@@ -95,6 +129,17 @@ $app->post(
         $data = $app->request->post();
         $db = new DbHandler();
         $jobData = $db->createJobs($data);
+        echoRespnse(201,$jobData);
+    }
+);
+
+//提交简历
+$app->post(
+    '/join/jobs',
+    function () use ($app){
+        $data = $app->request->post();
+        $db = new DbHandler();
+        $jobData = $db->joinJobs($data['jid'],$data['uid']);
         echoRespnse(201,$jobData);
     }
 );
@@ -287,7 +332,7 @@ $app->post(
     function () use ($app){
         $data = $app->request->post();
         $db = new DbHandler();
-        $jobData = $db->createEvents($data);
+        $jobData = $db->createServices($data);
         echoRespnse(201,$jobData);
     }
 );
@@ -355,13 +400,29 @@ $app->get(
 );
 
 
-
-
 $app->get(
     '/project(/:start)(:/num)',
     function ($start = 0,$num  = 30){
         $db = new DbHandler();
-        $data = $db->getProject($start,$num);
+        $data = $db->getProject('',$start,$num);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+
+$app->get(
+    '/project/:city/:industry(/:start)(/:num)',
+    function ($city,$industry,$start = 0,$num  = 30){
+        $db = new DbHandler();
+        $where = '';
+        if($city != '全部地区'){
+            $where .= " AND project_city = '$city'";
+        };
+        if($industry != '全部领域'){
+            $where .= " AND project_type = '$industry'";
+        }
+        $data = $db->getProject($where,$start,$num);
         $db = null;
         echoRespnse(200,$data);
     }
@@ -424,11 +485,33 @@ $app->get(
     '/users(/:start)(:/num)',
     function ($start = 0,$num  = 30){
         $db = new DbHandler();
-        $data = $db->getUsers($start,$num);
+        $data = $db->getUsers('',$start,$num);
         $db = null;
         echoRespnse(200,$data);
     }
 );
+
+//人才展示 筛选
+$app->get(
+    '/users/:city/:salary/:jobs(/:start)(/:num)',
+    function ($city,$salary,$jobs,$start = 0,$num  = 30){
+        $db = new DbHandler();
+        $where = '';
+        if($city != '全部地区'){
+            $where .= " AND user_city = '$city'";
+        };
+//        if($salary != '全部薪酬'){
+//            $where .= " AND jobs_salary_start > '$salary'";
+//        }
+        if($jobs != '全部岗位'){
+            $where .= " AND user_jobs_type = '$jobs'";
+        }
+        $data = $db->getUsers($where,$start,$num);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
 
 $app->post(
     '/users',
@@ -519,6 +602,33 @@ $app->post(
         $data = $app->request->post();
         $db = new DbHandler();
         $jobData = $db->joinEvents($data['eid'],$data['uid']);
+        echoRespnse(201,$jobData);
+    }
+);
+
+
+/**
+ * 判断是否已发出邀请
+ */
+$app->get(
+    '/check/company/:companyid/user/:userid',
+    function ($companyId,$userId){
+        $db = new DbHandler();
+        $data = $db->checkCompanyJoin($companyId,$userId);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
+/**
+ * 我要发出邀请
+ */
+$app->post(
+    '/join/company',
+    function () use ($app){
+        $data = $app->request->post();
+        $db = new DbHandler();
+        $jobData = $db->joinCompany($data['cid'],$data['uid']);
         echoRespnse(201,$jobData);
     }
 );

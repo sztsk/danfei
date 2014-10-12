@@ -19,6 +19,24 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'delete':{method:'DELETE'}
         });
 
+        //提交简历
+        RestApi.JoinJobs = $resource(BATEURL + 'join/jobs/:id',{},{
+            'query': { method: 'GET',isArray:true}
+        });
+
+        /**
+         * 判断是否已经提交过简历
+         */
+        RestApi.CheckIsJob = $resource(BATEURL + 'check/jobs/:jid/user/:uid',{},{
+            'query': { method: 'GET'}
+        });
+        /**
+         * 职业筛选
+         */
+        RestApi.JobsFilter = $resource(BATEURL + 'jobs/:city/:salary/:jobs/:start/:num',{},{
+            'query': { method: 'GET',isArray:true,params:{start:0,num:30 }}
+        });
+
         /**
          * 活动url
          */
@@ -69,6 +87,13 @@ angular.module('app.services', ['ngResource','ngStorage'])
         });
 
         /**
+         * 筛选创业服务
+         */
+        RestApi.ProjectFilter = $resource(BATEURL + 'project/:city/:industry/:start/:num',{},{
+            'query': { method: 'GET',isArray:true,params:{start:0,num:30 }}
+        });
+
+        /**
          * 用户信息
          */
         RestApi.Users = $resource(BATEURL + 'users/:id',{},{
@@ -79,7 +104,16 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'delete':{method:'DELETE'}
         });
 
+
         RestApi.CheckLogin = $resource(BATEURL + 'login',{});
+
+        /**
+         * 人才筛选
+         */
+        RestApi.TalentFilter = $resource(BATEURL + 'users/:city/:salary/:jobs/:start/:num',{},{
+            'query': { method: 'GET',isArray:true,params:{start:0,num:30 }}
+        });
+
 
         /**
          * 公司信息
@@ -90,6 +124,19 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'update':{method:'PATCH'},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}
+        });
+
+        /**
+         * 发出邀请
+         */
+        RestApi.JoinCompany = $resource(BATEURL + 'join/company/:id',{},{
+            'query': { method: 'GET',isArray:true}
+        });
+        /**
+         * 判断是否已经邀请
+         */
+        RestApi.CheckIsCompany = $resource(BATEURL + 'check/company/:cid/user/:uid',{},{
+            'query': { method: 'GET'}
         });
 
         /**
@@ -106,6 +153,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
         });
 
 
+
         return RestApi;
     })
     //设置post header
@@ -118,6 +166,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
             return str.join('&');
         };
         $httpProvider.defaults.headers.put['Content-Type'] =
+            $httpProvider.defaults.headers.patch['Content-Type'] =
             $httpProvider.defaults.headers.post['Content-Type'] =
                 'application/x-www-form-urlencoded; charset=UTF-8';
     })
@@ -145,6 +194,9 @@ angular.module('app.services', ['ngResource','ngStorage'])
                 //cache
                 $localStorage.loginData = _loginData;
             },
+            setUserType : function(user_type){
+                _loginData.user_type = user_type;
+            },
             get : function(){
                 return _loginData;
             },
@@ -152,9 +204,13 @@ angular.module('app.services', ['ngResource','ngStorage'])
                 //TODO TEST
                return _loginData.user_id;
             },
+            getUserType : function(){
+                return _loginData.user_type;
+            },
             reset : function () {
-                _loginData = {};
+                _loginData = {user_name : null};
                 delete $localStorage.loginData;
+                return _loginData;
             }
         }
     })
@@ -212,4 +268,87 @@ angular.module('app.services', ['ngResource','ngStorage'])
             }
         ]
     })
+    .service('jobsData',function(){
+        return [
+            {
+                id : 0,
+                name : '全部岗位'
+            },
+            {
+                id : 1,
+                name : '前端开发'
+            },
+            {
+                id : 2,
+                name : '后台开发'
+            },
+            {
+                id : 3,
+                name : '产品经理'
+            },
+            {
+                id : 4,
+                name : '产品运营'
+            }
+        ]
+    })
+    .service('salaryData',function(){
+        return [
+            {
+                id : 0,
+                name : '全部薪酬'
+            },
+            {
+                id : 1,
+                name : '2K以下'
+            },
+            {
+                id : 2,
+                name : '2k-5k'
+            },
+            {
+                id : 3,
+                name : '5k-10k'
+            },
+            {
+                id : 4,
+                name : '10k-15k'
+            }
+        ]
+    })
+
+    .service('stageData',function(){
+        return [
+            {
+                id : 0,
+                name : '全部阶段'
+            },
+            {
+                id : 1,
+                name : '天使轮'
+            },
+            {
+                id : 2,
+                name : 'A轮'
+            },
+            {
+                id : 3,
+                name : 'B轮'
+            },
+            {
+                id : 4,
+                name : 'C轮'
+            },
+            {
+                id : 5,
+                name : 'C轮以上'
+            },
+            {
+                id : 6,
+                name : '未融资'
+            }
+        ]
+    })
+;
+
 

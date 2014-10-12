@@ -1,7 +1,7 @@
-<ion-view title="{{data.user_name}}" class="mod_detail">
+<ion-view title="{{data.user_nice_name}}" class="mod_detail">
     <ion-content class="has-header">
         <section class="mod_detail_hd">
-            <h1>{{data.user_name}}</h1>
+            <h1>{{data.user_nice_name}}</h1>
             <div class="user_info">
                 <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
                 <ul class="user_info_list">
@@ -36,8 +36,8 @@
 
         <div class="mod_detail_action">
 
-            <button class="button button-full button-positive">
-                发出邀请
+            <button ng-disabled="isjoin" class="button button-full button-positive" ng-click="submitJob()">
+                {{joinBtnName || '发出邀请'}}
             </button>
             <div class="row mod_share">
                 <div class="col">

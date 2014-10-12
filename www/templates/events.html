@@ -10,6 +10,9 @@
         </div>
 
         <ion-list class="events_list">
+            <div ng-if="event_type == 'userlist'">
+                <a class="button button-full button-positive" href="#/app/tabs/events_add">发布活动</a>
+            </div>
             <ion-item ng-repeat="item in data" href="#/app/tabs/events/{{item.events_id}}">
                 <h2 class="positive">{{item.events_title}} </h2>
                 <div class="events_info">

@@ -1,20 +1,16 @@
-<ion-view title="创业服务">
+<ion-view title="{{list_title || '创业服务'}}">
     <ion-content class="has-header">
-        <!--<div class="button-bar">-->
-            <!--<a class="button">创业服务</a>-->
-            <!--<a class="button">职业机会</a>-->
-        <!--</div>-->
 
         <!--筛选 S-->
         <div class="row mod_filter" ng-hide="uselist">
-            <label class="col">
+            <label class="col mod_select mod_select_col2">
                 <select ng-options="m.name for m in industryData"
                         ng-model="selectedIndustry"
                         ng-init="selectedIndustry = industryData[0]"
                         ng-change="changeIndustry(selectedIndustry)">
                 </select>
             </label>
-            <label class="col">
+            <label class="col mod_select mod_select_col2">
                 <select ng-options="m.name for m in cityData"
                         ng-model="selectedCity"
                         ng-init="selectedCity = cityData[0]"
@@ -24,26 +20,30 @@
         </div>
         <!--筛选 E-->
 
-        <ion-list class="mod_list" ng-class="{only_list: 'uselist'}">
+        <ion-list class="mod_list">
+            <div ng-show="uselist">
+                <a class="button button-full button-positive" href="#/app/tabs/services_add">发布服务</a>
+            </div>
             <ion-item class="item mod_item" ng-repeat="item in data" href="#/app/tabs/services/{{item.services_id}}">
                 <div class="mod_item_info">
                     <div class="mod_item_col1">
-                        <img class="mod_item_img" src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
+                        <img class="mod_item_img" src="http://img.qian-duan-she-ji.us/140" alt="组织LOGO 公司LOGO" />
                         <button class="button button-small button-positive">收藏</button>
                     </div>
                     <div class="mod_item_col2">
-                        <h2 class="positive mod_item_tit">{{item.user_name}} </h2>
+                        <h2 class="positive mod_item_tit">{{item.services_organization_name}} </h2>
                         <div class="mod_item_tags">
-                            <span>{{item.user_city}}</span> | <span>{{item.services_industry}}</span>
+                            <span>{{item.services_city}}</span> | <span>{{item.services_industry}}</span>
                         </div>
                         <div class="mod_item_cnt">
-                            {{item.services_detail}}
+                            {{item.services_content}}
                         </div>
                     </div>
                 </div>
             </ion-item>
             <div class="no_data" ng-hide="data.length">
                 暂时没有相关数据！
+                <p ng-show="uselist"><a class="button button-positive" href="#/app/services_add">发布创业服务</a></p>
             </div>
         </ion-list>
 

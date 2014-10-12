@@ -1,10 +1,10 @@
-<ion-view title="{{data.company_name}}" class="mod_detail">
+<ion-view title="{{data.services_organization_name}}" class="mod_detail">
     <ion-content class="has-header">
         <section class="mod_detail_hd">
-            <h1>{{data.user_name}}</h1>
+            <h1>{{data.services_organization_name}}</h1>
             <div class="row">
-                <div class="col">领域：<span>{{data.company_type}}</span></div>
-                <div class="col">地点：<span>{{data.user_city}}</span></div>
+                <div class="col">领域：<span>{{data.services_industry}}</span></div>
+                <div class="col">地点：<span>{{data.services_city}}</span></div>
             </div>
             <div class="row">
                 <div class="col">规模：{{data.company_size}}</div>
@@ -15,13 +15,13 @@
             <div class="mod_detail_part">
                 <h1 class="positive">服务详情</h1>
                 <div class="mod_detail_info">
-                    {{data.services_detail}}
+                    {{data.services_content}}
                 </div>
             </div>
             <div class="mod_detail_part">
-                <h1 class="positive">公司简介</h1>
+                <h1 class="positive">代表客户</h1>
                 <div class="mod_detail_info">
-                    {{data.company_intro}}
+                    {{data.services_client}}
                 </div>
             </div>
             <div class="mod_detail_part">
@@ -35,10 +35,17 @@
 
         <div class="mod_detail_action">
 
-            <button class="button button-full button-positive" ng-click="submitProject()">
+            <button class="button button-full button-positive" ng-hide="control"  ng-click="submitProject()">
                 提交项目
             </button>
-            <!--<a class="detail_fund" href="##">我要投资</a>-->
+
+            <a href="#/app/tabs/services_edit/{{data.services_id}}" class="button button-full button-positive" ng-show="control">
+                修改服务
+            </a>
+            <button class="button button-full button-assertive" ng-show="control" ng-click="removeForm()">
+                删除服务
+            </button>
+
             <div class="row mod_share">
                 <div class="col">
                     <a href="javascript:;"><i class="ion-ios7-heart-outline"></i>已赞</a>

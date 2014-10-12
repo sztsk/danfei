@@ -3,8 +3,6 @@
     <ion-side-menu-content>
 
         <ion-nav-bar class="bar-stable bar-positive nav-title-slide-ios7">
-            <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> 返回
-            </ion-nav-back-button>
         </ion-nav-bar>
 
         <ion-nav-buttons side="left">
@@ -32,25 +30,25 @@
                 <ion-item nav-clear menu-close ng-click="login()" ng-hide="loginData.user_name">
                     登录
                 </ion-item>
-                <ion-item nav-clear menu-close href="#/app/register" ng-hide="loginData.user_name">
+                <ion-item nav-clear menu-close href="#/app/register_user" ng-hide="loginData.user_name">
                     注册
                 </ion-item>
-                <ion-item nav-clear class="item-divider">
-                    用户资料
+                <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 1" href="#/app/register_company/{{loginData.user_id}}" ng-show="loginData.user_name">
+                    升级为企业用户
                 </ion-item>
                 <ion-item nav-clear menu-close ng-click="checkLogin('app.tabs.eventsmy')">
                     我的活动
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="checkLogin('app.tabs.servicesmy')">
-                    我的微项目
+                <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 2" ng-click="checkLogin('app.tabs.projectmy')">
+                    我的项目
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="checkLogin('app.tabs.servicesmy')">
-                    我的微简历
+                <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 2" ng-click="checkLogin('app.tabs.servicesmy')">
+                    我的简历
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="checkLogin('app.tabs.servicesmy')">
+                <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 2" ng-click="checkLogin('app.tabs.servicesmy')">
                     我的服务
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="checkLogin('app.tabs.servicesmy')">
+                <ion-item nav-clear menu-close ng-click="checkLogin('app.tabs.favorites')">
                     我的收藏
                 </ion-item>
                 <!--<ion-item nav-clear class="item-divider">-->

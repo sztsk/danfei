@@ -8,20 +8,27 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col">行业：{{data.project_type}}人</div>
-                <div class="col">城市：{{data.events_city}}</div>
+                <div class="col">创始人：{{data.project_founder}}</div>
+                <div class="col">团队人数：{{data.project_user_num}}人</div>
             </div>
             <div class="row">
+                <div class="col">行业：{{data.project_type}}</div>
+                <div class="col">城市：{{data.project_city}}</div>
+            </div>
+            <div class="row">
+                <div class="col">融资金额：{{data.project_financing}}</div>
                 <div class="col">融资阶段：{{data.project_stage}}</div>
             </div>
             <div class="row">
-                <div class="col">团队规模：{{data.company_size}}</div>
+                <div class="col">创业时间：{{data.project_date}}</div>
             </div>
         </section>
         <section class="mod_detail_bd">
             <div class="mod_detail_part">
                 <h1 class="positive">项目介绍</h1>
                 <div class="mod_detail_info">
+                    <p>{{data.project_brief}}</p>
+
                     {{data.project_intro}}
                 </div>
             </div>
@@ -42,9 +49,17 @@
 
         <div class="mod_detail_action">
 
-            <button class="button button-full button-positive">
+            <button class="button button-full button-positive" ng-hide="control"  ng-click="submitProject()">
                 我有意向
             </button>
+
+            <a href="#/app/tabs/project_edit/{{data.project_id}}" class="button button-full button-positive" ng-show="control">
+                修改项目
+            </a>
+            <button class="button button-full button-assertive" ng-show="control" ng-click="removeForm()">
+                删除项目
+            </button>
+
             <div class="row mod_share">
                 <div class="col">
                     <a href="javascript:;"><i class="ion-ios7-heart-outline"></i><span>{{data.project_zan}}</span> 已赞</a>

@@ -6,7 +6,7 @@
 .mod_share i{font-size: 20px; vertical-align: middle; margin-right: 5px;}
 /*列表*/
 .mod_list .list{margin: 0 15px; color: #5a5a5a;}
-.only_list .list{margin-top: 15px;}
+.only_list .list{margin-top: 15px !important;}
 .mod_item{border-top: 2px solid #4a87ee; margin-bottom: 10px;font-size: 12px;}
 .mod_item .item-content{padding-right: 16px;}
     .mod_item_col1{ width: 70px; float: left; margin-right: 10px; text-align: center;}
@@ -17,10 +17,19 @@
 /*select*/
 .mod_filter select{ width: 100%;}
 
+/*重新icnoc*/
+.item-text-wrap{padding: 6px 0 5px 16px}
+.item-text-wrap .input-label{max-width: 320px; width: auto;}
+
 /*表单验证*/
 .mod_form .icon{ position: absolute; right: 10px; top: 50%; margin-top: -10px;  font-size: 16px; }
-.mod_form_error{margin:0 15px;}
+.mod_form_error{margin:0 15px; padding-bottom: 10px;}
 
+/*select*/
+.mod_select_col2{ padding-left: 40px;}
+.mod_select{position: relative;}
+.mod_select select{border: none; padding-right: 20px; width: 90%; background: #fff;color: #333;text-indent: 0.01px;text-overflow: '';white-space: nowrap;font-size: 14px;cursor: pointer;-webkit-appearance: none;-moz-appearance: none;appearance: none;direction: ltr;}
+.mod_select:after{position: absolute;top: 50%;right: 16px;margin-top: -3px;width: 0;height: 0;border-top: 5px solid;border-right: 5px solid rgba(0, 0, 0, 0);border-left: 5px solid rgba(0, 0, 0, 0);color: #999;content: "";pointer-events: none;}
 /*报名人数*/
 .mod_user_list{margin: 15px;}
     .mod_user_list_hd{font-size: 14px; font-weight: 700; margin-bottom: 5px;}
@@ -44,7 +53,7 @@
     .events_info{position: relative; padding: 0 0 0 80px;}
     .events_info img{ position: absolute; top: 0; left: 0; width: 70px; height: 70px;}
     .events_info_cnt{white-space: normal; min-height: 70px;}
-    .events_info_cnt time{padding-left: 10px; color: #666;}
+    .events_info_cnt time{color: #666;}
 
 /*活动详情页*/
 .mod_detail{font-size: 12px;}
@@ -102,12 +111,12 @@
 
 
 /*浮层*/
-.mod_pop{ position: absolute; padding: 2px; border-radius: 5px;  bottom: 55px; width: 90px; height: 110px; background: #f2f2f2; }
-.mod_pop a{display: block; height: 36px; line-height: 36px; text-align: center; color: #000; font-size: 14px; border-bottom: 1px solid #ccc; text-decoration: none;}
+.mod_pop{ position: absolute; padding: 2px; border-radius: 5px;  bottom: 55px; width: 90px; height: 120px; background: #f2f2f2; }
+.mod_pop a{display: block; height: 40px; line-height: 40px; text-align: center; color: #000; font-size: 14px; border-bottom: 1px solid #ccc; text-decoration: none;}
 .mod_pop a:last-child{border-bottom: 0;}
 
 .more_pop{left: 80px;}
-.services_pop{ left: 65%; height: 75px; }
+.services_pop{ left: 65%; height: 85px; }
 
 /*创业项目*/
 .project_list .list{ margin: 0 15px; font-size: 14px;}
@@ -117,7 +126,7 @@
 .project_info{position: relative; padding: 0 0 0 80px;}
 .project_info img{ position: absolute; top: 0; left: 0; width: 70px; height: 70px;}
 .project_info_cnt{white-space: normal; min-height: 70px;}
-.project_detail{height: 70px;overflow: hidden; margin-bottom: 5px; text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 4; -webkit-box-orient: vertical; font-size: 12px; line-height: 18px;}
+.project_detail{height: 52px;overflow: hidden; margin-bottom: 5px; text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 4; -webkit-box-orient: vertical; font-size: 12px; line-height: 18px;}
 .project_extra span{display:inline-block; vertical-align: middle; font-size: 12px}
     .project_financing{font-size: 14px; width: 70px; margin-right: 5px;}
     .project_financing span{font-size: 16px; font-weight: 700}

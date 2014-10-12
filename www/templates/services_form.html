@@ -1,0 +1,65 @@
+<ion-header-bar class="bar-stable bar-positive">
+    <h1 class="title">{{form_title || '发布创业活动'}}</h1>
+    <div class="buttons">
+        <button class="button button-clear" ng-click="closePage()">关闭</button>
+    </div>
+</ion-header-bar>
+<ion-content>
+    <form name="services_form" class="mod_form"  ng-submit="submitForm(services_form)">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">组织名称</span>
+                <input type="tel" name="services_organization_name" placeholder="组织名称" ng-model="data.services_organization_name" required>
+                <i class="icon ion-checkmark-circled balanced" ng-show="services_form.services_organization_name.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="services_form.services_organization_name.$invalid && services_form.user_phone.$dirty"></i>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">服务领域</span>
+                <select ng-options="m.name as m.name for m in industryData"
+                        ng-model="data.services_industry"
+                        ng-init="data.services_industry = industryData[0].name"
+                        ng-change="changeIndustry(data.services_industry)">
+                </select>
+
+            </label>
+            <label class="item item-input">
+                <span class="input-label">所在城市</span>
+                <select ng-options="m.name as m.name for m in cityData"
+                        ng-model="data.services_city"
+                        ng-init="data.services_city = cityData[0].name"
+                        ng-change="changeIndustry(data.services_city)">
+                </select>
+
+            </label>
+            <label class="item item-text-wrap">
+                <span class="input-label">可提供的服务</span>
+                <textarea rows="3" name="services_content" placeholder="可提供的服务" ng-model="data.services_content" required></textarea>
+                <i class="icon ion-checkmark-circled balanced" ng-show="services_form.services_content.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="services_form.services_content.$invalid && services_form.services_content.$dirty"></i>
+            </label>
+            <label class="item item-text-wrap">
+                <span class="input-label">代表客户</span>
+                <textarea rows="3" name="services_client" placeholder="代表客户" ng-model="data.services_client" required></textarea>
+                <i class="icon ion-checkmark-circled balanced" ng-show="services_form.services_client.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="services_form.services_client.$invalid && services_form.services_client.$dirty"></i>
+
+            </label>
+
+            <label class="item item-text-wrap">
+                <span class="input-label">组织简介</span>
+                <textarea rows="5" name="services_organization_intro" placeholder="可提供的服务" ng-model="data.services_organization_intro" required></textarea>
+                <i class="icon ion-checkmark-circled balanced" ng-show="services_form.services_organization_intro.$valid"></i>
+                <i class="icon ion-close-circled assertive" ng-show="services_form.services_organization_intro.$invalid && services_form.services_organization_intro.$dirty"></i>
+            </label>
+
+        </div>
+        <div class="padding">
+            <button class="button button-block button-positive" type="submit">{{ form_btn ||  '发布创业服务'}}</button>
+        </div>
+        <!--<div class="mod_form_error assertive"-->
+             <!--ng-show="services_form.$invalid">-->
+            <!--所有输入框 都必须填写内容！-->
+        <!--</div>-->
+    </form>
+</ion-content>
+

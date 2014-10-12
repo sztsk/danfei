@@ -3,27 +3,24 @@
         <!--筛选 S-->
         <div class="row mod_filter">
             <div class="col">
-                <select name="J_industry" id="J_industry">
-                    <option value="1">按岗位</option>
-                    <option value="1">互联网</option>
-                    <option value="1">移动端</option>
-                    <option value="1">按行业</option>
+                <select ng-options="m.name for m in jobsData"
+                        ng-model="selectedJobs"
+                        ng-init="selectedJobs = jobsData[0]"
+                        ng-change="changeJobs(selectedJobs)">
                 </select>
             </div>
             <div class="col">
-                <select name="city" id="J_city">
-                    <option value="1">按城市</option>
-                    <option value="1">北京</option>
-                    <option value="1">上海</option>
-                    <option value="1">广州</option>
+                <select ng-options="m.name for m in cityData"
+                        ng-model="selectedCity"
+                        ng-init="selectedCity = cityData[0]"
+                        ng-change="changeCity(selectedCity)">
                 </select>
             </div>
             <div class="col">
-                <select name="stage" id="J_stage">
-                    <option value="1">按工作年限</option>
-                    <option value="1">天使</option>
-                    <option value="1">A轮</option>
-                    <option value="1">B轮</option>
+                <select ng-options="m.name for m in salaryData"
+                        ng-model="selectedSalary"
+                        ng-init="selectedSalary = salaryData[0]"
+                        ng-change="changeSalary(selectedSalary)">
                 </select>
             </div>
         </div>

@@ -134,6 +134,30 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 }
             })
 
+            //我的服务 - 新增
+            .state('app.tabs.servicesadd', {
+                url: "/services_add",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/services_form.html",
+                        controller: 'ServicesAddCtrl'
+                    }
+                }
+            })
+
+
+            //我的服务 - 修改
+            .state('app.tabs.servicesedit', {
+                url: "/services_edit/:id",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/services_form.html",
+                        controller: 'ServicesEditFormCtrl'
+                    }
+                }
+            })
+
+
             //服务 - 职业机会 - 职业列表页
             .state('app.tabs.jobs', {
                 url: "/jobs",
@@ -155,6 +179,18 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                     }
                 }
             })
+
+            //服务 - 职业机会 - 简历完善
+            .state('app.tabs.jobsedit', {
+                url: "/jobs_form/:id",
+                views: {
+                    'servicesContent': {
+                        templateUrl: "templates/jobs_form.html",
+                        controller: 'JobsFormlCtrl'
+                    }
+                }
+            })
+
 
             //服务 - 职业机会 - 公司详情
             .state('app.tabs.company', {
@@ -196,6 +232,41 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                     'moreContent': {
                         templateUrl: "templates/project_detail.html",
                         controller: 'ProjectDetailCtrl'
+                    }
+                }
+            })
+            //创业项目 - 我的
+            .state('app.tabs.projectmy', {
+                url: "/project_my",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/project.html",
+                        controller: 'ProjectMyCtrl'
+                    }
+                }
+            })
+
+
+
+            //我的服务 - 新增
+            .state('app.tabs.projectadd', {
+                url: "/project_add",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/project_form.html",
+                        controller: 'ProjectAddCtrl'
+                    }
+                }
+            })
+
+
+            //我的服务 - 修改
+            .state('app.tabs.projectedit', {
+                url: "/project_edit/:id",
+                views: {
+                    'otherContent': {
+                        templateUrl: "templates/project_form.html",
+                        controller: 'ProjectEditCtrl'
                     }
                 }
             })
@@ -248,41 +319,26 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
 
             //注册
             .state('app.register_company', {
-                url : '/register_company',
+                url : '/register_company/:id',
                 templateUrl : 'templates/register_company.html',
                 controller : 'RegisterCtrl'
             })
 
+            //我的收藏
+            .state('app.tabs.favorites', {
+                url : '/favorites',
+                views: {
+                    'otherContent': {
+                        templateUrl : 'templates/favorites.html',
+                        controller : 'FavoritesCtrl'
+                    }
+                }
+
+            })
+
+
             ;
 
-
-//            .state('app.browse', {
-//                url: "/browse",
-//                views: {
-//                    'workingContent': {
-//                        templateUrl: "templates/browse.html"
-//                    }
-//                }
-//            })
-//            .state('app.playlists', {
-//                url: "/playlists",
-//                views: {
-//                    'partnerContent': {
-//                        templateUrl: "templates/playlists.html",
-//                        controller: 'PlaylistsCtrl'
-//                    }
-//                }
-//            })
-//            .state('app.single', {
-//                url: "/playlists/:playlistId",
-//                views: {
-//                    'menuContent': {
-//                        templateUrl: "templates/playlist.html",
-//                        controller: 'PlaylistCtrl'
-//                    }
-//                }
-//            });
-        // if none of the above states are matched, use this as the fallback
         // 当没有被匹配时 跳转到app/home
         $urlRouterProvider.otherwise('/app/tabs/events');
     });
