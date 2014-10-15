@@ -1,4 +1,4 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['imageupload'])
 
     .controller('AppCtrl', function ($scope, $state,$ionicModal, restApi, loginData) {
 // Create the login modal that we will use later
@@ -249,13 +249,12 @@ angular.module('app.controllers', [])
     })
 
     //活动表格 新增
-    .controller('EventsAddFormCtrl', function ($scope, restApi, $state, $ionicPopup,cityData,loginData) {
+    .controller('EventsAddFormCtrl', function ($scope,$http, restApi, $state, $ionicPopup,cityData,loginData) {
         $scope.data = {};
         $scope.events_title = "发布活动";
         $scope.events_btn = '发布活动';
         cityData.shift();
         $scope.cityData = cityData;
-        console.log($scope.userId,'123');
         //提交表单
         $scope.eventsSubmit = function(events_form){
             if (events_form.$valid) {
@@ -275,6 +274,19 @@ angular.module('app.controllers', [])
                     }
                 })
             }
+        };
+
+        $scope.single = function(image) {
+            var formData = new FormData();
+            formData.append('image', image, image.name);
+
+            $http.post('upload', formData, {
+                headers: { 'Content-Type': false },
+                transformRequest: angular.identity
+            }).success(function(result) {
+                $scope.uploadedImgSrc = result.src;
+                $scope.sizeInBytes = result.size;
+            });
         };
     })
 
