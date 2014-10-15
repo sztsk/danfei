@@ -11,8 +11,10 @@
             <div class="upload">
                 <div class="upload_hd">活动头图</div>
                 <div class="upload_bd">
+                    <img ng-src="{{image2.resized.dataURL}}" src="./img/ionic.png"/>
                     <input id="inputImage2"
                            type="file"
+                           class="upload_inp"
                            accept="image/*"
                            image="image2"
                            resize-max-height="300"
@@ -23,19 +25,6 @@
                     <img ng-show="image2" ng-src="{{image2.resized.dataURL}}"/>
                 </div>
             </div>
-
-
-
-            <h2>Single image with resizing</h2>
-            <div>
-                <label for="inputImage2">Image 2</label>
-
-
-                <p>Resized</p>
-
-                <button type="submit" ng-click="single(image2.resized)" disabled>Add</button>
-            </div>
-
 
             <label class="item item-input">
                 <span class="input-label">活动标题</span>
