@@ -11,25 +11,22 @@
             <div class="upload">
                 <div class="upload_hd">活动头图</div>
                 <div class="upload_bd">
-                    <img ng-src="{{image2.resized.dataURL}}" src="./img/ionic.png"/>
-                    <input id="inputImage2"
-                           type="file"
+                    <img ng-src="{{image.resized.dataURL}}" src="./img/upload.jpg"/>
+                    <input type="file"
                            class="upload_inp"
                            accept="image/*"
-                           image="image2"
+                           image="image"
                            resize-max-height="300"
-                           resize-max-width="250"
-                           resize-quality="0.7" />
-                </div>
-                <div class="upload_ft">
-                    <img ng-show="image2" ng-src="{{image2.resized.dataURL}}"/>
+                           resize-max-width="150"
+                           resize-quality="0.7"
+                            />
                 </div>
             </div>
 
             <label class="item item-input">
                 <span class="input-label">活动标题</span>
-                <input type="text" name="events_title" placeholder="活动简短标题" ng-model="data.events_title" requiredrequired ng-minlength="5">
-                <input type="hidden" name="events_id" value="{{data.events_id}}"/>
+                <input type="text" name="events_title" placeholder="活动简短标题" ng-model="data.events_title" requiredrequired ng-minlength="5" ng-click="upload(image.resized)">
+                <input type="hidden" name="events_id" value="{{data.events_id}}" ng-f />
             </label>
             <label class="item item-input">
                 <span class="input-label">城市</span>

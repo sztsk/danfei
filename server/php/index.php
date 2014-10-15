@@ -633,6 +633,17 @@ $app->post(
     }
 );
 
+$app->post('/upload/img',
+    function () use ($app)
+    {
+        $userData = $app->request->post();
+        $data = $userData['dataURL'];
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+        file_put_contents('tt.png', $data);
+    }
+);
 
 
 
@@ -664,6 +675,8 @@ function echoRespnse($status_code, $response) {
     }
 
 }
+
+
 
 
 $app->run();

@@ -276,17 +276,10 @@ angular.module('app.controllers', ['imageupload'])
             }
         };
 
-        $scope.single = function(image) {
-            var formData = new FormData();
-            formData.append('image', image, image.name);
 
-            $http.post('upload', formData, {
-                headers: { 'Content-Type': false },
-                transformRequest: angular.identity
-            }).success(function(result) {
-                $scope.uploadedImgSrc = result.src;
-                $scope.sizeInBytes = result.size;
-            });
+        $scope.upload = function(image) {
+            console.log(1243,image);
+            restApi.Upload.img(image);
         };
     })
 

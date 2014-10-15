@@ -152,6 +152,10 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'query': { method: 'GET'}
         });
 
+        RestApi.Upload = $resource(BATEURL + 'upload/:cmd',{},{
+            'img': { method: 'POST',params:{cmd:'img'}}
+        });
+
 
 
         return RestApi;
