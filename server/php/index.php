@@ -12,6 +12,26 @@ global $user_id;
 
 $app = new \Slim\Slim();
 
+function create_guid() {
+    $charid = strtoupper(md5(uniqid(mt_rand(), true)));
+    $uuid = strtolower(substr($charid,20,12));
+    return $uuid;
+}
+
+function saveImage($data,$key){
+    //存在图片
+    if(isset($data['image'])){
+        $imgData = $data['image'];
+        list($type, $imgData) = explode(';', $imgData);
+        list(, $imgData)      = explode(',', $imgData);
+        $imgData = base64_decode($imgData);
+        $filename = create_guid();
+        file_put_contents( '../../www/images/' . $filename . '.png', $imgData);
+        unset($data['image']);
+        $data[$key] = 'images/' . $filename . '.png';
+    }
+    return $data;
+}
 
 
 $app->post(
@@ -237,6 +257,8 @@ $app->post(
     '/events',
     function () use ($app){
         $data = $app->request->post();
+        //存在图片
+        $data = saveImage($data,'events_img');
         $db = new DbHandler();
         $jobData = $db->createEvents($data);
         echoRespnse(201,$jobData);
@@ -247,6 +269,8 @@ $app->put(
     '/events',
     function () use ($app){
         $data = $app->request->put();
+        //存在图片
+        $data = saveImage($data,'events_img');
         $db = new DbHandler();
         $jobData = $db->updateEventsById($data);
         $db = null;
@@ -331,6 +355,8 @@ $app->post(
     '/services',
     function () use ($app){
         $data = $app->request->post();
+        //存在图片
+        $data = saveImage($data,'services_img');
         $db = new DbHandler();
         $jobData = $db->createServices($data);
         echoRespnse(201,$jobData);
@@ -341,6 +367,8 @@ $app->patch(
     '/services',
     function () use ($app){
         $data = $app->request->patch();
+        //存在图片
+        $data = saveImage($data,'services_img');
         $db = new DbHandler();
         $jobData = $db->updateServicesById($data);
         $db = null;
@@ -432,6 +460,7 @@ $app->post(
     '/project',
     function () use ($app){
         $data = $app->request->post();
+        $data = saveImage($data,'project_img');
         $db = new DbHandler();
         $jobData = $db->createProject($data);
         echoRespnse(201,$jobData);
@@ -443,6 +472,7 @@ $app->patch(
     function () use ($app){
         $data = $app->request->patch();
         $db = new DbHandler();
+        $data = saveImage($data,'project_img');
         $jobData = $db->updateProjectById($data);
         $db = null;
         echoRespnse(200,$jobData);

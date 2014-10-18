@@ -337,7 +337,7 @@ class DbHandler {
      * @param $num
      */
     public function getEvents($start,$num = 30){
-        $sql = "SELECT events_id,events_title,events_detail,events_start_time FROM  `tb_events` WHERE events_state = 1 ORDER BY events_id DESC LIMIT $start , $num";
+        $sql = "SELECT events_id,events_title,events_detail,events_img,events_start_time FROM  `tb_events` WHERE events_state = 1 ORDER BY events_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -347,7 +347,7 @@ class DbHandler {
      * @param $id
      */
     public function getEventsById($id){
-        $sql = "SELECT events_id,user_name,events_title,events_user_id,events_users_num,events_city,events_start_time,events_end_time,events_guests,events_quota,events_detail,events_address FROM  `tb_events` LEFT JOIN tb_users ON tb_events.events_user_id = tb_users.user_id WHERE events_state = 1 AND events_id = $id  ORDER BY events_id DESC";
+        $sql = "SELECT events_id,user_name,events_title,events_user_id,events_users_num,events_city,events_start_time,events_end_time,events_guests,events_quota,events_detail,events_img,events_address FROM  `tb_events` LEFT JOIN tb_users ON tb_events.events_user_id = tb_users.user_id WHERE events_state = 1 AND events_id = $id  ORDER BY events_id DESC";
         $data = $this->conn->get_row($sql);
         return $data;
     }
@@ -358,7 +358,7 @@ class DbHandler {
      * @param $num
      */
     public function getEventsByUserId($userId){
-        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,
+        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,events_img,
 events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId ORDER BY events_id DESC ";
         $data = $this->conn->get_results($sql);
         if($data){
@@ -486,7 +486,7 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $num
      */
     public function getServices($where = '',$start = 0,$num = 30){
-        $sql = "SELECT services_id,services_content,services_industry,services_organization_name,services_city FROM  `tb_services` WHERE services_state = 1 $where  ORDER BY services_id DESC LIMIT $start , $num";
+        $sql = "SELECT services_id,services_content,services_img,services_industry,services_organization_name,services_city FROM  `tb_services` WHERE services_state = 1 $where  ORDER BY services_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         if($data){
             return $data;
@@ -578,7 +578,7 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $num
      */
     public function getProject($where = '',$start = 0,$num = 30){
-        $sql = "SELECT project_id,project_name,project_thum,project_push_date,project_financing,project_stage,project_intro,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 $where  ORDER BY project_id DESC LIMIT $start , $num";
+        $sql = "SELECT project_id,project_name,project_img,project_push_date,project_financing,project_stage,project_intro,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 $where  ORDER BY project_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         if($data){
             return $data;
@@ -593,7 +593,7 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $num
      */
     public function getProjectByUserId($userId,$start = 0,$num = 30){
-        $sql = "SELECT project_id,project_name,project_thum,project_date,project_financing,project_stage,project_brief,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 AND project_user_id = '$userId'  ORDER BY project_id DESC LIMIT $start , $num";
+        $sql = "SELECT project_id,project_name,project_img,project_date,project_financing,project_stage,project_brief,project_stage,project_city,project_type FROM  `tb_project` WHERE project_state = 1 AND project_user_id = '$userId'  ORDER BY project_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         if($data){
             return $data;

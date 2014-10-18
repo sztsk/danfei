@@ -16,7 +16,7 @@
             <ion-item ng-repeat="item in data" href="#/app/tabs/events/{{item.events_id}}">
                 <h2 class="positive">{{item.events_title}} </h2>
                 <div class="events_info">
-                    <img src="http://img.qian-duan-she-ji.us/140" alt="图片名称" />
+                    <img src="images/{{item.events_img}}" alt="图片名称" />
                     <div class="events_info_cnt">
                         <div><time>{{item.events_start_time}}</time></div>
                         <div class="events_detail" ng-show="item.events_detail">
@@ -33,9 +33,9 @@
                     </div>
                 </div>
             </ion-item>
-            <div class="no_data" ng-hide="data.length">
+            <div class="no_data" ng-show="nodata">
                 暂时没有相关数据！
-                <p><a class="button button-positive" href="#/app/tabs/events_add">发布活动</a></p>
+                <p ng-show="uselist"><a class="button button-positive" href="#/app/tabs/events_add">发布活动</a></p>
             </div>
         </ion-list>
 

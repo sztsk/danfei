@@ -5,8 +5,22 @@
     </div>
 </ion-header-bar>
 <ion-content>
-    <form name="services_form" class="mod_form"  ng-submit="submitForm(services_form)">
+    <form name="services_form" class="mod_form"  ng-submit="submitForm(services_form,image)">
         <div class="list">
+            <div class="upload">
+                <div class="upload_hd">组织LOGO</div>
+                <div class="upload_bd">
+                    <img ng-model="image" ng-src="{{image.resized.dataURL || editimage}}" src="./img/upload.jpg"/>
+                    <input type="file"
+                           class="upload_inp"
+                           accept="image/*"
+                           image="image"
+                           resize-max-height="300"
+                           resize-max-width="150"
+                           resize-quality="0.7"
+                            />
+                </div>
+            </div>
             <label class="item item-input">
                 <span class="input-label">组织名称</span>
                 <input type="tel" name="services_organization_name" placeholder="组织名称" ng-model="data.services_organization_name" required>

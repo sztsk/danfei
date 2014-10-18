@@ -80,7 +80,7 @@ angular.module('imageupload', [])
                 resizeMaxHeight: '@?',
                 resizeMaxWidth: '@?',
                 resizeQuality: '@?',
-                resizeType: '@?',
+                resizeType: '@?'
             },
             link: function postLink(scope, element, attrs, ctrl) {
 
@@ -89,7 +89,7 @@ angular.module('imageupload', [])
                         var dataURL = resizeImage(image, scope);
                         imageResult.resized = {
                             dataURL: dataURL,
-                            type: dataURL.match(/:(.+\/.+);/)[1],
+                            type: dataURL.match(/:(.+\/.+);/)[1]
                         };
                         callback(imageResult);
                     });

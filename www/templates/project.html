@@ -26,7 +26,7 @@
             <ion-item ng-repeat="item in data" href="#/app/tabs/project/{{item.project_id}}">
                 <h2 class="positive">{{item.project_name}}</h2>
                 <div class="project_info">
-                    <img src="http://img.qian-duan-she-ji.us/140" alt="项目LOGO" />
+                    <img src="{{item.project_img}}" alt="项目LOGO" />
                     <div class="project_info_cnt">
                         <time>{{item.project_date}}</time>
                         <div class="project_detail">
@@ -40,9 +40,9 @@
                     <span>{{item.project_type}}</span>
                 </div>
             </ion-item>
-            <div class="no_data" ng-hide="data.length">
+            <div class="no_data" ng-show="nodata">
                 暂时没有相关数据！
-                <p><a class="button button-positive" href="#/app/project_add">发布创业项目</a></p>
+                <p ng-show="uselist"><a class="button button-positive" href="#/app/project_add">发布创业项目</a></p>
             </div>
         </ion-list>
 

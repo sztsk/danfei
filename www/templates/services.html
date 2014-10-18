@@ -27,7 +27,7 @@
             <ion-item class="item mod_item" ng-repeat="item in data" href="#/app/tabs/services/{{item.services_id}}">
                 <div class="mod_item_info">
                     <div class="mod_item_col1">
-                        <img class="mod_item_img" src="http://img.qian-duan-she-ji.us/140" alt="组织LOGO 公司LOGO" />
+                        <img class="mod_item_img" src="{{item.services_img}}" alt="组织LOGO 公司LOGO" />
                         <button class="button button-small button-positive">收藏</button>
                     </div>
                     <div class="mod_item_col2">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
             </ion-item>
-            <div class="no_data" ng-hide="data.length">
+            <div class="no_data" ng-show="nodata">
                 暂时没有相关数据！
                 <p ng-show="uselist"><a class="button button-positive" href="#/app/services_add">发布创业服务</a></p>
             </div>

@@ -134,7 +134,7 @@
 /*人才展示*/
 .user_info{ position: relative;}
 .user_info img{ width: 75px; height: 75px; position: absolute; top: 15px; left: 15px;}
-.user_info_list{ margin-left: 105px; min-height: 100px; padding: 13px 0;}
+.user_info_list{ margin-left: 15px; min-height: 100px; padding: 13px 0;}
 
 /*关于我们*/
 .about_cnt{padding: 15px;}

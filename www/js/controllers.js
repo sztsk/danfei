@@ -1,12 +1,16 @@
-angular.module('app.controllers', ['imageupload'])
+angular.module('app.controllers', ['imageupload','angular-datepicker'])
 
-    .controller('AppCtrl', function ($scope, $state,$ionicModal, restApi, loginData) {
+    .controller('AppCtrl', function ($scope, $state,$ionicModal, restApi, loginData,$ionicLoading) {
 // Create the login modal that we will use later
         //http://ionicframework.com/docs/api/service/$ionicModal/
         $ionicModal.fromTemplateUrl('templates/login.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.modal = modal;
+        });
+
+        $ionicLoading.show({
+            template: 'Loading...'
         });
 
         // Triggered in the login modal to close it
@@ -70,12 +74,21 @@ angular.module('app.controllers', ['imageupload'])
         })
     })
 
-    .controller('JobsCtrl', function ($scope, restApi,salaryData,cityData,jobsData) {
-        $scope.data = restApi.Job.query();
+    .controller('JobsCtrl', function ($scope, restApi,salaryData,cityData,jobsData,$ionicLoading) {
+        function done(ajax){
+            $scope.data = ajax;
+            $ionicLoading.hide();
+            if(!ajax.length){
+                $scope.nodata = true;
+            }
+        }
+
+        restApi.Job.query(function(ajax){
+            done(ajax);
+        });
         $scope.salaryData = salaryData;
         $scope.cityData = cityData;
         $scope.jobsData = jobsData;
-
         //用于第一次赛选的默认值
         $scope.selectedCity = {id:0,name:'全部地区'};
         $scope.selectedJobs = {id:0,name:'全部岗位'};
@@ -84,29 +97,41 @@ angular.module('app.controllers', ['imageupload'])
         //筛选岗位
         $scope.changeJobs = function(jobs){
             $scope.selectedJobs = jobs;
+            $scope.nodata = false;
             $scope.data = restApi.JobsFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name}
+                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+                    done(ajax);
+                }
             );
         };
         $scope.changeCity = function(city){
             $scope.selectedCity = city;
+            $scope.nodata = false;
             $scope.data = restApi.JobsFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name}
+                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+                    done(ajax);
+                }
             );
         };
         $scope.changeSalary = function(salary){
             $scope.selectedSalary = salary;
+            $scope.nodata = false;
             $scope.data = restApi.JobsFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name}
+                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+                    done(ajax);
+                }
             );
         };
     })
 
-    .controller('JobsDetailCtrl', function ($scope,$state, $stateParams,restApi,loginData) {
+    .controller('JobsDetailCtrl', function ($scope,$state, $stateParams,restApi,loginData,$ionicLoading) {
         var userId = loginData.getUserId(),
             join = {uid:userId,jid:$stateParams.id};
         restApi.Job.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
+            $ionicLoading.hide();
+            console.log($scope.joinBtnName);
+
             //提交简历
             $scope.submitJob = function(){
                 //判断是否登录
@@ -117,6 +142,8 @@ angular.module('app.controllers', ['imageupload'])
                             $state.go('app.tabs.jobsedit')
                         }else{
                             //简历提交成功
+                            $scope.isjoin = true;
+                            $scope.joinBtnName = '已提交';
                             alert('简历提交成功！');
                         }
                     })
@@ -136,13 +163,15 @@ angular.module('app.controllers', ['imageupload'])
             //判断是否已经报名
             restApi.CheckIsJob.query(join,function(data){
                 $scope.isjoin = data.data;
-                $scope.joinBtnName = '已提交'
+                if(data.data){
+                    $scope.joinBtnName = '已提交'
+                }
             });
         }
     })
 
     //events
-    .controller('EventsCtrl', function ($scope, restApi, morePop) {
+    .controller('EventsCtrl', function ($scope,$ionicLoading, restApi, morePop) {
         var start = 0,
             num = 30,
             page = 1;
@@ -150,7 +179,12 @@ angular.module('app.controllers', ['imageupload'])
         $scope.event_title = "活动列表";
         $scope.event_type = 'alllist';
         $scope.noMoreItemsAvailable = false;
-        $scope.data = restApi.Events.query({cmd:start,id:num},function(){
+        restApi.Events.query({cmd:start,id:num},function(ajax){
+            $scope.data = ajax;
+            $ionicLoading.hide();
+            if(!ajax.length){
+                $scope.nodata = true;
+            }
             //$scope.noMoreItemsAvailable = true;
         });
         $scope.searchEvents = function(keyword){
@@ -182,8 +216,18 @@ angular.module('app.controllers', ['imageupload'])
                 //可以控制
                 $scope.control = true;
             }
+
+            if (userId && data.events_user_id != userId) {
+                //判断是否已经报名
+                restApi.CheckIsJoin.query(join,function(data){
+                    $scope.isjoin = data.data;
+                    $scope.joinBtnName = '已报名'
+                });
+                //获取报名列表
+                $scope.joinData = restApi.EventsJoin.query($stateParams);
+            }
+
         },function(){
-            $scope.hideBackButton = true;
             $state.go('app.tabs.events');
         });
 
@@ -209,16 +253,6 @@ angular.module('app.controllers', ['imageupload'])
         };
 
 
-        if(userId){
-            //判断是否已经报名
-            restApi.CheckIsJoin.query(join,function(data){
-                $scope.isjoin = data.data;
-                $scope.joinBtnName = '已报名'
-            });
-            //获取报名列表
-            $scope.joinData = restApi.EventsJoin.query($stateParams);
-        }
-        
 
         /**
          * 报名
@@ -237,12 +271,18 @@ angular.module('app.controllers', ['imageupload'])
 
     })
 
-    .controller('EventsMyCtrl', function ($scope, restApi, loginData,$ionicModal) {
+    .controller('EventsMyCtrl', function ($scope, restApi, loginData,$ionicLoading) {
         var id = loginData.getUserId();
         if (id) {
             $scope.event_title = "我的活动";
             $scope.event_type = 'userlist';
-            $scope.data = restApi.Events.userQuery({id: id});
+            restApi.Events.userQuery({id: id},function(ajax){
+                $scope.data = ajax;
+                $ionicLoading.hide();
+                if(!ajax.length){
+                    $scope.nodata = true;
+                }
+            });
         }else{
 
         }
@@ -256,10 +296,13 @@ angular.module('app.controllers', ['imageupload'])
         cityData.shift();
         $scope.cityData = cityData;
         //提交表单
-        $scope.eventsSubmit = function(events_form){
+        $scope.eventsSubmit = function(events_form,image){
+            console.log(image);
+            
             if (events_form.$valid) {
                 //userId 在外层control
                 $scope.data.events_user_id = loginData.getUserId();
+                image && ($scope.data.image = image.dataURL);
                 restApi.Events.save($scope.data, function (data) {
                     if (data && !data.error) {
                         $ionicPopup.alert({
@@ -276,30 +319,27 @@ angular.module('app.controllers', ['imageupload'])
             }
         };
 
-
-        $scope.upload = function(image) {
-            console.log(1243,image);
-            restApi.Upload.img(image);
-        };
     })
 
     //活动表格 修改
     .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData) {
         cityData.shift();
-        console.log($stateParams);
-        
         $scope.cityData = cityData;
         $scope.events_title = '修改活动';
         $scope.events_btn = '修改活动';
         restApi.Events.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
+            if(ajax.data.events_img){
+                $scope.editimage = 'images/' + ajax.data.events_img;
+            }
         });
 
         //提交表单
-        $scope.eventsSubmit = function(events_form){
+        $scope.eventsSubmit = function(events_form,image){
             if (events_form.$valid) {
                 //删除用户名 因为提交的时候不需要username
                 delete  $scope.data.user_name;
+                image && ($scope.data.image = image.dataURL);
                 restApi.Events.update($scope.data, function (data) {
                     if (data && !data.error) {
                         $ionicPopup.alert({
@@ -320,40 +360,64 @@ angular.module('app.controllers', ['imageupload'])
 
 
     //services
-    .controller('ServicesCtrl', function ($scope, restApi,industryData,cityData) {
-        $scope.data = restApi.Services.query();
+    .controller('ServicesCtrl', function ($scope, restApi,industryData,cityData,$ionicLoading) {
+
+        function done(ajax){
+            $scope.data = ajax;
+            $ionicLoading.hide();
+            if(!ajax.length){
+                $scope.nodata = true;
+            }
+        }
+
+        restApi.Services.query(function(ajax){
+            done(ajax);
+        });
         $scope.industryData = industryData;
         $scope.cityData = cityData;
         $scope.selectedCity = {id:0,name:'全部地区'};
         $scope.selectedIndustry = {id:0,name:'全部领域'};
         //筛选
         $scope.changeIndustry = function(industry){
+            $ionicLoading.show();
+            $scope.nodata = false;
             $scope.selectedIndustry = industry;
-            $scope.data = restApi.ServicesFilter.query(
-                {city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name}
+            restApi.ServicesFilter.query(
+                {city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name},function(ajax){
+                    done(ajax);
+                }
             );
         };
         $scope.changeCity = function(city){
             $scope.selectedCity = city;
-            $scope.data = restApi.ServicesFilter.query({city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name});
+            $ionicLoading.show();
+            $scope.data = restApi.ServicesFilter.query({city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name},function(ajax){
+                done(ajax);
+            });
         };
     })
 
-    .controller('ServicesMyCtrl', function ($scope, restApi,loginData) {
+    .controller('ServicesMyCtrl', function ($scope, restApi,loginData,$ionicLoading) {
         var id = loginData.getUserId() || 1;
         if (id) {
             $scope.list_title = "我的服务";
             $scope.uselist = true;
-            $scope.data = restApi.Services.userQuery({id: id});
+            restApi.Services.userQuery({id: id},function(ajax){
+                $scope.data = ajax;
+                $ionicLoading.hide();
+                if(!ajax.length){
+                    $scope.nodata = true;
+                }
+            });
         }
     })
 
 
-    .controller('ServicesDetailCtrl', function ($scope,$state, $stateParams,$ionicPopup, loginData,restApi) {
+    .controller('ServicesDetailCtrl', function ($scope,$state, $stateParams,$ionicPopup, loginData,restApi,$ionicLoading) {
         var userId = loginData.getUserId();
         restApi.Services.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
-
+            $ionicLoading.hide();
             //判断用户是否登录，且是自己创建的活动
             if (userId && ajax.data.services_user_id == userId) {
                 //可以控制
@@ -427,21 +491,24 @@ angular.module('app.controllers', ['imageupload'])
         }
     })
 
-    .controller('ServicesAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData) {
+    .controller('ServicesAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,$ionicLoading) {
         $scope.data = {};
         industryData.shift();
         cityData.shift();
         $scope.industryData = industryData;
         $scope.cityData = cityData;
+        $ionicLoading.hide();
         //发布创业服务
-        $scope.submitForm = function (signup_form) {
-            console.log($scope.data);
+        $scope.submitForm = function (signup_form,image) {
+            $ionicLoading.show();
             //表单验证
             // TODO 详细验证信息需要设置
             if (signup_form.$valid) {
                 $scope.data.services_user_id = loginData.getUserId();
+                image && ($scope.data.image = image.dataURL);
                 restApi.Services.save($scope.data, function (data) {
                     if (data && !data.error) {
+                        $ionicLoading.hide();
                         alert('创业服务发布成功！');
                         $state.go('app.tabs.servicesmy');
                     } else {
@@ -457,7 +524,7 @@ angular.module('app.controllers', ['imageupload'])
     })
 
     //活动表格 修改
-    .controller('ServicesEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData) {
+    .controller('ServicesEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData,$ionicLoading) {
         cityData.shift();
         industryData.shift();
         $scope.cityData = cityData;
@@ -466,11 +533,13 @@ angular.module('app.controllers', ['imageupload'])
         $scope.form_btn = '修改服务';
         restApi.Services.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
+            $ionicLoading.hide();
         });
 
         //提交表单
-        $scope.submitForm = function(events_form){
+        $scope.submitForm = function(events_form,image){
             if (events_form.$valid) {
+                image && ($scope.data.image = image.dataURL);
                 //删除用户名 因为提交的时候不需要username
                 restApi.Services.update($scope.data, function (data) {
                     if (data && !data.error) {
@@ -511,30 +580,47 @@ angular.module('app.controllers', ['imageupload'])
     })
 
     //创业项目
-    .controller('ProjectCtrl', function ($scope, restApi,industryData,cityData) {
-        $scope.data = restApi.Project.query();
+    .controller('ProjectCtrl', function ($scope, restApi,industryData,cityData,$ionicLoading) {
+        function done(ajax){
+            $scope.data = ajax;
+            $ionicLoading.hide();
+            if(!ajax.length){
+                $scope.nodata = true;
+            }
+        }
+        restApi.Project.query(function(ajax){
+            done(ajax);
+        });
         $scope.industryData = industryData;
         $scope.cityData = cityData;
         $scope.selectedCity = {id:0,name:'全部地区'};
         $scope.selectedIndustry = {id:0,name:'全部领域'};
         //筛选
         $scope.changeIndustry = function(industry){
+            $ionicLoading.show();
+            $scope.nodata = false;
             $scope.selectedIndustry = industry;
-            $scope.data = restApi.ProjectFilter.query(
-                {city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name}
+            restApi.ProjectFilter.query(
+                {city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name},function(ajax){
+                    done(ajax);
+                }
             );
         };
         $scope.changeCity = function(city){
+            $ionicLoading.show();
+            $scope.nodata = false;
             $scope.selectedCity = city;
-            $scope.data = restApi.ProjectFilter.query({city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name});
+            restApi.ProjectFilter.query({city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name},function(ajax){
+                done(ajax);
+            });
         };
     })
 
-    .controller('ProjectDetailCtrl', function ($scope, $state,$stateParams, $ionicPopup,loginData,restApi) {
+    .controller('ProjectDetailCtrl', function ($scope, $state,$stateParams, $ionicPopup,loginData,restApi,$ionicLoading) {
         var userId = loginData.getUserId();
         restApi.Project.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
-
+            $ionicLoading.hide();
             //判断用户是否登录，且是自己创建的活动
             if (userId && ajax.data.project_user_id == userId) {
                 //可以控制
@@ -607,17 +693,23 @@ angular.module('app.controllers', ['imageupload'])
         }
     })
 
-    .controller('ProjectMyCtrl', function ($scope, restApi,loginData) {
+    .controller('ProjectMyCtrl', function ($scope, restApi,loginData,$ionicLoading) {
         var id = loginData.getUserId();
         if (id) {
             $scope.list_title = "我的项目";
             $scope.uselist = true;
-            $scope.data = restApi.Project.userQuery({id: id});
+            restApi.Project.userQuery({id: id},function(ajax){
+                $scope.data = ajax;
+                $ionicLoading.hide();
+                if(!ajax.length){
+                    $scope.nodata = true;
+                }
+            });
         }
     })
 
     //发布创业项目
-    .controller('ProjectAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,stageData) {
+    .controller('ProjectAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,stageData,$ionicLoading) {
         $scope.data = {};
         industryData.shift();
         cityData.shift();
@@ -625,13 +717,15 @@ angular.module('app.controllers', ['imageupload'])
         $scope.industryData = industryData;
         $scope.cityData = cityData;
         $scope.stageData = stageData;
+        $ionicLoading.hide();
         //发布创业服务
-        $scope.submitForm = function (signup_form) {
+        $scope.submitForm = function (project_form,image) {
             console.log($scope.data);
             //表单验证
             // TODO 详细验证信息需要设置
-            if (signup_form.$valid) {
+            if (project_form.$valid) {
                 $scope.data.project_user_id = loginData.getUserId();
+                image && ($scope.data.image = image.dataURL);
                 restApi.Project.save($scope.data, function (data) {
                     if (data && !data.error) {
                         alert('创业项目发布成功！');
@@ -649,7 +743,7 @@ angular.module('app.controllers', ['imageupload'])
         }
     })
 
-    .controller('ProjectEditCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData,stageData) {
+    .controller('ProjectEditCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData,stageData,$ionicLoading) {
         cityData.shift();
         industryData.shift();
         stageData.shift();
@@ -660,13 +754,16 @@ angular.module('app.controllers', ['imageupload'])
         $scope.form_btn = '修改项目';
         restApi.Project.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
+            $ionicLoading.hide();
         });
 
         //提交表单
-        $scope.submitForm = function(events_form){
-            if (events_form.$valid) {
-                //删除用户名 因为提交的时候不需要username
+        $scope.submitForm = function(project_form,image){
+            if (project_form.$valid) {
+                $ionicLoading.show();
+                image && ($scope.data.image = image.dataURL);
                 restApi.Project.update($scope.data, function (data) {
+                    $ionicLoading.hide();
                     if (data && !data.error) {
                         $ionicPopup.alert({
                             title: '提示!',
@@ -689,8 +786,18 @@ angular.module('app.controllers', ['imageupload'])
     })
 
     //人才展示
-    .controller('TalentCtrl', function ($scope, restApi,salaryData,cityData,jobsData) {
-        $scope.data = restApi.Users.query();
+    .controller('TalentCtrl', function ($scope, restApi,salaryData,cityData,jobsData,$ionicLoading) {
+        function done(ajax){
+            $scope.data = ajax;
+            $ionicLoading.hide();
+            if(!ajax.length){
+                $scope.nodata = true;
+            }
+        }
+
+        restApi.Users.query(function(ajax){
+            done(ajax)
+        });
         $scope.salaryData = salaryData;
         $scope.cityData = cityData;
         $scope.jobsData = jobsData;
@@ -703,30 +810,40 @@ angular.module('app.controllers', ['imageupload'])
         //筛选岗位
         $scope.changeJobs = function(jobs){
             $scope.selectedJobs = jobs;
+            $scope.nodata = false;
             $scope.data = restApi.TalentFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name}
+                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+                    done(ajax)
+                }
             );
         };
         $scope.changeCity = function(city){
             $scope.selectedCity = city;
+            $scope.nodata = false;
             $scope.data = restApi.TalentFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name}
+                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+                    done(ajax)
+                }
             );
         };
         $scope.changeSalary = function(salary){
             $scope.selectedSalary = salary;
+            $scope.nodata = false;
             $scope.data = restApi.TalentFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name}
+                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+                    done(ajax)
+                }
             );
         };
     })
 
-    .controller('TalentDetailCtrl', function ($scope,$state,$stateParams, restApi,loginData) {
+    .controller('TalentDetailCtrl', function ($scope,$state,$stateParams,$ionicLoading, restApi,loginData) {
         var userId = loginData.getUserId(),
             userType = loginData.getUserType(),
             join = {cid:userId,uid:$stateParams.id};
         restApi.Users.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
+            $ionicLoading.hide();
             //提交简历
             $scope.submitJob = function(){
                 //判断是否登录
