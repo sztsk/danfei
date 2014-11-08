@@ -175,6 +175,17 @@ $app->patch(
     }
 );
 
+$app->patch(
+    '/jobs/zan',
+    function () use ($app){
+        $data = $app->request->patch();
+        $jobsId = $data['id'];
+        $db = new DbHandler();
+        $jobData = $db->updateJobsZanById($jobsId);
+        echoRespnse(201,$jobData);
+    }
+);
+
 $app->delete(
     '/jobs/:id',
     function ($id){
@@ -220,10 +231,10 @@ $app->get(
  * 根据地区 获取 活动列表
  */
 $app->get(
-    '/events/city/:city',
-    function ($city){
+    '/events/city/:city(/:sort)',
+    function ($city,$sort){
         $db = new DbHandler();
-        $data = $db->getEventsByCity($city);
+        $data = $db->getEventsByCity($city,$sort);
         $db = null;
         echoRespnse(200,$data);
     }
@@ -261,6 +272,17 @@ $app->post(
         $data = saveImage($data,'events_img');
         $db = new DbHandler();
         $jobData = $db->createEvents($data);
+        echoRespnse(201,$jobData);
+    }
+);
+
+$app->patch(
+    '/events/zan',
+    function () use ($app){
+        $data = $app->request->patch();
+        $eventId = $data['id'];
+        $db = new DbHandler();
+        $jobData = $db->updateEventZanById($eventId);
         echoRespnse(201,$jobData);
     }
 );
@@ -376,6 +398,17 @@ $app->patch(
     }
 );
 
+$app->patch(
+    '/services/zan',
+    function () use ($app){
+        $data = $app->request->patch();
+        $servicesId = $data['id'];
+        $db = new DbHandler();
+        $jobData = $db->updateServicesZanById($servicesId);
+        echoRespnse(201,$jobData);
+    }
+);
+
 $app->delete(
     '/services/:id',
     function ($id){
@@ -479,6 +512,19 @@ $app->patch(
     }
 );
 
+
+$app->patch(
+    '/project/zan',
+    function () use ($app){
+        $data = $app->request->patch();
+        $projectId = $data['id'];
+        $db = new DbHandler();
+        $jobData = $db->updateProjectZanById($projectId);
+        echoRespnse(201,$jobData);
+    }
+);
+
+
 $app->delete(
     '/project/:id',
     function ($id){
@@ -562,6 +608,17 @@ $app->patch(
         $jobData = $db->updateUsersById($data);
         $db = null;
         echoRespnse(200,$jobData);
+    }
+);
+
+$app->patch(
+    '/users/zan',
+    function () use ($app){
+        $data = $app->request->patch();
+        $userId = $data['id'];
+        $db = new DbHandler();
+        $jobData = $db->updateUsersZanById($userId);
+        echoRespnse(201,$jobData);
     }
 );
 
@@ -663,19 +720,84 @@ $app->post(
     }
 );
 
-$app->post('/upload/img',
-    function () use ($app)
-    {
-        $userData = $app->request->post();
-        $data = $userData['dataURL'];
-        list($type, $data) = explode(';', $data);
-        list(, $data)      = explode(',', $data);
-        $data = base64_decode($data);
-        file_put_contents('tt.png', $data);
+/********************* cv **************************/
+
+$app->get(
+    '/cv/:userId',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getCvByUserId($id);
+        $db = null;
+        echoRespnse(200,$data);
     }
 );
 
 
+$app->post(
+    '/cv',
+    function () use ($app){
+        $data = $app->request->post();
+        $data = saveImage($data,'cv_img');
+        $db = new DbHandler();
+        $jobData = $db->createCv($data);
+        echoRespnse(201,$jobData);
+    }
+);
+
+$app->patch(
+    '/cv',
+    function () use ($app){
+        $data = $app->request->patch();
+        $db = new DbHandler();
+        $data = saveImage($data,'cv_img');
+        $jobData = $db->updateCvByUserId($data);
+        $db = null;
+        echoRespnse(200,$jobData);
+    }
+);
+
+
+$app->patch(
+    '/cv/zan',
+    function () use ($app){
+        $data = $app->request->patch();
+        $cvId = $data['id'];
+        $db = new DbHandler();
+        $jobData = $db->updateCvZanById($cvId);
+        echoRespnse(201,$jobData);
+    }
+);
+
+$app->delete(
+    '/cv/:userId',
+    function ($id){
+        $db = new DbHandler();
+        $result = $db->delCvByUserId($id);
+        if ($result) {
+            // task deleted successfully
+            $response["error"] = false;
+            $response["message"] = "Task deleted succesfully";
+        } else {
+            // task failed to delete
+            $response["error"] = true;
+            $response["message"] = "Task failed to delete. Please try again!";
+        }
+        echoRespnse(200, $response);
+    }
+);
+
+
+//收藏
+$app->post(
+    '/collect',
+    function () use ($app){
+        $data = $app->request->post();
+        //存在图片
+        $db = new DbHandler();
+        $jobData = $db->createCollect($data);
+        echoRespnse(201,$jobData);
+    }
+);
 
 /**
  * Echoing json response to client

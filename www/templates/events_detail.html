@@ -1,24 +1,41 @@
 <ion-view title="{{data.events_title}}" class="mod_detail">
     <ion-content class="has-header">
-        <section class="mod_detail_hd">
-            <h1>{{data.events_title}}</h1>
-            <div class="row">
-                <div class="col">
-                    活动发起人：<span>{{data.user_name}}</span>
-                </div>
-                <div class="col">已报名人数：{{data.events_users_num}}人</div>
-            </div>
-            <div class="row">
-                <div class="col">名额：{{data.events_quota}}人</div>
-                <div class="col">城市：{{data.events_city}}</div>
-            </div>
-            <div class="row">
-                <div class="col">活动时间：{{data.events_start_time}}</div>
-            </div>
-            <div class="row">
-                <div class="col">报名截止：{{data.events_end_time}}</div>
-            </div>
-        </section>
+
+        <div class="mod_detail_img">
+            <img ng-src="images/{{data.events_img}}" alt="" />
+        </div>
+        <div class="events_info2">
+            <h3>{{data.events_title}}</h3>
+            <div><i class="icon ion-clock"></i> <time>{{data.events_start_time}}</time></div>
+            <div><i class="icon ion-location"></i> <span>{{data.events_city}}</span></div>
+        </div>
+
+        <!--<section class="mod_detail_hd">-->
+            <!--<h1>{{data.events_title}}</h1>-->
+            <!--<div class="row">-->
+                <!--<div class="col">-->
+                    <!--活动发起人：<span>{{data.user_name}}</span>-->
+                <!--</div>-->
+                <!--<div class="col">已报名人数：{{data.events_users_num}}人</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+                <!--<div class="col">名额：{{data.events_quota}}人</div>-->
+                <!--<div class="col">城市：{{data.events_city}}</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+                <!--<div class="col">活动开始时间：{{data.events_start_time}}</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+                <!--<div class="col">活动结束时间：{{data.events_end_time}}</div>-->
+            <!--</div>-->
+        <!--</section>-->
+
+        <div class="mod_detail_action">
+            <button ng-disabled="isjoin" class="button button-full button-positive" ng-hide="control" ng-click="joinEvents()">
+                {{joinBtnName || '我要报名'}}
+            </button>
+        </div>
+
         <section class="mod_detail_bd">
             <div class="mod_detail_part">
                 <h1 class="positive">分享嘉宾</h1>
@@ -42,25 +59,23 @@
 
 
         <!--报名人数-->
-        <div class="mod_user_list" ng-show="joinData.length">
-            <div class="mod_user_list_hd positive">
-                已报名人员
-            </div>
-            <div class="mod_user_list_bd">
-                <ul class="list">
-                    <li class="item" ng-repeat="item in joinData">
-                        {{item.user_name}}
-                        <span class="item-note">{{item.user_phone}}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <!--<div class="mod_user_list" ng-show="joinData.length">-->
+            <!--<div class="mod_user_list_hd positive">-->
+                <!--已报名人员-->
+            <!--</div>-->
+            <!--<div class="mod_user_list_bd">-->
+                <!--<ul class="list">-->
+                    <!--<li class="item" ng-repeat="item in joinData">-->
+                        <!--{{item.user_name}}-->
+                        <!--<span class="item-note">{{item.user_phone}}</span>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="mod_detail_action">
 
-            <button ng-disabled="isjoin" class="button button-full button-positive" ng-hide="control" ng-click="joinEvents()">
-                {{joinBtnName || '我要报名'}}
-            </button>
+
 
             <a href="#/app/tabs/events_edit/{{data.events_id}}" class="button button-full button-positive" ng-show="control">
                 修改活动
@@ -71,16 +86,18 @@
 
             <div class="row mod_share">
                 <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-heart-outline"></i><span>{{data.events_zan}}</span> 已赞</a>
+                    <a href="javascript:;"  ng-class="{selected: zan}" ng-disabled="zan" ng-click="zanEvt()"><i ng-disabled="zan" class="ion-ios7-heart-outline"></i>{{data.events_zan}} 赞</a>
                 </div>
                 <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-redo-outline"></i>分享</a>
+                    <a href="javascript:;" ng-click="showShareEvt()"><i class="ion-ios7-redo-outline"></i>分享</a>
                 </div>
                 <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-star-outline"></i>收藏</a>
+                    <a href="javascript:;"  ng-class="{selected: collect}" ng-disabled="collect" ng-click="collectEvt(data.events_user_id)"><i  ng-disabled="collect"  class="ion-ios7-star-outline"></i>{{collect || '收藏'}}</a>
                 </div>
             </div>
+
         </div>
 
+        <div class="mod_share_pop" ng-class="{show: share}" ng-click="hideShareEvt()"></div>
     </ion-content>
 </ion-view>

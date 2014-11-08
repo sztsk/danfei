@@ -229,6 +229,18 @@ class DbHandler {
         return $result > 0;
     }
 
+    /**
+     * 更新赞
+     * @param $data
+     * @return null
+     */
+    public function updateUsersZanById($userId){
+        $sql = "update tb_users set user_zan = user_zan + 1 where user_id = $userId";
+        $this->conn->query($sql);
+        $data = $this->getUsersById($userId);
+        return $data;
+    }
+
 
     /* ------------- `tb_jobs` table method ------------------ */
     /**
@@ -330,6 +342,19 @@ class DbHandler {
         return $result;
     }
 
+    /**
+     * 更新赞
+     * @param $data
+     * @return null
+     */
+    public function updateJobsZanById($jobsId){
+        $sql = "update tb_jobs set jobs_zan = jobs_zan + 1 where jobs_id = $jobsId";
+        $this->conn->query($sql);
+        $data = $this->getJobById($jobsId);
+        return $data;
+    }
+
+
     /* ------------- `tb_events` table method ------------------ */
     /**
      * 获取活动列表
@@ -337,7 +362,7 @@ class DbHandler {
      * @param $num
      */
     public function getEvents($start,$num = 30){
-        $sql = "SELECT events_id,events_title,events_detail,events_img,events_start_time FROM  `tb_events` WHERE events_state = 1 ORDER BY events_id DESC LIMIT $start , $num";
+        $sql = "SELECT events_id,events_title,events_city,events_img,events_start_time FROM  `tb_events` WHERE events_state = 1 ORDER BY events_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         return $data;
     }
@@ -347,7 +372,7 @@ class DbHandler {
      * @param $id
      */
     public function getEventsById($id){
-        $sql = "SELECT events_id,user_name,events_title,events_user_id,events_users_num,events_city,events_start_time,events_end_time,events_guests,events_quota,events_detail,events_img,events_address FROM  `tb_events` LEFT JOIN tb_users ON tb_events.events_user_id = tb_users.user_id WHERE events_state = 1 AND events_id = $id  ORDER BY events_id DESC";
+        $sql = "SELECT events_id,user_name,events_title,events_user_id,events_users_num,events_city,events_start_time,events_end_time,events_guests,events_quota,events_detail,events_img,events_address,events_zan FROM  `tb_events` LEFT JOIN tb_users ON tb_events.events_user_id = tb_users.user_id WHERE events_state = 1 AND events_id = $id  ORDER BY events_id DESC";
         $data = $this->conn->get_row($sql);
         return $data;
     }
@@ -367,6 +392,24 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
             return array();
         }
     }
+
+    /**
+     * 获取活动列表
+     * @param $start
+     * @param $num
+     */
+    public function getEventsByCity($city,$sort = 'events_id'){
+        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,events_img,
+events_city FROM  `tb_events` WHERE events_state = 1 AND events_city = '$city' ORDER BY $sort DESC ";
+        $data = $this->conn->get_results($sql);
+        if($data){
+            return $data;
+        }else{
+            return array();
+        }
+    }
+
+
 
     /**
      * 根据地区 获取活动列表
@@ -412,6 +455,18 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
         $where = '`events_id` =' . $data['events_id'];
         $sql = $this->buildSqlUpdate("tb_events",$data,$where);
         $this->conn->query($sql);
+        return $data;
+    }
+
+    /**
+     * 更新赞
+     * @param $data
+     * @return null
+     */
+    public function updateEventZanById($eventId){
+        $sql = "update tb_events set events_zan = events_zan + 1 where events_id = $eventId";
+        $this->conn->query($sql);
+        $data = $this->getEventsById($eventId);
         return $data;
     }
 
@@ -570,6 +625,18 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
         }
     }
 
+    /**
+     * 更新赞
+     * @param $data
+     * @return null
+     */
+    public function updateServicesZanById($servicesId){
+        $sql = "update tb_services set services_zan = services_zan + 1 where services_id = $servicesId";
+        $this->conn->query($sql);
+        $data = $this->getServicesById($servicesId);
+        return $data;
+    }
+
 
     /* ------------- `tb_project` table method ------------------ */
     /**
@@ -661,6 +728,123 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
         $result = $this->conn->query($sql);
         return $result;
     }
+
+    /**
+     * 更新赞
+     * @param $data
+     * @return null
+     */
+    public function updateProjectZanById($projectId){
+        $sql = "update tb_project set project_zan = project_zan + 1 where project_id = $projectId";
+        $this->conn->query($sql);
+        $data = $this->getProjectById($projectId);
+        return $data;
+    }
+
+
+    /* ------------- `tb_cv` table method ------------------ */
+
+
+    /**
+     * 获取我的简历
+     * @param $id
+     */
+    public function getCvByUserId($id){
+        $sql = "SELECT * FROM  `tb_cv` WHERE cv_user_id = $id";
+        $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+    /**
+     * 创建活动
+     * @param $data
+     * @return null
+     */
+    public function createCv($data){
+        $sql = $this->buildSqlInsert("tb_cv",$data);
+        $this->conn->query($sql);
+        $id = $this->conn->insert_id;
+        if($id){
+            $data['cv_id'] = $id;
+            return $data;
+        } else{
+            return null;
+        }
+    }
+
+    /**
+     * 更新创业服务信息
+     * @param $data
+     * @return null
+     */
+    public function updateCvByUserId($data){
+        if(!isset($data['cv_user_id'])){
+            return null;
+        }
+        $where = '`cv_user_id` =' . $data['cv_user_id'];
+        $sql = $this->buildSqlUpdate("tb_cv",$data,$where);
+        $result = $this->conn->query($sql);
+
+        if($result){
+            return $data;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 删除创业项目
+     * @param $id
+     * @return mixed
+     */
+    public function delCvByUserId($id){
+        $sql = "UPDATE  tb_cv SET cv_state = 0 WHERE project_id = $id";
+        $result = $this->conn->query($sql);
+        return $result;
+    }
+
+    /**
+     * 更新赞
+     * @param $data
+     * @return null
+     */
+    public function updatCvZanById($userId){
+        $sql = "update tb_cv set cv_zan = cv_zan + 1 where cv_id = $userId";
+        $this->conn->query($sql);
+        $data = $this->getCvByUserId($userId);
+        return $data;
+    }
+
+    /**
+     * 新增
+     * @param $id
+     * @return mixed
+     */
+    public function createCollect($data){
+        //判断是否已经收藏过
+        $favorites_user_id = $data['favorites_user_id'];
+        $favorites_type = $data['favorites_type'];
+        $favorites_type_id = $data['favorites_type_id'];
+
+        $check = "SELECT favorites_id FROM  `tb_favorites_user` WHERE `favorites_user_id` = $favorites_user_id AND  `favorites_type` = $favorites_type  AND  `favorites_type_id` = $favorites_type_id";
+        $favorites_id = $this->conn->get_var($check);
+        if($favorites_id){
+            $data['favorites_id'] = $favorites_id;
+            return $data;
+        }else{
+            $sql = $this->buildSqlInsert("tb_favorites_user",$data);
+            $this->conn->query($sql);
+            $id = $this->conn->insert_id;
+            if($id){
+                $data['favorites_id'] = $id;
+                return $data;
+            } else{
+                return null;
+            }
+        }
+
+    }
+
 
 
 

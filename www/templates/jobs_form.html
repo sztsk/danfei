@@ -47,17 +47,7 @@
                 提交简历
             </button>
             <!--<a class="detail_fund" href="##">我要投资</a>-->
-            <div class="row mod_share">
-                <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-heart-outline"></i><span>{{data.jobs_zan}} </span>已赞</a>
-                </div>
-                <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-redo-outline"></i>分享</a>
-                </div>
-                <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-star-outline"></i>收藏</a>
-                </div>
-            </div>
+            <div ng-include src="mod_share.html"></div>
         </div>
     </ion-content>
 </ion-view>

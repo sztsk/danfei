@@ -1,6 +1,6 @@
 angular.module('app.controllers', ['imageupload','angular-datepicker'])
 
-    .controller('AppCtrl', function ($scope, $state,$ionicModal, restApi, loginData,$ionicLoading) {
+    .controller('AppCtrl', function ($scope, $state,$stateParams,$ionicModal, restApi, loginData,$ionicLoading) {
 // Create the login modal that we will use later
         //http://ionicframework.com/docs/api/service/$ionicModal/
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -33,6 +33,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
             if(userId){
                 $state.go(url)
             }else{
+                $ionicLoading.hide();
                 $scope.modal.show();
             }
         };
@@ -52,20 +53,17 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
             });
         };
 
+        $scope.goReg = function(){
+            $state.go('app.register_user');
+            $scope.modal.hide();
+        };
+
+        //全局分享组件
+
+
     })
 
 
-
-    .controller('LoginCtrl', function ($scope) {
-        $scope.playlists = [
-            {title: 'Reggae', id: 1},
-            {title: 'Chill', id: 2},
-            {title: 'Dubstep', id: 3},
-            {title: 'Indie', id: 4},
-            {title: 'Rap', id: 5},
-            {title: 'Cowbell', id: 6}
-        ];
-    })
 
     .controller('DetailCtrl', function ($scope, $stateParams,workServer) {
         workServer.getWorkById($stateParams.id).then(function (data) {
@@ -125,17 +123,16 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
     })
 
     .controller('JobsDetailCtrl', function ($scope,$state, $stateParams,restApi,loginData,$ionicLoading) {
-        var userId = loginData.getUserId(),
-            join = {uid:userId,jid:$stateParams.id};
+        $scope.userId = loginData.getUserId();
+        var join = {uid:$scope.userId,jid:$stateParams.id};
         restApi.Job.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
             $ionicLoading.hide();
-            console.log($scope.joinBtnName);
 
             //提交简历
             $scope.submitJob = function(){
                 //判断是否登录
-                if(userId){
+                if($scope.userId){
                     restApi.JoinJobs.save(join,function(data){
                         if(data.error){
                             alert(data.error);
@@ -159,7 +156,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
             $state.go('app.tabs.jobs');
         });
 
-        if(userId){
+        if($scope.userId){
             //判断是否已经报名
             restApi.CheckIsJob.query(join,function(data){
                 $scope.isjoin = data.data;
@@ -168,16 +165,55 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
                 }
             });
         }
+
+        //收藏
+        $scope.collectEvt = function(jobsId){
+
+            if($scope.userId){
+                var collectData = {
+                    favorites_user_id : $scope.userId,
+                    favorites_publish_user_id : jobsId,
+                    favorites_type : 2,
+                    favorites_type_id : $stateParams.id
+                };
+                restApi.Collect.save(collectData,function(data){
+                    if(data && data.favorites_id){
+                        $scope.collect = '已收藏';
+                    }
+                })
+            }else{
+                $scope.modal.show();
+            }
+        };
+        //赞
+        $scope.zanEvt = function(){
+            restApi.Job.zan($stateParams, function (ajax) {
+                $scope.data = ajax.data;
+                $scope.zan = true;
+            })
+        };
+
     })
 
     //events
-    .controller('EventsCtrl', function ($scope,$ionicLoading, restApi, morePop) {
+    .controller('EventsCtrl', function ($scope,$ionicLoading, restApi, morePop,cityData,eStatusData) {
         var start = 0,
             num = 30,
             page = 1;
+
+        function done(ajax){
+            $scope.data = ajax;
+            $ionicLoading.hide();
+            if(!ajax.length){
+                $scope.nodata = true;
+            }
+        }
+
         morePop.pop.value = false;
         $scope.event_title = "活动列表";
         $scope.event_type = 'alllist';
+        $scope.cityData = cityData;
+        $scope.eStatusData = eStatusData;
         $scope.noMoreItemsAvailable = false;
         restApi.Events.query({cmd:start,id:num},function(ajax){
             $scope.data = ajax;
@@ -188,9 +224,25 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
             //$scope.noMoreItemsAvailable = true;
         });
         $scope.searchEvents = function(keyword){
-            $scope.data = restApi.Events.searchQuery({id:keyword})
-
+            $scope.nodata = false;
+            restApi.Events.searchQuery({id:keyword},function(ajax){
+                done(ajax);
+            })
         };
+
+
+        $scope.changeCity = function(city){
+            $scope.selectedCity = city;
+            $scope.nodata = false;
+            restApi.EventsFilter.query({city:$scope.selectedCity.name,sort:'events_id'},function(ajax){
+                done(ajax);
+            });
+        };
+
+        //$scope.hotData = [{
+        //    key : ''
+        //}]
+
         ////翻页
         //$scope.loadMore = function(){
         //    page++;
@@ -203,7 +255,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
 
     })
 
-    .controller('EventsDetailCtrl', function ($scope,$state, $location,$stateParams,$ionicPopup,restApi, morePop, loginData) {
+    .controller('EventsDetailCtrl', function ($scope,$state, $location,$stateParams,$ionicPopup,restApi, morePop, loginData,$ionicLoading) {
         var userId = loginData.getUserId(),
             join = {uid:userId,eid:$stateParams.id};
         morePop.pop.value = false;
@@ -211,6 +263,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         restApi.Events.getOne($stateParams, function (data) {
             data = data.data;
             $scope.data = data;
+            $ionicLoading.hide();
             //判断用户是否登录，且是自己创建的活动
             if (userId && data.events_user_id == userId) {
                 //可以控制
@@ -224,7 +277,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
                     $scope.joinBtnName = '已报名'
                 });
                 //获取报名列表
-                $scope.joinData = restApi.EventsJoin.query($stateParams);
+                //$scope.joinData = restApi.EventsJoin.query($stateParams);
             }
 
         },function(){
@@ -267,13 +320,51 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
             }else{
                 $scope.modal.show();
             }
-        }
+        };
+
+        //收藏
+        $scope.collectEvt = function(eventsUid){
+
+            if(userId){
+                var collectData = {
+                    favorites_user_id : userId,
+                    favorites_publish_user_id : eventsUid,
+                    favorites_type : 1,
+                    favorites_type_id : $stateParams.id
+                };
+                restApi.Collect.save(collectData,function(data){
+                    console.log(data);
+                    
+                    if(data && data.favorites_id){
+                        $scope.collect = '已收藏';
+                    }
+                })
+            }else{
+                $scope.modal.show();
+            }
+        };
+        //赞
+        $scope.zanEvt = function(){
+            restApi.Events.zan($stateParams, function (ajax) {
+                $scope.data = ajax.data;
+                $scope.zan = true;
+            })
+        };
+        //分享
+        //$scope.hideShareEvt = function(){
+        //    $scope.share = false;
+        //};
+        //
+        //$scope.showShareEvt = function(){
+        //    $scope.share = true;
+        //}
 
     })
 
     .controller('EventsMyCtrl', function ($scope, restApi, loginData,$ionicLoading) {
         var id = loginData.getUserId();
         if (id) {
+            $scope.uselist = true;
             $scope.event_title = "我的活动";
             $scope.event_type = 'userlist';
             restApi.Events.userQuery({id: id},function(ajax){
@@ -289,12 +380,13 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
     })
 
     //活动表格 新增
-    .controller('EventsAddFormCtrl', function ($scope,$http, restApi, $state, $ionicPopup,cityData,loginData) {
+    .controller('EventsAddFormCtrl', function ($scope,$http, restApi, $state, $ionicPopup,cityData,loginData,$ionicLoading) {
         $scope.data = {};
         $scope.events_title = "发布活动";
         $scope.events_btn = '发布活动';
         cityData.shift();
         $scope.cityData = cityData;
+        $ionicLoading.hide();
         //提交表单
         $scope.eventsSubmit = function(events_form,image){
             console.log(image);
@@ -322,15 +414,16 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
     })
 
     //活动表格 修改
-    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData) {
+    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,$ionicLoading) {
         cityData.shift();
         $scope.cityData = cityData;
         $scope.events_title = '修改活动';
         $scope.events_btn = '修改活动';
         restApi.Events.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
+            $ionicLoading.hide();
             if(ajax.data.events_img){
-                $scope.editimage = 'images/' + ajax.data.events_img;
+                $scope.editimage = ajax.data.events_img;
             }
         });
 
@@ -391,7 +484,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         $scope.changeCity = function(city){
             $scope.selectedCity = city;
             $ionicLoading.show();
-            $scope.data = restApi.ServicesFilter.query({city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name},function(ajax){
+            restApi.ServicesFilter.query({city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name},function(ajax){
                 done(ajax);
             });
         };
@@ -414,12 +507,12 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
 
 
     .controller('ServicesDetailCtrl', function ($scope,$state, $stateParams,$ionicPopup, loginData,restApi,$ionicLoading) {
-        var userId = loginData.getUserId();
+        $scope.userId = loginData.getUserId();
         restApi.Services.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
             $ionicLoading.hide();
             //判断用户是否登录，且是自己创建的活动
-            if (userId && ajax.data.services_user_id == userId) {
+            if ($scope.userId && ajax.data.services_user_id == $scope.userId) {
                 //可以控制
                 $scope.control = true;
             }
@@ -433,7 +526,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         //提交项目
         $scope.submitProject = function(){
             var sid = $stateParams.id;
-            if(userId){
+            if($scope.userId){
                 //弹出浮层
                 var myPopup = $ionicPopup.show({
                     templateUrl: "templates/inc.project_list.html",
@@ -488,7 +581,36 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
                         }
                     }]
             });
-        }
+        };
+
+
+        //收藏
+        $scope.collectEvt = function(servicesUid){
+
+            if($scope.userId){
+                var collectData = {
+                    favorites_user_id : $scope.userId,
+                    favorites_publish_user_id : servicesUid,
+                    favorites_type : 2,
+                    favorites_type_id : $stateParams.id
+                };
+                restApi.Collect.save(collectData,function(data){
+                    if(data && data.favorites_id){
+                        $scope.collect = '已收藏';
+                    }
+                })
+            }else{
+                $scope.modal.show();
+            }
+        };
+        //赞
+        $scope.zanEvt = function(){
+            restApi.Services.zan($stateParams, function (ajax) {
+                $scope.data = ajax.data;
+                $scope.zan = true;
+            })
+        };
+
     })
 
     .controller('ServicesAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,$ionicLoading) {
@@ -534,6 +656,9 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         restApi.Services.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
             $ionicLoading.hide();
+            if(ajax.data.services_img){
+                $scope.editimage = ajax.data.services_img;
+            }
         });
 
         //提交表单
@@ -570,6 +695,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         $scope.change = function(item) {
             console.log("Selected Serverside, text:", item.text, "value:", item.value);
         };
+
     })
 
 
@@ -617,12 +743,12 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
     })
 
     .controller('ProjectDetailCtrl', function ($scope, $state,$stateParams, $ionicPopup,loginData,restApi,$ionicLoading) {
-        var userId = loginData.getUserId();
+        $scope.userId = loginData.getUserId();
         restApi.Project.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
             $ionicLoading.hide();
             //判断用户是否登录，且是自己创建的活动
-            if (userId && ajax.data.project_user_id == userId) {
+            if ($scope.userId && ajax.data.project_user_id == $scope.userId) {
                 //可以控制
                 $scope.control = true;
             }
@@ -636,7 +762,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         //提交项目
         $scope.submitProject = function(){
             var sid = $stateParams.id;
-            if(userId){
+            if($scope.userId){
                 //弹出浮层
                 var myPopup = $ionicPopup.show({
                     templateUrl: "templates/inc.project_list.html",
@@ -691,6 +817,33 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
                     }]
             });
         }
+
+        //收藏
+        $scope.collectEvt = function(jobsId){
+
+            if($scope.userId){
+                var collectData = {
+                    favorites_user_id : $scope.userId,
+                    favorites_publish_user_id : jobsId,
+                    favorites_type : 5,
+                    favorites_type_id : $stateParams.id
+                };
+                restApi.Collect.save(collectData,function(data){
+                    if(data && data.favorites_id){
+                        $scope.collect = '已收藏';
+                    }
+                })
+            }else{
+                $scope.modal.show();
+            }
+        };
+        //赞
+        $scope.zanEvt = function(){
+            restApi.Project.zan($stateParams, function (ajax) {
+                $scope.data = ajax.data;
+                $scope.zan = true;
+            })
+        };
     })
 
     .controller('ProjectMyCtrl', function ($scope, restApi,loginData,$ionicLoading) {
@@ -755,6 +908,9 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         restApi.Project.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
             $ionicLoading.hide();
+            if(ajax.data.project_img){
+                $scope.editimage = ajax.data.project_img;
+            }
         });
 
         //提交表单
@@ -838,16 +994,16 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
     })
 
     .controller('TalentDetailCtrl', function ($scope,$state,$stateParams,$ionicLoading, restApi,loginData) {
-        var userId = loginData.getUserId(),
-            userType = loginData.getUserType(),
-            join = {cid:userId,uid:$stateParams.id};
+        $scope.userId = loginData.getUserId();
+        var userType = loginData.getUserType(),
+            join = {cid:$scope.userId,uid:$stateParams.id};
         restApi.Users.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
             $ionicLoading.hide();
             //提交简历
             $scope.submitJob = function(){
                 //判断是否登录
-                if(userId){
+                if($scope.userId){
                     if(userType == 2){
                         restApi.JoinCompany.save(join);
                         $scope.isjoin = true;
@@ -870,7 +1026,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
             $state.go('app.tabs.jobs');
         });
 
-        if(userId){
+        if($scope.userId){
             //判断是否已经报名
             restApi.CheckIsCompany.query(join,function(data){
                 $scope.isjoin = data.data;
@@ -879,6 +1035,34 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
                 }
             });
         }
+
+        //
+        //收藏
+        $scope.collectEvt = function(jobsId){
+
+            if($scope.userId){
+                var collectData = {
+                    favorites_user_id : $scope.userId,
+                    favorites_publish_user_id : jobsId,
+                    favorites_type : 4,
+                    favorites_type_id : $stateParams.id
+                };
+                restApi.Collect.save(collectData,function(data){
+                    if(data && data.favorites_id){
+                        $scope.collect = '已收藏';
+                    }
+                })
+            }else{
+                $scope.modal.show();
+            }
+        };
+        //赞
+        $scope.zanEvt = function(){
+            restApi.Cv.zan($stateParams, function (ajax) {
+                $scope.data = ajax.data;
+                $scope.zan = true;
+            })
+        };
 
 
     })
@@ -925,9 +1109,16 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         //$scope.isShowPop = morePop.isShowPop;
         $scope.pop = morePop.pop;
         //设置二级菜单位置信息
-        var tabWidth = $window.innerWidth/4;
-        $scope.sLeft = tabWidth * 2 + (tabWidth/2 - 50) + 'px';
-        $scope.mLeft = tabWidth * 3 + (tabWidth/2 - 50) + 'px';
+        var pageWidth = $window.innerWidth,
+            tabWidth = $window.innerWidth/ 3,
+            marginLeft = 0;
+        if($window.innerWidth >= 450){
+            pageWidth = 450;
+            tabWidth = 150;
+            marginLeft = ($window.innerWidth - 450) /2;
+        }
+        $scope.sLeft = (tabWidth/2 - 50) + marginLeft + 'px';
+        $scope.mLeft = tabWidth * 2 + (tabWidth/2 - 50) + marginLeft + 'px';
 
         
 
@@ -951,10 +1142,11 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         }
     })
 
-    .controller('RegisterCtrl', function ($scope, $location, $state, restApi, loginData,cityData) {
+    .controller('RegisterCtrl', function ($scope, $location, $state, restApi, loginData,cityData,$ionicLoading) {
         $scope.data = {};
         cityData.shift();
         $scope.cityData = cityData;
+        $ionicLoading.hide();
         //注册用户
         $scope.registerUser = function (signup_form) {
             console.log($scope.data);
@@ -1002,4 +1194,116 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         $scope.closeReg = function () {
             $state.go('app.tabs.events');
         }
+    })
+
+    .controller('CvFormCtrl', function ($scope, $state, restApi, loginData,cityData,jobsData,eduData,salaryData,sexData,experienceData,$ionicLoading) {
+        var userId = loginData.getUserId();
+        $scope.event_title = "我的简历";
+        $scope.data = {};
+        cityData.shift();
+        $scope.cityData = cityData;
+        $scope.jobsData = jobsData;
+        $scope.eduData = eduData;
+        $scope.salaryData = salaryData;
+        $scope.sexData = sexData;
+        $scope.experienceData = experienceData;
+
+        restApi.Cv.getOne({id:userId},function(ajax){
+            if(ajax.data){
+                $scope.data = ajax.data;
+                $scope.edit = true;
+            }
+            $ionicLoading.hide();
+        });
+
+        $scope.submitForm = function (cv_form,image) {
+            console.log($scope.data);
+            //表单验证
+            // TODO 详细验证信息需要设置
+            if (cv_form.$valid) {
+                $scope.data.cv_user_id = userId;
+                image && ($scope.data.image = image.dataURL);
+                if($scope.edit){
+                    restApi.Cv.update($scope.data, function (data) {
+                        if (data && !data.error) {
+                            $state.go('app.tabs.cv2');
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                }else{
+                    restApi.Cv.save($scope.data, function (data) {
+                        if (data && !data.error) {
+                            $state.go('app.tabs.cv2');
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                }
+
+            }
+        };
+
+        //关闭页面
+        $scope.closePop = function () {
+            $state.go('app.tabs.events');
+        }
+    })
+
+    .controller('Cv2FormCtrl', function ($scope, $state, restApi, loginData,cityData,jobsData,eduData,salaryData,sexData,experienceData,$ionicLoading) {
+        var userId = loginData.getUserId();
+        $scope.data = {};
+        cityData.shift();
+        $scope.cityData = cityData;
+        $scope.jobsData = jobsData;
+        $scope.eduData = eduData;
+        $scope.salaryData = salaryData;
+        $scope.sexData = sexData;
+        $scope.experienceData = experienceData;
+
+        restApi.Cv.getOne({id:userId},function(ajax){
+            if(ajax.data){
+                $scope.data = ajax.data;
+                $scope.edit = true;
+            }
+            $ionicLoading.hide();
+        });
+
+        $scope.submitForm = function (cv_form,image) {
+            console.log($scope.data);
+            //表单验证
+            // TODO 详细验证信息需要设置
+            if (cv_form.$valid) {
+                $scope.data.cv_user_id = userId;
+                image && ($scope.data.image = image.dataURL);
+                if($scope.edit){
+                    restApi.Cv.update($scope.data, function (data) {
+                        if (data && !data.error) {
+                            $state.go('app.tabs.cv2');
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                }else{
+                    restApi.Cv.save($scope.data, function (data) {
+                        if (data && !data.error) {
+                            $state.go('app.tabs.cv2');
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                }
+
+            }
+        };
+
+        //关闭页面
+        $scope.closePop = function () {
+            $state.go('app.tabs.events');
+        }
+    })
+
+
+    .controller('shareCtrl',function(){
+
     });

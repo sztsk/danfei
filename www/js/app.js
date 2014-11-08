@@ -52,7 +52,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
             .state('app.tabs.events', {
                 url: "/events",
                 views: {
-                    'eventsContent': {
+                    'servicesContent': {
                         templateUrl: "templates/events.html",
                         controller: 'EventsCtrl'
                     }
@@ -62,7 +62,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
             .state('app.tabs.edetail', {
                 url: "/events/:id",
                 views: {
-                    'eventsContent': {
+                    'servicesContent': {
                         templateUrl: "templates/events_detail.html",
                         controller: 'EventsDetailCtrl'
                     }
@@ -333,7 +333,28 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                         controller : 'FavoritesCtrl'
                     }
                 }
+            })
 
+            //我的简历 - 编辑
+            .state('app.tabs.cv', {
+                url : '/cv',
+                views: {
+                    'otherContent': {
+                        templateUrl : 'templates/cv.html',
+                        controller : 'CvFormCtrl'
+                    }
+                }
+            })
+
+            //我的简历 - 编辑
+            .state('app.tabs.cv2', {
+                url : '/cv2',
+                views: {
+                    'otherContent': {
+                        templateUrl : 'templates/cv2.html',
+                        controller : 'Cv2FormCtrl'
+                    }
+                }
             })
 
 

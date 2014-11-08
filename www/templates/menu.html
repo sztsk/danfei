@@ -36,19 +36,20 @@
                 <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 1" href="#/app/register_company/{{loginData.user_id}}" ng-show="loginData.user_name">
                     升级为企业用户
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="checkLogin('app.tabs.eventsmy')">
+                <ion-item nav-clear menu-close ng-show="loginData" ng-click="checkLogin('app.tabs.eventsmy')">
                     我的活动
+                </ion-item>
+                <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 1" ng-click="checkLogin('app.tabs.cv')">
+                    我的简历
                 </ion-item>
                 <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 2" ng-click="checkLogin('app.tabs.projectmy')">
                     我的项目
                 </ion-item>
-                <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 2" ng-click="checkLogin('app.tabs.servicesmy')">
-                    我的简历
-                </ion-item>
+
                 <ion-item nav-clear menu-close ng-if="loginData && loginData.user_type == 2" ng-click="checkLogin('app.tabs.servicesmy')">
                     我的服务
                 </ion-item>
-                <ion-item nav-clear menu-close ng-click="checkLogin('app.tabs.favorites')">
+                <ion-item nav-clear menu-close ng-show="loginData" ng-click="checkLogin('app.tabs.favorites')">
                     我的收藏
                 </ion-item>
                 <!--<ion-item nav-clear class="item-divider">-->

@@ -1,13 +1,32 @@
 <ion-view title="{{event_title}}">
     <ion-content class="has-header">
-        <div class="item item-input-inset">
-            <label class="item-input-wrapper">
-                <input type="search" placeholder="搜索活动" ng-model="keyword">
+        <!--<div class="item item-input-inset">-->
+            <!--<label class="item-input-wrapper">-->
+                <!--<input type="search" placeholder="搜索活动" ng-model="keyword">-->
+            <!--</label>-->
+            <!--<button class="button button-small" ng-click="searchEvents(keyword)">-->
+                <!--搜索-->
+            <!--</button>-->
+        <!--</div>-->
+
+        <!--筛选 S-->
+        <div class="row mod_filter" ng-hide="uselist">
+            <label class="col mod_select mod_select_col2">
+                <select ng-options="m.name for m in cityData"
+                        ng-model="selectedCity"
+                        ng-init="selectedCity = cityData[0]"
+                        ng-change="changeCity(selectedCity)">
+                </select>
             </label>
-            <button class="button button-small" ng-click="searchEvents(keyword)">
-                搜索
-            </button>
+            <label class="col mod_select mod_select_col2">
+                <select ng-options="m.name for m in eStatusData"
+                        ng-model="selectedStatus"
+                        ng-init="selectedStatus = eStatusData[0]"
+                        ng-change="changeStatus(selectedStatus)">
+                </select>
+            </label>
         </div>
+        <!--筛选 E-->
 
         <ion-list class="events_list">
             <div ng-if="event_type == 'userlist'">
@@ -16,19 +35,15 @@
             <ion-item ng-repeat="item in data" href="#/app/tabs/events/{{item.events_id}}">
                 <h2 class="positive">{{item.events_title}} </h2>
                 <div class="events_info">
-                    <img src="images/{{item.events_img}}" alt="图片名称" />
-                    <div class="events_info_cnt">
-                        <div><time>{{item.events_start_time}}</time></div>
-                        <div class="events_detail" ng-show="item.events_detail">
-                            {{item.events_detail}}
+                    <img ng-src="images/{{item.events_img}}" alt="" />
+                    <div><i class="icon ion-clock"></i> <time>{{item.events_start_time}}</time></div>
+                    <div><i class="icon ion-location"></i> <span>{{item.events_city}}</span></div>
+                    <div class="events_detail" ng-show="item.events_users_num">
+                        <div class="events_detail_item">
+                            报名人数：<strong>{{item.events_users_num}}</strong>
                         </div>
-                        <div class="events_detail" ng-show="item.events_users_num">
-                            <div class="events_detail_item">
-                                报名人数：<strong>{{item.events_users_num}}</strong>
-                            </div>
-                            <div class="events_detail_item">
-                                已有<strong>{{item.events_zan}}</strong>人点赞
-                            </div>
+                        <div class="events_detail_item">
+                            已有<strong>{{item.events_zan}}</strong>人点赞
                         </div>
                     </div>
                 </div>

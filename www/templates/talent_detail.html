@@ -39,17 +39,20 @@
             <button ng-disabled="isjoin" class="button button-full button-positive" ng-click="submitJob()">
                 {{joinBtnName || '发出邀请'}}
             </button>
+
             <div class="row mod_share">
                 <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-heart-outline"></i><span>{{data.user_zan}}</span> 已赞</a>
+                    <a href="javascript:;"  ng-class="{selected: zan}" ng-disabled="zan" ng-click="zanEvt()"><i ng-disabled="zan" class="ion-ios7-heart-outline"></i>{{data.user_zan}} 赞</a>
                 </div>
                 <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-redo-outline"></i>分享</a>
+                    <a href="javascript:;" ng-click="showShareEvt()"><i class="ion-ios7-redo-outline"></i>分享</a>
                 </div>
                 <div class="col">
-                    <a href="javascript:;"><i class="ion-ios7-star-outline"></i>收藏</a>
+                    <a href="javascript:;"  ng-class="{selected: collect}" ng-disabled="collect" ng-click="collectEvt(data.events_user_id)"><i  ng-disabled="collect"  class="ion-ios7-star-outline"></i>{{collect || '收藏'}}</a>
                 </div>
             </div>
+
+
         </div>
     </ion-content>
 </ion-view>

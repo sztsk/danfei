@@ -15,6 +15,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'queryByComId':{method:'GET',isArray:true,params:{ cmd:'company' }},
             'getOne':{method:'GET',params:{}},
             'update':{method:'PATCH'},
+            'zan':{method:'PATCH',params:{ cmd:'zan'}},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}
         });
@@ -44,10 +45,16 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'query': { method: 'GET',isArray:true,params:{ cmd:0 ,id:10}},
             'userQuery': { method: 'GET',isArray:true,params:{ cmd:'user' }},
             'searchQuery': { method: 'GET',isArray:true,params:{ cmd:'search' }},
+            'cityQuery': { method: 'GET',isArray:true,params:{ cmd:'city' }},
             'getOne':{method:'GET'},
+            'zan':{method:'PATCH',params:{ cmd:'zan'}},
             'update':{method:'PUT'},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}
+        });
+
+        RestApi.EventsFilter = $resource(BATEURL + 'events/city/:city/:sort',{},{
+            'query': { method: 'GET',isArray:true}
         });
 
         /**
@@ -58,6 +65,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'userQuery': { method: 'GET',isArray:true,params:{ cmd:'user' }},
             'getOne':{method:'GET',params:{}},
             'update':{method:'PATCH'},
+            'zan':{method:'PATCH',params:{ cmd:'zan'}},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}
         });
@@ -82,6 +90,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'userQuery': { method: 'GET',isArray:true,params:{ cmd:'user' }},
             'getOne':{method:'GET',params:{}},
             'update':{method:'PATCH'},
+            'zan':{method:'PATCH',params:{ cmd:'zan'}},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}
         });
@@ -127,6 +136,18 @@ angular.module('app.services', ['ngResource','ngStorage'])
         });
 
         /**
+         * 公司信息
+         */
+        RestApi.Cv = $resource(BATEURL + 'cv/:cmd/:id',{},{
+            'query': { method: 'GET',isArray:true},
+            'getOne':{method:'GET',params:{}},
+            'update':{method:'PATCH'},
+            'zan':{method:'PATCH',params:{ cmd:'zan'}},
+            'save':{method:'POST'},
+            'delete':{method:'DELETE'}
+        });
+
+        /**
          * 发出邀请
          */
         RestApi.JoinCompany = $resource(BATEURL + 'join/company/:id',{},{
@@ -152,11 +173,10 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'query': { method: 'GET'}
         });
 
-        RestApi.Upload = $resource(BATEURL + 'upload/:cmd',{},{
-            'img': { method: 'POST',params:{cmd:'img'}}
+        //收藏
+        RestApi.Collect = $resource(BATEURL + 'collect/:uid',{},{
+            'save': { method: 'POST'}
         });
-
-
 
         return RestApi;
     })
@@ -320,6 +340,95 @@ angular.module('app.services', ['ngResource','ngStorage'])
             }
         ]
     })
+    .service('sexData',function(){
+        return [
+            {
+                id : 0,
+                name : '男'
+            },
+            {
+                id : 1,
+                name : '女'
+            }
+        ]
+    })
+    .service('eduData',function(){
+        return [
+            {
+                id : 0,
+                name : '大专'
+            },
+            {
+                id : 1,
+                name : '本科'
+            },
+            {
+                id : 1,
+                name : '硕士'
+            },
+            {
+                id : 1,
+                name : '博士'
+            },
+            {
+                id : 1,
+                name : '其他'
+            }
+        ]
+    })
+    .service('experienceData',function(){
+        return [
+            {
+                id : 0,
+                name : '应届毕业生'
+            },
+            {
+                id : 1,
+                name : '1年'
+            },
+            {
+                id : 2,
+                name : '2年'
+            },
+            {
+                id : 3,
+                name : '3年'
+            },
+            {
+                id : 4,
+                name : '4年'
+            }
+            ,
+            {
+                id : 5,
+                name : '5年'
+            },
+            {
+                id : 6,
+                name : '6年'
+            },
+            {
+                id : 7,
+                name : '7年'
+            },
+            {
+                id : 8,
+                name : '8年'
+            },
+            {
+                id : 9,
+                name : '9年'
+            },
+            {
+                id : 10,
+                name : '10年'
+            },
+            {
+                id : 11,
+                name : '10年以上'
+            }
+        ]
+    })
 
     .service('stageData',function(){
         return [
@@ -350,6 +459,27 @@ angular.module('app.services', ['ngResource','ngStorage'])
             {
                 id : 6,
                 name : '未融资'
+            }
+        ]
+    })
+
+    .service('eStatusData',function(){
+        return [
+            {
+                id : 0,
+                name : '全部状态'
+            },
+            {
+                id : 1,
+                name : '未开始'
+            },
+            {
+                id : 2,
+                name : '已结束'
+            },
+            {
+                id : 3,
+                name : '进行中'
             }
         ]
     })

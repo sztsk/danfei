@@ -40,7 +40,7 @@
                 <select ng-options="m.name as m.name for m in cityData"
                         ng-model="data.project_city"
                         ng-init="data.project_city = cityData[0].name"
-                        ng-change="changeIndustry(data.project_city)">
+                        ng-change="changeCity(data.project_city)">
                 </select>
             </label>
 

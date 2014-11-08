@@ -3,7 +3,11 @@
 .hide{display: none;}
 /*分享*/
 .mod_share a{color: #5a5a5a; text-decoration: none; display: block; height: 26px; line-height: 26px;}
+.mod_share a.selected,
+.mod_share a.collect{color: #4a87ee;}
 .mod_share i{font-size: 20px; vertical-align: middle; margin-right: 5px;}
+.mod_share_pop{position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none;}
+.mod_share_pop.show{display: block; z-index: 1000;}
 /*列表*/
 .mod_list .list{margin: 0 15px; color: #5a5a5a;}
 .only_list .list{margin-top: 15px !important;}
@@ -50,8 +54,8 @@
 .events_list .item{border-top: 2px solid #4a87ee; margin-bottom: 10px;}
 .events_list .item-content{ padding-right: 16px;}
 .events_list h2{font-weight: 700; white-space: normal;}
-    .events_info{position: relative; padding: 0 0 0 80px;}
-    .events_info img{ position: absolute; top: 0; left: 0; width: 70px; height: 70px;}
+    /*.events_info{position: relative; padding: 0 0 0 80px;}*/
+    .events_info img{ width: 100%; height: 100px;}
     .events_info_cnt{white-space: normal; min-height: 70px;}
     .events_info_cnt time{color: #666;}
 
@@ -63,6 +67,8 @@
     .mod_detail_part{margin-bottom: 10px;}
     .mod_detail_part h1{font-size: 14px; font-weight: 700; margin-bottom: 5px;}
     .mod_detail_action{margin: 15px;}
+.mod_detail_img{margin: 10px 15px 0 15px;}
+.mod_detail_img img{ width: 100%;}
 
 /*详情页*/
 .detail_banner{width: 100%;}
@@ -79,10 +85,13 @@
 .events_banner{ height: 150px; position: relative; background: #f2f2f2;}
 .events_cnt{padding: 15px; color: #5a5a5a;}
 .events_tit{font-size: 20px; font-weight: 700;}
-.events_info{ margin-bottom: 10px; font-size: 12px;}
+.events_info{font-size: 12px;}
+.events_info2{ margin: 3px 15px;}
+.events_info2 h3{font-size: 16px; margin-bottom: 5px; font-weight: 700}
 .events_part{ margin-bottom: 10px;}
 .events_part h1{font-size: 14px; margin-bottom: 5px;}
 .events_detail{height: 60px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3; -webkit-box-orient: vertical;}
+
 
 /*职业机会*/
 .jobs_hd{margin-bottom: 3px;}
@@ -116,7 +125,7 @@
 .mod_pop a:last-child{border-bottom: 0;}
 
 .more_pop{left: 80px;}
-.services_pop{ left: 65%; height: 85px; }
+.services_pop{ left: 33%; height: 122px; }
 
 /*创业项目*/
 .project_list .list{ margin: 0 15px; font-size: 14px;}
@@ -159,3 +168,7 @@
     .upload_bd{position: relative;}
     .upload_bd img{ width: 80px; height: 80px; margin: 0 auto;}
         .upload_inp{ opacity: 0; position: absolute; top: 0; left: 0; right: 0; bottom: 0;}
+
+
+/**/
+.login_tip{margin: 15px}
