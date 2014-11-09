@@ -8,6 +8,11 @@
         <ion-nav-buttons side="left">
             <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
         </ion-nav-buttons>
+
+        <ion-nav-buttons side="right">
+            <button menu-toggle="right" class="button button-icon icon ion-navicon"></button>
+        </ion-nav-buttons>
+
         <ion-nav-view></ion-nav-view>
 
     </ion-side-menu-content>
@@ -53,21 +58,288 @@
                     我的收藏
                 </ion-item>
                 <!--<ion-item nav-clear class="item-divider">-->
-                    <!--发布信息-->
+                <!--发布信息-->
                 <!--</ion-item>-->
                 <!--<ion-item nav-clear menu-close ng-click="login()">-->
-                    <!--发布创业项目-->
+                <!--发布创业项目-->
                 <!--</ion-item>-->
                 <!--<ion-item nav-clear menu-close ng-click="login()">-->
-                    <!--发布创业服务-->
+                <!--发布创业服务-->
                 <!--</ion-item>-->
                 <!--<ion-item nav-clear menu-close ng-click="login()">-->
-                    <!--发布活动-->
+                <!--发布活动-->
                 <!--</ion-item>-->
                 <ion-item nav-clear menu-close ng-click="logout()" ng-show="loginData.user_name">
                     <span class="assertive">退出登录</span>
                 </ion-item>
             </ion-list>
+        </ion-content>
+    </ion-side-menu>
+
+
+    <ion-side-menu side="right">
+        <header class="bar bar-header bar-dark">
+            <h1 class="title">筛选简历</h1>
+        </header>
+        <ion-content class="has-header">
+            <ion-list class="list">
+                <div class="menu_jobs" ng-class="{open: zan}">
+                    <ion-item class="item item-icon-right" ng-click="openMenu()">
+                        工作地点：<strong class="assertive">全国</strong>
+                        <i class="icon ion-ios7-plus-empty"></i>
+                    </ion-item>
+                    <div class="menu_jobs_bd">
+                        <label class="item item-radio">
+                            <input type="radio" name="group">
+                            <div class="item-content">
+                                不限
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group">
+                            <div class="item-content">
+                                北京
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group">
+                            <div class="item-content">
+                                上海
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group">
+                            <div class="item-content">
+                                广州
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="menu_jobs">
+                    <ion-item class="item item-icon-right">
+                        月薪范围：<strong class="assertive">不限</strong>
+                        <i class="icon ion-ios7-plus-empty"></i>
+                    </ion-item>
+                    <div class="menu_jobs_bd">
+                        <label class="item item-radio">
+                            <input type="radio" name="group2">
+                            <div class="item-content">
+                                不限
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group2">
+                            <div class="item-content">
+                                2K以下
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group2">
+                            <div class="item-content">
+                                2K - 5K
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group">
+                            <div class="item-content">
+                                5K - 10K
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group">
+                            <div class="item-content">
+                                10K - 15K
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group2">
+                            <div class="item-content">
+                                15K - 25K
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group2">
+                            <div class="item-content">
+                                25K - 50K
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group2">
+                            <div class="item-content">
+                                50K以上
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="menu_jobs">
+                    <ion-item class="item item-icon-right">
+                        工作经验：<strong class="assertive">不限</strong>
+                        <i class="icon ion-ios7-plus-empty"></i>
+                    </ion-item>
+                    <div class="menu_jobs_bd">
+                        <label class="item item-radio">
+                            <input type="radio" name="group3">
+                            <div class="item-content">
+                                不限
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group3">
+                            <div class="item-content">
+                                应届毕业生
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group3">
+                            <div class="item-content">
+                                1年以下
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group3">
+                            <div class="item-content">
+                                1 - 3年
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group3">
+                            <div class="item-content">
+                                3 - 5年
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group3">
+                            <div class="item-content">
+                                5 - 510年
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group3">
+                            <div class="item-content">
+                                10年以上
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="menu_jobs">
+                    <ion-item class="item item-icon-right">
+                        最低学历：<strong class="assertive">不限</strong>
+                        <i class="icon ion-ios7-plus-empty"></i>
+                    </ion-item>
+                    <div class="menu_jobs_bd">
+                        <label class="item item-radio">
+                            <input type="radio" name="group4">
+                            <div class="item-content">
+                                不限
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group4">
+                            <div class="item-content">
+                                大专
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group4">
+                            <div class="item-content">
+                                本科
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group4">
+                            <div class="item-content">
+                                硕士
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group4">
+                            <div class="item-content">
+                                博士
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="menu_jobs">
+                    <ion-item class="item item-icon-right">
+                        发布时间：<strong class="assertive">不限</strong>
+                        <i class="icon ion-ios7-plus-empty"></i>
+                    </ion-item>
+                    <div class="menu_jobs_bd">
+                        <label class="item item-radio">
+                            <input type="radio" name="group5">
+                            <div class="item-content">
+                                不限
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group5">
+                            <div class="item-content">
+                                今天
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group5">
+                            <div class="item-content">
+                                3天内
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group5">
+                            <div class="item-content">
+                                一周内
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                        <label class="item item-radio">
+                            <input type="radio" name="group5">
+                            <div class="item-content">
+                                一月内
+                            </div>
+                            <i class="radio-icon ion-checkmark"></i>
+                        </label>
+                    </div>
+                </div>
+
+            </ion-list>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block button-positive">
+                        确定
+                    </button>
+                </div>
+            </div>
         </ion-content>
     </ion-side-menu>
 

@@ -172,3 +172,10 @@
 
 /**/
 .login_tip{margin: 15px}
+
+
+/*筛选简历*/
+.menu_jobs_bd .item{font-size: 14px;}
+.menu_jobs_bd .item-radio .item-content{padding: 8px 49px 8px 20px}
+.menu_jobs_bd .item-radio .radio-icon{padding: 7px 19px; font-size: 16px;}
+.menu_jobs_bd .item-content{background: #f7f7f7;}
