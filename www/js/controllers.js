@@ -58,7 +58,17 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
             $scope.modal.hide();
         };
 
-        //全局分享组件
+        //TODO 移到简历controller
+        $scope.openMenu = function(type){
+            $scope[type] = !$scope[type];
+            console.log($scope);
+        };
+
+        $scope.menuCv = {};
+        $scope.searchCv = function () {
+            console.log($scope);
+
+        }
 
 
     })

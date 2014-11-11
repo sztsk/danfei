@@ -175,6 +175,8 @@
 
 
 /*筛选简历*/
+.open .menu_jobs_bd{display: block;}
+.menu_jobs_bd{display: none}
 .menu_jobs_bd .item{font-size: 14px;}
 .menu_jobs_bd .item-radio .item-content{padding: 8px 49px 8px 20px}
 .menu_jobs_bd .item-radio .radio-icon{padding: 7px 19px; font-size: 16px;}

@@ -110,18 +110,33 @@ $app->get(
 );
 
 $app->get(
-    '/jobs/:city/:salary/:jobs(/:start)(/:num)',
-    function ($city,$salary,$jobs,$start = 0,$num  = 30){
+    '/jobs/:city/:salary/:jobs/:experience/:edu/:time(/:start)(/:num)',
+    function ($city,$salary,$jobs,$experience,$edu,$time,$start = 0,$num  = 30){
         $db = new DbHandler();
         $where = '';
-        if($city != '全部地区'){
+        //地点
+        if($city != '0'){
             $where .= " AND jobs_city = '$city'";
         };
-        if($salary != '全部薪酬'){
+        //薪酬
+        if($salary != '0'){
             $where .= " AND jobs_salary_start > '$salary'";
         }
-        if($jobs != '全部岗位'){
+        //岗位
+        if($jobs != '0'){
             $where .= " AND jobs_type = '$jobs'";
+        }
+        //工作经验
+        if($experience != '0'){
+            $where .= " AND jobs_experience = '$experience'";
+        }
+        //教育程度
+        if($edu != '0'){
+            $where .= " AND jobs_education = '$edu'";
+        }
+        //发布时间
+        if($edu != '0'){
+            $where .= " AND jobs_push_date > '$time'";
         }
         $data = $db->getJobs($where,$start,$num);
         $db = null;
