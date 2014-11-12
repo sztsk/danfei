@@ -249,7 +249,7 @@ class DbHandler {
      * @param $num
      */
     public function getJobs($where = '',$start = 0,$num = 30){
-        $sql = "SELECT * FROM  `tb_jobs` LEFT JOIN tb_users on tb_jobs.`jobs_user_id` = tb_users.user_id WHERE jobs_state = 1  ORDER BY jobs_id DESC $where LIMIT $start , $num";
+        $sql = "SELECT * FROM  `tb_jobs` LEFT JOIN tb_users on tb_jobs.`jobs_user_id` = tb_users.user_id WHERE jobs_state = 1 $where ORDER BY jobs_id DESC LIMIT $start , $num";
         $data = $this->conn->get_results($sql);
         if($data){
             return $data;

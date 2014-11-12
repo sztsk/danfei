@@ -1,32 +1,32 @@
 <ion-view title="职业机会">
     <ion-content class="has-header">
         <!--筛选 S-->
-        <div class="row mod_filter">
-            <div class="col">
-                <select ng-options="m.name for m in jobsData"
-                        ng-model="selectedJobs"
-                        ng-init="selectedJobs = jobsData[0]"
-                        ng-change="changeJobs(selectedJobs)">
-                </select>
-            </div>
-            <div class="col">
-                <select ng-options="m.name for m in cityData"
-                        ng-model="selectedCity"
-                        ng-init="selectedCity = cityData[0]"
-                        ng-change="changeCity(selectedCity)">
-                </select>
-            </div>
-            <div class="col">
-                <select ng-options="m.name for m in salaryData"
-                        ng-model="selectedSalary"
-                        ng-init="selectedSalary = salaryData[0]"
-                        ng-change="changeSalary(selectedSalary)">
-                </select>
-            </div>
-        </div>
+        <!--<div class="row mod_filter">-->
+            <!--<div class="col">-->
+                <!--<select ng-options="m.name for m in jobsData"-->
+                        <!--ng-model="selectedJobs"-->
+                        <!--ng-init="selectedJobs = jobsData[0]"-->
+                        <!--ng-change="changeJobs(selectedJobs)">-->
+                <!--</select>-->
+            <!--</div>-->
+            <!--<div class="col">-->
+                <!--<select ng-options="m.name for m in cityData"-->
+                        <!--ng-model="selectedCity"-->
+                        <!--ng-init="selectedCity = cityData[0]"-->
+                        <!--ng-change="changeCity(selectedCity)">-->
+                <!--</select>-->
+            <!--</div>-->
+            <!--<div class="col">-->
+                <!--<select ng-options="m.name for m in salaryData"-->
+                        <!--ng-model="selectedSalary"-->
+                        <!--ng-init="selectedSalary = salaryData[0]"-->
+                        <!--ng-change="changeSalary(selectedSalary)">-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
         <!--筛选 E-->
 
-        <ion-list class="mod_list">
+        <ion-list class="mod_list only_list">
             <ion-item class="mod_item" ng-repeat="item in data" href="#/app/tabs/jobs/{{item.jobs_id}}">
                 <div class="jobs_hd">
                     <h1 class="jobs_tit positive">{{item.jobs_name}}</h1>
@@ -44,6 +44,9 @@
                     </div>
                 </div>
             </ion-item>
+            <div class="no_data" ng-show="nodata">
+                暂时没有相关数据！
+            </div>
         </ion-list>
 
 

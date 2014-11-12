@@ -168,6 +168,15 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                     }
                 }
             })
+            .state('app.tabs.jobssearch', {
+                url: "/jobs/:city/:salary/:jobs/:experience/:edu/:time",
+                views: {
+                    'servicesContent': {
+                        templateUrl: "templates/jobs.html",
+                        controller: 'JobsSearchCtrl'
+                    }
+                }
+            })
 
             //服务 - 职业机会 - 职业详情页
             .state('app.tabs.jdetail', {

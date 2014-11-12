@@ -1,6 +1,6 @@
 angular.module('app.controllers', ['imageupload','angular-datepicker'])
 
-    .controller('AppCtrl', function ($scope, $state,$stateParams,$ionicModal, restApi, loginData,$ionicLoading) {
+    .controller('AppCtrl', function ($scope, $state,$stateParams,$ionicModal,$rootScope, loginData,$ionicLoading,$location,cityData,salaryData,eduData,experienceData,timeData,jobsData) {
 // Create the login modal that we will use later
         //http://ionicframework.com/docs/api/service/$ionicModal/
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -61,14 +61,47 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         //TODO 移到简历controller
         $scope.openMenu = function(type){
             $scope[type] = !$scope[type];
-            console.log($scope);
         };
 
-        $scope.menuCv = {};
-        $scope.searchCv = function () {
-            console.log($scope);
+        //是否显示搜索按钮
+        $scope.jobsPage = ($state.current.url.indexOf('jobs') !== -1);
+        $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
+            $scope.jobsPage = (toState.url.indexOf('jobs') !== -1);
+        });
 
+
+        $scope.cityData = cityData;
+        $scope.salaryData = salaryData;
+        $scope.eduData = eduData;
+        $scope.experienceData = experienceData;
+        $scope.timeData = timeData;
+        $scope.jobsData = jobsData;
+        //重新整理数据
+        $scope.cityData[0].name = '不限';
+        $scope.salaryData[0].name = '不限';
+        $scope.experienceData[0].name = '不限';
+        $scope.eduData[0].name = '不限';
+        $scope.jobsData[0].name = '不限';
+        $scope.menuData = {
+            city : '不限',
+            salary : '不限',
+            experience : '不限',
+            edu : '不限',
+            time : '不限',
+            jobs : '不限'
+        };
+
+        $scope.searchCv = function () {
+            $location.path('/app/tabs/jobs/' +
+                $scope.menuData.city + '/' +
+                $scope.menuData.salary + '/' +
+                $scope.menuData.jobs + '/' +
+                $scope.menuData.experience + '/' +
+                $scope.menuData.edu + '/' +
+                $scope.menuData.time
+            );
         }
+
 
 
     })
@@ -78,11 +111,11 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
     .controller('DetailCtrl', function ($scope, $stateParams,workServer) {
         workServer.getWorkById($stateParams.id).then(function (data) {
             $scope.data = data;
-            console.log(data, '123');
         })
     })
 
     .controller('JobsCtrl', function ($scope, restApi,salaryData,cityData,jobsData,$ionicLoading) {
+        $scope.jobsPage = true;
         function done(ajax){
             $scope.data = ajax;
             $ionicLoading.hide();
@@ -94,42 +127,58 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
         restApi.Job.query(function(ajax){
             done(ajax);
         });
-        $scope.salaryData = salaryData;
-        $scope.cityData = cityData;
-        $scope.jobsData = jobsData;
-        //用于第一次赛选的默认值
-        $scope.selectedCity = {id:0,name:'全部地区'};
-        $scope.selectedJobs = {id:0,name:'全部岗位'};
-        $scope.selectedSalary = {id:0,name:'全部薪酬'};
+        //$scope.salaryData = salaryData;
+        //$scope.cityData = cityData;
+        //$scope.jobsData = jobsData;
+        ////用于第一次赛选的默认值
+        //$scope.selectedCity = {id:0,name:'全部地区'};
+        //$scope.selectedJobs = {id:0,name:'全部岗位'};
+        //$scope.selectedSalary = {id:0,name:'全部薪酬'};
 
         //筛选岗位
-        $scope.changeJobs = function(jobs){
-            $scope.selectedJobs = jobs;
-            $scope.nodata = false;
-            $scope.data = restApi.JobsFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
-                    done(ajax);
-                }
-            );
-        };
-        $scope.changeCity = function(city){
-            $scope.selectedCity = city;
-            $scope.nodata = false;
-            $scope.data = restApi.JobsFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
-                    done(ajax);
-                }
-            );
-        };
-        $scope.changeSalary = function(salary){
-            $scope.selectedSalary = salary;
-            $scope.nodata = false;
-            $scope.data = restApi.JobsFilter.query(
-                {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
-                    done(ajax);
-                }
-            );
-        };
+        //$scope.changeJobs = function(jobs){
+        //    $scope.selectedJobs = jobs;
+        //    $scope.nodata = false;
+        //    $scope.data = restApi.JobsFilter.query(
+        //        {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+        //            done(ajax);
+        //        }
+        //    );
+        //};
+        //$scope.changeCity = function(city){
+        //    $scope.selectedCity = city;
+        //    $scope.nodata = false;
+        //    $scope.data = restApi.JobsFilter.query(
+        //        {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+        //            done(ajax);
+        //        }
+        //    );
+        //};
+        //$scope.changeSalary = function(salary){
+        //    $scope.selectedSalary = salary;
+        //    $scope.nodata = false;
+        //    $scope.data = restApi.JobsFilter.query(
+        //        {city:$scope.selectedCity.name,jobs:$scope.selectedJobs.name,salary:$scope.selectedSalary.name},function(ajax){
+        //            done(ajax);
+        //        }
+        //    );
+        //};
+    })
+
+    .controller('JobsSearchCtrl', function ($scope, restApi,$stateParams,$ionicLoading) {
+
+        $scope.jobsPage = true;
+        function done(ajax){
+            $scope.data = ajax;
+            $ionicLoading.hide();
+            if(!ajax.length){
+                $scope.nodata = true;
+            }
+        }
+
+        restApi.JobsSearch.query($stateParams,function(ajax){
+            done(ajax);
+        });
     })
 
     .controller('JobsDetailCtrl', function ($scope,$state, $stateParams,restApi,loginData,$ionicLoading) {

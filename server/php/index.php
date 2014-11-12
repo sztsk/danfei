@@ -114,29 +114,69 @@ $app->get(
     function ($city,$salary,$jobs,$experience,$edu,$time,$start = 0,$num  = 30){
         $db = new DbHandler();
         $where = '';
+
         //地点
-        if($city != '0'){
+        if($city != '不限'){
             $where .= " AND jobs_city = '$city'";
         };
-        //薪酬
-        if($salary != '0'){
-            $where .= " AND jobs_salary_start > '$salary'";
-        }
         //岗位
-        if($jobs != '0'){
+        if($jobs != '不限'){
+
             $where .= " AND jobs_type = '$jobs'";
         }
         //工作经验
-        if($experience != '0'){
+        if($experience != '不限'){
             $where .= " AND jobs_experience = '$experience'";
         }
         //教育程度
-        if($edu != '0'){
+        if($edu != '不限'){
             $where .= " AND jobs_education = '$edu'";
         }
+
+        //薪酬
+        switch($salary){
+            case '2K以下':
+                $where .= " AND jobs_salary_start < 2000 ";
+                break;
+            case '2K-5K':
+                $where .= " AND jobs_salary_start >= 2000 AND  jobs_salary_end < 5000";
+                break;
+            case '5K-10K':
+                $where .= " AND jobs_salary_start >= 5000 AND  jobs_salary_end < 10000";
+                break;
+            case '10K-15K':
+                $where .= " AND jobs_salary_start >= 10000 AND  jobs_salary_end < 15000";
+                break;
+            case '15K-25K':
+                $where .= " AND jobs_salary_start >= 15000 AND  jobs_salary_end < 25000";
+                break;
+            case '25K-50K':
+                $where .= " AND jobs_salary_start >= 25000 AND  jobs_salary_end < 50000";
+                break;
+            case '50以上':
+                $where .= " AND jobs_salary_end >= 50000";
+                break;
+            case '不限':
+            default:
+                $where .= '';
+        }
         //发布时间
-        if($edu != '0'){
-            $where .= " AND jobs_push_date > '$time'";
+        switch($time){
+            case '今天':
+                $where .= " AND date(jobs_push_date) = date(now()) ";
+                break;
+            case '3天内':
+                $where .= " AND DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(jobs_push_date)";
+                break;
+            case '一周内':
+                $where .= " AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(jobs_push_date)";
+                break;
+            case '一月内':
+                $where .= "  AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= date(jobs_push_date)";
+                break;
+            case '不限':
+            default:
+                $where .= '';
         }
         $data = $db->getJobs($where,$start,$num);
         $db = null;

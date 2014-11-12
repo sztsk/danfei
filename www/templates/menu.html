@@ -10,7 +10,9 @@
         </ion-nav-buttons>
 
         <ion-nav-buttons side="right">
-            <button menu-toggle="right" class="button button-icon icon ion-ios7-search"></button>
+            <button menu-toggle="right"
+                    class="button button-icon icon ion-ios7-search"
+                    ng-show="jobsPage"></button>
         </ion-nav-buttons>
 
         <ion-nav-view></ion-nav-view>
@@ -83,37 +85,32 @@
         </header>
         <ion-content class="has-header">
             <ion-list class="list">
-                <div class="menu_jobs" ng-class="{open: menuCity}">
-                    <ion-item class="item item-icon-right" ng-click="openMenu('menuCity')">
-                        工作地点：<strong class="assertive">全国</strong>
+                <div class="menu_jobs" ng-class="{open: menuJobs}">
+                    <ion-item class="item item-icon-right" ng-click="openMenu('menuJobs')">
+                        岗位：<strong class="assertive">{{menuData.jobs || '不限'}}</strong>
                         <i class="icon ion-ios7-plus-empty"></i>
                     </ion-item>
                     <div class="menu_jobs_bd">
-                        <label class="item item-radio">
-                            <input type="radio" name="group" ng-model="menuData.city" ng-value="1">
+                        <label class="item item-radio" ng-repeat="item in jobsData">
+                            <input type="radio" name="jobs" ng-value="item.name" ng-model="$parent.menuData.jobs">
                             <div class="item-content">
-                                不限
+                                {{item.name}}
                             </div>
                             <i class="radio-icon ion-checkmark"></i>
                         </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group" ng-model="menuData.city" ng-value="2">
+                    </div>
+                </div>
+
+                <div class="menu_jobs" ng-class="{open: menuCity}">
+                    <ion-item class="item item-icon-right" ng-click="openMenu('menuCity')">
+                        工作地点：<strong class="assertive">{{menuData.city || '不限'}}</strong>
+                        <i class="icon ion-ios7-plus-empty"></i>
+                    </ion-item>
+                    <div class="menu_jobs_bd">
+                        <label class="item item-radio" ng-repeat="item in cityData">
+                            <input type="radio" name="city" ng-value="item.name" ng-model="$parent.menuData.city">
                             <div class="item-content">
-                                北京
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group" ng-model="menuData.city" ng-value="3">
-                            <div class="item-content">
-                                上海
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group" ng-model="menuData.city" ng-value="4">
-                            <div class="item-content">
-                                广州
+                                {{item.name}}
                             </div>
                             <i class="radio-icon ion-checkmark"></i>
                         </label>
@@ -123,121 +120,30 @@
 
                 <div class="menu_jobs" ng-class="{open: menuSalary}">
                     <ion-item class="item item-icon-right" ng-click="openMenu('menuSalary')">
-                        月薪范围：<strong class="assertive">不限</strong>
+                        月薪范围：<strong class="assertive">{{menuData.salary || '不限'}}</strong>
                         <i class="icon ion-ios7-plus-empty"></i>
                     </ion-item>
                     <div class="menu_jobs_bd">
-                        <label class="item item-radio">
-                            <input type="radio" name="group2">
+                        <label class="item item-radio" ng-repeat="item in salaryData">
+                            <input type="radio" name="salary" ng-value="item.name" ng-model="$parent.menuData.salary">
                             <div class="item-content">
-                                不限
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group2">
-                            <div class="item-content">
-                                2K以下
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group2">
-                            <div class="item-content">
-                                2K - 5K
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group">
-                            <div class="item-content">
-                                5K - 10K
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group">
-                            <div class="item-content">
-                                10K - 15K
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group2">
-                            <div class="item-content">
-                                15K - 25K
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group2">
-                            <div class="item-content">
-                                25K - 50K
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group2">
-                            <div class="item-content">
-                                50K以上
+                                {{item.name}}
                             </div>
                             <i class="radio-icon ion-checkmark"></i>
                         </label>
                     </div>
                 </div>
 
-                <div class="menu_jobs" ng-class="{open: menuJobs}">
-                    <ion-item class="item item-icon-right" ng-click="openMenu('menuJobs')">
-                        工作经验：<strong class="assertive">不限</strong>
+                <div class="menu_jobs" ng-class="{open: menuExperience}">
+                    <ion-item class="item item-icon-right" ng-click="openMenu('menuExperience')">
+                        工作经验：<strong class="assertive">{{menuData.experience || '不限'}}</strong>
                         <i class="icon ion-ios7-plus-empty"></i>
                     </ion-item>
                     <div class="menu_jobs_bd">
-                        <label class="item item-radio" >
-                            <input type="radio" name="group3">
+                        <label class="item item-radio" ng-repeat="item in experienceData">
+                            <input type="radio" name="experience" ng-value="item.name" ng-model="$parent.menuData.experience">
                             <div class="item-content">
-                                不限
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group3">
-                            <div class="item-content">
-                                应届毕业生
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group3">
-                            <div class="item-content">
-                                1年以下
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group3">
-                            <div class="item-content">
-                                1 - 3年
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group3">
-                            <div class="item-content">
-                                3 - 5年
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group3">
-                            <div class="item-content">
-                                5 - 10年
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group3">
-                            <div class="item-content">
-                                10年以上
+                                {{item.name}}
                             </div>
                             <i class="radio-icon ion-checkmark"></i>
                         </label>
@@ -246,42 +152,14 @@
 
                 <div class="menu_jobs" ng-class="{open: menuEdu}">
                     <ion-item class="item item-icon-right" ng-click="openMenu('menuEdu')">
-                        最低学历：<strong class="assertive">不限</strong>
+                        最低学历：<strong class="assertive">{{menuData.edu || '不限'}}</strong>
                         <i class="icon ion-ios7-plus-empty"></i>
                     </ion-item>
                     <div class="menu_jobs_bd">
-                        <label class="item item-radio">
-                            <input type="radio" name="group4">
+                        <label class="item item-radio" ng-repeat="item in eduData">
+                            <input type="radio" name="edu" ng-value="item.name" ng-model="$parent.menuData.edu">
                             <div class="item-content">
-                                不限
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group4">
-                            <div class="item-content">
-                                大专
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group4">
-                            <div class="item-content">
-                                本科
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group4">
-                            <div class="item-content">
-                                硕士
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group4">
-                            <div class="item-content">
-                                博士
+                                {{item.name}}
                             </div>
                             <i class="radio-icon ion-checkmark"></i>
                         </label>
@@ -290,42 +168,14 @@
 
                 <div class="menu_jobs" ng-class="{open: menuTime}">
                     <ion-item class="item item-icon-right" ng-click="openMenu('menuTime')">
-                        发布时间：<strong class="assertive">不限</strong>
+                        发布时间：<strong class="assertive">{{menuData.time || '不限'}}</strong>
                         <i class="icon ion-ios7-plus-empty"></i>
                     </ion-item>
                     <div class="menu_jobs_bd">
-                        <label class="item item-radio">
-                            <input type="radio" name="group5">
+                        <label class="item item-radio" ng-repeat="item in timeData">
+                            <input type="radio" name="time" ng-value="item.name" ng-model="$parent.menuData.time">
                             <div class="item-content">
-                                不限
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group5">
-                            <div class="item-content">
-                                今天
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group5">
-                            <div class="item-content">
-                                3天内
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group5">
-                            <div class="item-content">
-                                一周内
-                            </div>
-                            <i class="radio-icon ion-checkmark"></i>
-                        </label>
-                        <label class="item item-radio">
-                            <input type="radio" name="group5">
-                            <div class="item-content">
-                                一月内
+                                {{item.name}}
                             </div>
                             <i class="radio-icon ion-checkmark"></i>
                         </label>
@@ -335,7 +185,7 @@
             </ion-list>
             <div class="row">
                 <div class="col">
-                    <button class="button button-block button-positive" ng-click="searchCv()">
+                    <button menu-close  class="button button-block button-positive" ng-click="searchCv()">
                         确定
                     </button>
                 </div>

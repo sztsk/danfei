@@ -20,6 +20,13 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'delete':{method:'DELETE'}
         });
 
+        /**
+         * 搜索简历
+         */
+        RestApi.JobsSearch = $resource(BATEURL + 'jobs/:city/:salary/:jobs/:experience/:edu/:time',{},{
+            'query': { method: 'GET',isArray:true}
+        });
+
         //提交简历
         RestApi.JoinJobs = $resource(BATEURL + 'join/jobs/:id',{},{
             'query': { method: 'GET',isArray:true}
@@ -34,7 +41,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
         /**
          * 职业筛选
          */
-        RestApi.JobsFilter = $resource(BATEURL + 'jobs/:city/:salary/:jobs/:start/:num',{},{
+        RestApi.JobsFilter = $resource(BATEURL + 'jobs/:city/:salary/:jobs/:experience/:edu/:time/:start/:num',{},{
             'query': { method: 'GET',isArray:true,params:{start:0,num:30 }}
         });
 
@@ -328,15 +335,27 @@ angular.module('app.services', ['ngResource','ngStorage'])
             },
             {
                 id : 2,
-                name : '2k-5k'
+                name : '2K-5K'
             },
             {
                 id : 3,
-                name : '5k-10k'
+                name : '5K-10K'
             },
             {
                 id : 4,
-                name : '10k-15k'
+                name : '10K-15K'
+            },
+            {
+                id : 5,
+                name : '15K-25K'
+            },
+            {
+                id : 6,
+                name : '25K-50K'
+            },
+            {
+                id : 7,
+                name : '50以上'
             }
         ]
     })
@@ -356,6 +375,10 @@ angular.module('app.services', ['ngResource','ngStorage'])
         return [
             {
                 id : 0,
+                name : '全部学历'
+            },
+            {
+                id : 10,
                 name : '大专'
             },
             {
@@ -380,52 +403,56 @@ angular.module('app.services', ['ngResource','ngStorage'])
         return [
             {
                 id : 0,
+                name : '经验不限'
+            },
+            {
+                id : 10,
                 name : '应届毕业生'
             },
             {
                 id : 1,
-                name : '1年'
+                name : '1年以下'
             },
             {
                 id : 2,
-                name : '2年'
+                name : '1-3年'
             },
             {
                 id : 3,
-                name : '3年'
+                name : '3-5年'
             },
             {
                 id : 4,
-                name : '4年'
+                name : '5-10年'
             }
             ,
             {
                 id : 5,
-                name : '5年'
-            },
+                name : '10年以上'
+            }
+        ]
+    })
+    .service('timeData',function(){
+        return [
             {
-                id : 6,
-                name : '6年'
-            },
-            {
-                id : 7,
-                name : '7年'
-            },
-            {
-                id : 8,
-                name : '8年'
-            },
-            {
-                id : 9,
-                name : '9年'
+                id : 0,
+                name : '不限'
             },
             {
                 id : 10,
-                name : '10年'
+                name : '今天'
             },
             {
-                id : 11,
-                name : '10年以上'
+                id : 1,
+                name : '3天内'
+            },
+            {
+                id : 2,
+                name : '一周内'
+            },
+            {
+                id : 3,
+                name : '一月内'
             }
         ]
     })
