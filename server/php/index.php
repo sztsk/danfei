@@ -611,6 +611,16 @@ $app->get(
     }
 );
 
+$app->get(
+    '/users/edit/:id',
+    function ($id){
+        $db = new DbHandler();
+        $data = $db->getUsersEditById($id);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
 
 $app->get(
     '/users(/:start)(:/num)',
@@ -659,6 +669,9 @@ $app->patch(
     '/users',
     function () use ($app){
         $data = $app->request->patch();
+        //存在图片
+        $data = saveImage($data,'user_thum');
+
         $db = new DbHandler();
         $jobData = $db->updateUsersById($data);
         $db = null;

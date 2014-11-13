@@ -366,6 +366,13 @@ angular.module('app', ['ionic', 'app.controllers', 'app.constant', 'app.services
                 }
             })
 
+            //注册
+            .state('app.useredit', {
+                url : '/useredit/:id',
+                templateUrl : 'templates/user_form.html',
+                controller : 'UserCtrl'
+            })
+
 
             ;
 

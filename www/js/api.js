@@ -112,9 +112,10 @@ angular.module('app.services', ['ngResource','ngStorage'])
         /**
          * 用户信息
          */
-        RestApi.Users = $resource(BATEURL + 'users/:id',{},{
+        RestApi.Users = $resource(BATEURL + 'users/:cmd/:id',{},{
             'query': { method: 'GET',isArray:true},
             'getOne':{method:'GET',params:{}},
+            'getMin':{method:'GET',params:{cmd:'edit'}},
             'update':{method:'PATCH'},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}
@@ -221,12 +222,20 @@ angular.module('app.services', ['ngResource','ngStorage'])
                 _loginData.user_type = data.user_type;
                 _loginData.user_name = data.user_name;
                 _loginData.user_phone = data.user_phone;
+                _loginData.user_thum = data.user_thum;
 
                 //cache
                 $localStorage.loginData = _loginData;
             },
             setUserType : function(user_type){
                 _loginData.user_type = user_type;
+            },
+            /**
+             * 设置用户头像
+             * @param user_thum
+             */
+            setUserThum : function(user_thum){
+                _loginData.user_thum = user_thum;
             },
             get : function(){
                 return _loginData;

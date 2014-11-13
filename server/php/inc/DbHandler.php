@@ -156,6 +156,17 @@ class DbHandler {
     }
 
     /**
+     * 获取活动详细信息
+     * @param $id
+     */
+    public function getUsersEditById($id){
+        $sql = "SELECT user_id,user_nice_name,user_phone,user_thum FROM  `tb_users` WHERE user_id = $id";
+        $data = $this->conn->get_row($sql);
+        return $data;
+    }
+
+
+    /**
      * 获取公司列表
      * @param $start
      * @param $num
@@ -399,8 +410,12 @@ events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId
      * @param $num
      */
     public function getEventsByCity($city,$sort = 'events_id'){
+        $whereCity = "";
+        if($city != '不限'){
+            $whereCity = " AND events_city = '$city'";
+        }
         $sql = "SELECT events_id,events_title,events_start_time,events_users_num,events_img,
-events_city FROM  `tb_events` WHERE events_state = 1 AND events_city = '$city' ORDER BY $sort DESC ";
+events_city FROM  `tb_events` WHERE events_state = 1 $whereCity ORDER BY $sort DESC ";
         $data = $this->conn->get_results($sql);
         if($data){
             return $data;

@@ -26,7 +26,7 @@
         <ion-content class="has-header">
             <!--用户信息-->
             <div class="menu_user" ng-show="loginData.user_name">
-                <img src="http://img.qian-duan-she-ji.us/150" alt="图片名称" />
+                <a menu-close href="#/app/useredit/{{loginData.user_id}}"><img  ng-src="{{loginData.user_thum}}" alt="{{loginData.user_name}}" /></a>
                 <div class="menu_user_info">
                     <p class="menu_user_name positive">{{loginData.user_name}}</p>
                     <p class="menu_user_vip">VIP</p>

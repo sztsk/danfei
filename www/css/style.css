@@ -55,7 +55,7 @@
 .events_list .item-content{ padding-right: 16px;}
 .events_list h2{font-weight: 700; white-space: normal;}
     /*.events_info{position: relative; padding: 0 0 0 80px;}*/
-    .events_info img{ width: 100%; height: 100px;}
+    .events_info img{ width: 100%; min-height: 100px; /* height: 100px;*/}
     .events_info_cnt{white-space: normal; min-height: 70px;}
     .events_info_cnt time{color: #666;}
 

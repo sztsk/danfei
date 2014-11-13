@@ -1,6 +1,6 @@
 angular.module('app.controllers', ['imageupload','angular-datepicker'])
 
-    .controller('AppCtrl', function ($scope, $state,$stateParams,$ionicModal,$rootScope, loginData,$ionicLoading,$location,cityData,salaryData,eduData,experienceData,timeData,jobsData) {
+    .controller('AppCtrl', function ($scope, $state,$stateParams,$ionicModal,$rootScope, loginData,$ionicLoading,$location, restApi, cityData,salaryData,eduData,experienceData,timeData,jobsData) {
 // Create the login modal that we will use later
         //http://ionicframework.com/docs/api/service/$ionicModal/
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -1363,6 +1363,50 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
     })
 
 
-    .controller('shareCtrl',function(){
+    .controller('UserCtrl',function($scope,$stateParams,$state,$ionicLoading,$ionicPopup,restApi,loginData){
+        function done(ajax){
+            $scope.data = ajax.data;
+            $ionicLoading.hide();
+            if(!ajax.length){
+                $scope.nodata = true;
+            }
+        }
+
+        restApi.Users.getMin($stateParams,function(ajax){
+            done(ajax);
+            if(ajax.data.user_thum){
+                $scope.editimage = ajax.data.user_thum;
+            }
+        });
+
+        //关闭页面
+        $scope.closePop = function () {
+            $state.go('app.tabs.events');
+        }
+
+        //提交表单
+        $scope.userEditSubmit = function(events_form,image){
+
+            //userId 在外层control
+            image && ($scope.data.image = image.dataURL);
+            $scope.data.user_id = $stateParams.id;
+            console.log($scope.data);
+            
+            restApi.Users.update($scope.data, function (data) {
+                if (data && !data.error) {
+                    $ionicPopup.alert({
+                        title: '提示!',
+                        template: '资料修改成功！'
+                    }).then(function (res) {
+                        $state.go('app.tabs.events');
+                    });
+
+                    loginData.setUserThum(data.user_thum);
+
+                } else {
+                    alert(data.message);
+                }
+            })
+        }
 
     });
