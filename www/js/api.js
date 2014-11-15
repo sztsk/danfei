@@ -217,7 +217,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
             _loginData = _losData || {};
         return {
             set : function(data){
-                console.log('set',data);
+                //console.log('set',data);
                 _loginData.user_id = data.user_id;
                 _loginData.user_type = data.user_type;
                 _loginData.user_name = data.user_name;
@@ -518,6 +518,10 @@ angular.module('app.services', ['ngResource','ngStorage'])
                 name : '进行中'
             }
         ]
+    })
+
+    .service('timePicker',function(){
+        return ['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00']
     })
 ;
 

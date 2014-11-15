@@ -42,7 +42,13 @@
             </label>
             <label class="item item-input">
                 <span class="input-label">单飞时间</span>
-                <input type="date" placeholder="离职日期" name="user_leave_time" ng-model="data.user_leave_time" required>
+                <input type="text"
+                       placeholder="离职日期"
+                       ng-model="data.user_leave_time"
+                       name="user_leave_time"
+                       ng-click="opendateModal()"
+                       readonly required>
+                <!--<input type="date" placeholder="离职日期" name="user_leave_time" ng-model="data.user_leave_time" required>-->
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_leave_time.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_leave_time.$invalid && signup_form.user_leave_time.$dirty"></i>
             </label>

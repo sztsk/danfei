@@ -394,7 +394,7 @@ class DbHandler {
      * @param $num
      */
     public function getEventsByUserId($userId){
-        $sql = "SELECT events_id,events_title,events_start_time,events_users_num,events_img,
+        $sql = "SELECT events_id,events_city,events_title,events_start_time,events_users_num,events_img,
 events_zan FROM  `tb_events` WHERE events_state = 1 AND events_user_id = $userId ORDER BY events_id DESC ";
         $data = $this->conn->get_results($sql);
         if($data){

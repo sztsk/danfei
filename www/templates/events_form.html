@@ -1,7 +1,7 @@
 <ion-header-bar class="bar-stable bar-positive">
     <h1 class="title">{{events_title}}</h1>
     <div class="buttons">
-        <button class="button button-clear" ng-click="closeReg()">关闭</button>
+        <button class="button button-clear" ng-click="closePop()">关闭</button>
     </div>
 </ion-header-bar>
 <ion-content>
@@ -11,7 +11,7 @@
             <div class="upload">
                 <div class="upload_hd">活动头图</div>
                 <div class="upload_bd">
-                    <img ng-model="image" ng-src="{{image.resized.dataURL || editimage}}" src="./img/upload.jpg"/>
+                    <img ng-model="image" ng-src="{{image.resized.dataURL || editimage || './img/upload.jpg'}}" src="./img/upload.jpg" alt="" />
                     <input type="file"
                            class="upload_inp"
                            accept="image/*"
@@ -40,25 +40,39 @@
                 <span class="input-label">活动开始时间</span>
                 <!--<input type="datetime" name="events_start_time" ng-model="data.events_start_time" required />-->
                 <div class="picker">
-                    <input type="text" style="width: 100%"
-                           placeholder="Pick date"
-                           ng-model="datepicker"
+                    <input type="text"
+                           placeholder="日期"
+                           ng-model="start_date"
                            name="datepicker"
-                           ng-click="opendateModal()"
-                           readonly>
-                    <!--<input type="text" pick-a-time="time" ng-model="data.start_time" pick-a-time-options="{ format: 'HH:i' }" placeholder="时间" required />-->
+                           ng-click="opendateModal('start')"
+                           readonly required>
+                    <select ng-options="m as m for m in timePicker"
+                            ng-model="start_time"
+                            ng-init="start_time = timePicker[0]" required="required"
+                            ng-change="changeTime('start_time',start_time)"
+                            >
+                    </select>
                 </div>
-                <!--<input type="text" pick-a-date="date" placeholder="Select Date" /> {{ date }}-->
-                <!--<input type="text" pick-a-time="time" placeholder="Select Time" /> {{ time }}-->
                 <i class="icon ion-checkmark-circled balanced" ng-show="events_form.events_start_time.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="events_form.events_start_time.$invalid && events_form.events_start_time.$dirty"></i>
             </div>
-            <label class="item item-input">
+            <div class="item item-input">
                 <span class="input-label">活动结束时间</span>
-                <input type="date" name="events_end_time" ng-model="data.events_end_time" required />
-                <i class="icon ion-checkmark-circled balanced" ng-show="events_form.events_end_time.$valid"></i>
-                <i class="icon ion-close-circled assertive" ng-show="events_form.events_end_time.$invalid && events_form.events_end_time.$dirty"></i>
-            </label>
+                <div class="picker">
+                    <input type="text"
+                           placeholder="日期"
+                           ng-model="end_date"
+                           name="datepicker"
+                           ng-click="opendateModal('end')"
+                           readonly required>
+                    <select ng-options="m as m for m in timePicker"
+                            ng-model="end_time"
+                            ng-init="end_time = timePicker[0]" required="required"
+                            ng-change="changeTime('end_time',end_time)"
+                            >
+                    </select>
+                </div>
+            </div>
             <label class="item item-input">
                 <span class="input-label">活动名额</span>
                 <input type="text" name="events_quota" ng-model="data.events_quota" required />

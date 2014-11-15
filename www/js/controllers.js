@@ -28,7 +28,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
          */
         $scope.checkLogin = function(url){
             var userId = loginData.getUserId();
-            console.log(userId,loginData);
+            //console.log(userId,loginData);
             $scope.userId = userId;
             if(userId){
                 $state.go(url)
@@ -392,7 +392,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                     favorites_type_id : $stateParams.id
                 };
                 restApi.Collect.save(collectData,function(data){
-                    console.log(data);
+                    //console.log(data);
                     
                     if(data && data.favorites_id){
                         $scope.collect = '已收藏';
@@ -439,21 +439,41 @@ angular.module('app.controllers', ['imageupload','pickadate'])
     })
 
     //活动表格 新增
-    .controller('EventsAddFormCtrl', function ($scope,$http, restApi, $state, $ionicPopup,cityData,loginData,$ionicLoading) {
+    .controller('EventsAddFormCtrl', function ($scope,$http, restApi, $state, $ionicPopup,cityData,loginData,$ionicLoading,$ionicModal,timePicker) {
         $scope.data = {};
         $scope.events_title = "发布活动";
         $scope.events_btn = '发布活动';
         cityData.shift();
         $scope.cityData = cityData;
+        $scope.timePicker = timePicker;
         $ionicLoading.hide();
+
+        /**
+         * 合并日期
+         */
+        function mergeTime(){
+            if($scope.start_date && $scope.start_time){
+                $scope.data.events_start_time = $scope.start_date + ' ' + $scope.start_time;
+            }
+            if($scope.end_date && $scope.end_time){
+                $scope.data.events_end_time = $scope.end_date + ' ' + $scope.end_time;
+            }
+        }
+
+        //关闭页面
+        $scope.closePop = function () {
+            $state.go('app.tabs.events');
+        }
+
         //提交表单
         $scope.eventsSubmit = function(events_form,image){
-            console.log(image);
+            //console.log(image);
             
             if (events_form.$valid) {
                 //userId 在外层control
                 $scope.data.events_user_id = loginData.getUserId();
                 image && ($scope.data.image = image.dataURL);
+                mergeTime();
                 restApi.Events.save($scope.data, function (data) {
                     if (data && !data.error) {
                         $ionicPopup.alert({
@@ -470,21 +490,85 @@ angular.module('app.controllers', ['imageupload','pickadate'])
             }
         };
 
+        var curDate;
+        $scope.changeTime = function(type,val){
+            $scope[type] = val;
+        };
+
+        $ionicModal.fromTemplateUrl('templates/datemodal.html',
+            function(modal) {
+                $scope.datemodal = modal;
+            },
+            {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }
+        );
+        $scope.opendateModal = function(type) {
+            curDate = type;
+            $scope.datemodal.show();
+        };
+        $scope.closedateModal = function(modal) {
+            $scope.datemodal.hide();
+            //开始日期
+            if(curDate === 'start'){
+                $scope.start_date = modal;
+            }else{
+                $scope.end_date = modal;
+            }
+        };
+
     })
 
     //活动表格 修改
-    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,$ionicLoading,$ionicModal) {
+    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,$ionicLoading,$ionicModal,timePicker) {
+
         cityData.shift();
         $scope.cityData = cityData;
+        $scope.timePicker = timePicker;
         $scope.events_title = '修改活动';
         $scope.events_btn = '修改活动';
         restApi.Events.getOne($stateParams,function(ajax){
             $scope.data = ajax.data;
+            splitTime();
             $ionicLoading.hide();
             if(ajax.data.events_img){
                 $scope.editimage = ajax.data.events_img;
             }
         });
+
+        //关闭页面
+        $scope.closePop = function () {
+            $state.go('app.tabs.events');
+        };
+
+        /**
+         * 拆分日期
+         */
+        function splitTime(){
+            if($scope.data.events_start_time){
+                var _start = $scope.data.events_start_time.split(' ');
+                $scope.start_date = _start[0];
+                $scope.start_time = _start[1];
+            }
+            if($scope.data.events_end_time){
+                var _end = $scope.data.events_end_time.split(' ');
+                $scope.end_date = _end[0];
+                $scope.end_time = _end[1];
+            }
+        }
+
+        /**
+         * 合并日期
+         */
+        function mergeTime(){
+            if($scope.start_date && $scope.start_time){
+                $scope.data.events_start_time = $scope.start_date + ' ' + $scope.start_time;
+            }
+            if($scope.end_date && $scope.end_time){
+                $scope.data.events_end_time = $scope.end_date + ' ' + $scope.end_time;
+            }
+        }
 
         //提交表单
         $scope.eventsSubmit = function(events_form,image){
@@ -492,6 +576,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                 //删除用户名 因为提交的时候不需要username
                 delete  $scope.data.user_name;
                 image && ($scope.data.image = image.dataURL);
+                mergeTime();
                 restApi.Events.update($scope.data, function (data) {
                     if (data && !data.error) {
                         $ionicPopup.alert({
@@ -508,23 +593,32 @@ angular.module('app.controllers', ['imageupload','pickadate'])
             }
         };
 
+        var curDate;
+        $scope.changeTime = function(type,val){
+            $scope[type] = val;
+        };
+
         $ionicModal.fromTemplateUrl('templates/datemodal.html',
             function(modal) {
                 $scope.datemodal = modal;
             },
             {
-                // Use our scope for the scope of the modal to keep it simple
                 scope: $scope,
-                // The animation we want to use for the modal entrance
                 animation: 'slide-in-up'
             }
         );
-        $scope.opendateModal = function() {
+        $scope.opendateModal = function(type) {
+            curDate = type;
             $scope.datemodal.show();
         };
         $scope.closedateModal = function(modal) {
             $scope.datemodal.hide();
-            $scope.datepicker = modal;
+            //开始日期
+            if(curDate === 'start'){
+                $scope.start_date = modal;
+            }else{
+                $scope.end_date = modal;
+            }
         };
 
     })
@@ -642,7 +736,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         };
 
         $scope.removeForm = function(){
-            console.log('removeForm');
+            //console.log('removeForm');
 
             $ionicPopup.confirm({
                 title: '提醒',
@@ -771,7 +865,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         $scope.data = restApi.Project.userQuery({id: userId});
 
         $scope.change = function(item) {
-            console.log("Selected Serverside, text:", item.text, "value:", item.value);
+            //console.log("Selected Serverside, text:", item.text, "value:", item.value);
         };
 
     })
@@ -951,7 +1045,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         $ionicLoading.hide();
         //发布创业服务
         $scope.submitForm = function (project_form,image) {
-            console.log($scope.data);
+            //console.log($scope.data);
             //表单验证
             // TODO 详细验证信息需要设置
             if (project_form.$valid) {
@@ -1152,7 +1246,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
 
     .controller('HomeController', ['$scope', '$state', function ($scope, $state) {
         $scope.navTitle = 'Tab Page';
-        console.log(12);
+        //console.log(12);
 //        $scope.leftButtons = [{
 //            type: 'button-icon icon ion-navicon',
 //            tap: function(e) {
@@ -1171,7 +1265,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
 
         $scope.loginData = loginData.get();
         
-        console.log($scope.loginData);
+        //console.log($scope.loginData);
 
 
         $scope.logout = function () {
@@ -1220,14 +1314,14 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         }
     })
 
-    .controller('RegisterCtrl', function ($scope, $location, $state, restApi, loginData,cityData,$ionicLoading) {
+    .controller('RegisterCtrl', function ($scope, $location, $state, restApi, loginData,cityData,$ionicLoading,$ionicModal) {
         $scope.data = {};
         cityData.shift();
         $scope.cityData = cityData;
         $ionicLoading.hide();
         //注册用户
         $scope.registerUser = function (signup_form) {
-            console.log($scope.data);
+            //console.log($scope.data);
             //表单验证
             // TODO 详细验证信息需要设置
             if (signup_form.$valid) {
@@ -1247,7 +1341,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         };
 
         $scope.registerCompany = function (signup_form) {
-            console.log($scope.data);
+            //console.log($scope.data);
             //表单验证
             // TODO 详细验证信息需要设置
             if (signup_form.$valid) {
@@ -1264,6 +1358,24 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                     }
                 })
             }
+        };
+
+        $ionicModal.fromTemplateUrl('templates/datemodal.html',
+            function(modal) {
+                $scope.datemodal = modal;
+            },
+            {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }
+        );
+        $scope.opendateModal = function(type) {
+            curDate = type;
+            $scope.datemodal.show();
+        };
+        $scope.closedateModal = function(modal) {
+            $scope.datemodal.hide();
+            $scope.data.user_leave_time = modal;
         };
 
 
@@ -1295,7 +1407,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         });
 
         $scope.submitForm = function (cv_form,image) {
-            console.log($scope.data);
+            //console.log($scope.data);
             //表单验证
             // TODO 详细验证信息需要设置
             if (cv_form.$valid) {
@@ -1348,7 +1460,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         });
 
         $scope.submitForm = function (cv_form,image) {
-            console.log($scope.data);
+            //console.log($scope.data);
             //表单验证
             // TODO 详细验证信息需要设置
             if (cv_form.$valid) {
@@ -1409,7 +1521,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
             //userId 在外层control
             image && ($scope.data.image = image.dataURL);
             $scope.data.user_id = $stateParams.id;
-            console.log($scope.data);
+            //console.log($scope.data);
             
             restApi.Users.update($scope.data, function (data) {
                 if (data && !data.error) {
