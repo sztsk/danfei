@@ -181,3 +181,6 @@
 .menu_jobs_bd .item-radio .item-content{padding: 8px 49px 8px 20px}
 .menu_jobs_bd .item-radio .radio-icon{padding: 7px 19px; font-size: 16px;}
 .menu_jobs_bd .item-content{background: #f7f7f7;}
+
+/*日期选择器*/
+.picker input{ width: 30%;float: left;}

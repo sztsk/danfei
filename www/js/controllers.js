@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['imageupload','angular-datepicker'])
+angular.module('app.controllers', ['imageupload','pickadate'])
 
     .controller('AppCtrl', function ($scope, $state,$stateParams,$ionicModal,$rootScope, loginData,$ionicLoading,$location, restApi, cityData,salaryData,eduData,experienceData,timeData,jobsData) {
 // Create the login modal that we will use later
@@ -473,7 +473,7 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
     })
 
     //活动表格 修改
-    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,$ionicLoading) {
+    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,$ionicLoading,$ionicModal) {
         cityData.shift();
         $scope.cityData = cityData;
         $scope.events_title = '修改活动';
@@ -506,6 +506,25 @@ angular.module('app.controllers', ['imageupload','angular-datepicker'])
                     }
                 })
             }
+        };
+
+        $ionicModal.fromTemplateUrl('templates/datemodal.html',
+            function(modal) {
+                $scope.datemodal = modal;
+            },
+            {
+                // Use our scope for the scope of the modal to keep it simple
+                scope: $scope,
+                // The animation we want to use for the modal entrance
+                animation: 'slide-in-up'
+            }
+        );
+        $scope.opendateModal = function() {
+            $scope.datemodal.show();
+        };
+        $scope.closedateModal = function(modal) {
+            $scope.datemodal.hide();
+            $scope.datepicker = modal;
         };
 
     })
