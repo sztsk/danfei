@@ -53,7 +53,6 @@ class DbHandler {
      * @return boolean
      */
     private function isUserExists($phone) {
-        $phone = (int)$phone;
         $result = $this->conn->get_var("SELECT user_id from tb_users WHERE user_phone = '$phone'");
 //        echo $result . "SELECT user_id from tb_users WHERE user_phone = $phone";
 
@@ -118,7 +117,7 @@ class DbHandler {
      * @return mixed
      */
     public function getUserByPhone($phone){
-        $sql = "SELECT user_id,user_name,user_type, user_phone FROM tb_users WHERE user_phone = '$phone'";
+        $sql = "SELECT user_id,user_name,user_type, user_phone,user_vip,user_thum FROM tb_users WHERE user_phone = '$phone'";
         $user = $this->conn->get_row($sql);
         return $user;
     }
@@ -859,6 +858,55 @@ events_city FROM  `tb_events` WHERE events_state = 1 $whereCity ORDER BY $sort D
         }
 
     }
+
+    /**
+     * 获取收藏列表
+     * @param $id
+     */
+    public function getFavoritesByUserId($userId){
+        //活动
+        $sql1 = "SELECT favorites_id,events_id,events_title FROM  `tb_favorites_user` LEFT JOIN  `tb_events` ON  `tb_favorites_user`.`favorites_type_id` = `tb_events`.`events_id`  WHERE `favorites_type` = 1 AND `favorites_user_id` = $userId";
+        $data1 = $this->conn->get_results($sql1);
+        if(!$data1){
+            $data1 = array();
+        }
+        //创业服务
+        $sql2 = "SELECT favorites_id,services_id,services_organization_name FROM  `tb_favorites_user` LEFT JOIN  `tb_services` ON  `tb_favorites_user`.`favorites_type_id` = `tb_services`.`services_id`  WHERE `favorites_type` = 2 AND `favorites_user_id` = $userId";
+        $data2 = $this->conn->get_results($sql2);
+        if(!$data2){
+            $data2 = array();
+        }
+        //职业机会
+        $sql3 = "SELECT favorites_id,jobs_id,jobs_name FROM  `tb_favorites_user` LEFT JOIN  `tb_jobs` ON  `tb_favorites_user`.`favorites_type_id` = `tb_jobs`.`jobs_id`  WHERE `favorites_type` = 3 AND `favorites_user_id` = $userId";
+        $data3 = $this->conn->get_results($sql3);
+        if(!$data3){
+            $data3 = array();
+        }
+        //人才展示
+        $sql4 = "SELECT favorites_id,user_id,user_nice_name FROM  `tb_favorites_user` LEFT JOIN  `tb_users` ON  `tb_favorites_user`.`favorites_type_id` = `tb_users`.`user_id`  WHERE `favorites_type` = 4 AND `favorites_user_id` = $userId";
+        $data4 = $this->conn->get_results($sql4);
+        if(!$data4){
+            $data4 = array();
+        }
+        //创业项目
+        $sql5 = "SELECT favorites_id,project_id,project_name FROM  `tb_favorites_user` LEFT JOIN  `tb_project` ON  `tb_favorites_user`.`favorites_type_id` = `tb_project`.`project_id`  WHERE `favorites_type` = 5 AND `favorites_user_id` = $userId";
+        $data5 = $this->conn->get_results($sql5);
+        if(!$data5){
+            $data5 = array();
+        }
+
+        $data = new stdClass;
+        $data->event =  $data1;
+        $data->services =  $data2;
+        $data->jobs =  $data3;
+        $data->users =  $data4;
+        $data->project =  $data5;
+
+        return $data;
+    }
+
+
+
 
 
 

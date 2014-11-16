@@ -9,7 +9,7 @@
         <div class="list">
             <label class="item item-input">
                 <span class="input-label">手机号码</span>
-                <input type="tel" name="user_phone" placeholder="用于登录或找回密码" ng-model="data.user_phone" required ng-pattern="/^([0-9]{11})?$/">
+                <input type="tel" name="user_phone" placeholder="用于登录或找回密码" ng-model="data.user_phone" required ng-pattern="/^([0-9]{11})?$/" maxlength="11">
                 <!--/^[0-9]+$/-->
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_phone.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_phone.$invalid && signup_form.user_phone.$dirty"></i>
@@ -65,9 +65,11 @@
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_leader.$invalid && signup_form.user_leader.$dirty"></i>
             </label>
         </div>
+
         <div class="padding">
-            <button class="button button-block button-positive" type="submit">注册</button>
+            说明：所有选项都必须填写才能注册！
         </div>
+
         <div class="mod_form_error assertive"
              ng-show="signup_form.$invalid">
             <p class="error"
@@ -79,10 +81,12 @@
                 RTX名字必须是英文
             </p>
             <p class="error"
-               ng-show="signup_form.user_name.$invalid && !signup_form.user_name.$pristine">
-                姓名必须是中文
-            </p>
-
+                   ng-show="signup_form.user_name.$invalid && !signup_form.user_name.$pristine">
+            姓名必须是中文
+        </p>
+        </div>
+        <div class="padding">
+            <button class="button button-block button-positive" type="submit">注册</button>
         </div>
     </form>
 </ion-content>

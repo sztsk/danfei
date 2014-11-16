@@ -38,14 +38,16 @@ angular.module('app.controllers', ['imageupload','pickadate'])
             }
         };
 
+
         // Perform the login action when the user submits the login form
         $scope.data = {};
         $scope.doLogin = function () {
+
             restApi.CheckLogin.save($scope.data, function (ajax) {
-                var data = ajax.data;
-                if (data.error) {
-                    alert(data.message);
+                if (ajax.error) {
+                    alert(ajax.message);
                 } else {
+                    var data = ajax.data;
                     $scope.loginData = data;
                     loginData.set(data);
                     $scope.closeLogin();
@@ -252,6 +254,11 @@ angular.module('app.controllers', ['imageupload','pickadate'])
             })
         };
 
+        //分享
+        $scope.shareEvt = function(){
+            alert('请点击微信右上角的分享图标进行分享！')
+        }
+
     })
 
     //events
@@ -409,6 +416,11 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                 $scope.zan = true;
             })
         };
+
+        //分享
+        $scope.shareEvt = function(){
+            alert('请点击微信右上角的分享图标进行分享！')
+        }
         //分享
         //$scope.hideShareEvt = function(){
         //    $scope.share = false;
@@ -443,11 +455,11 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         $scope.data = {};
         $scope.events_title = "发布活动";
         $scope.events_btn = '发布活动';
-        cityData.shift();
+        //cityData.shift();
         $scope.cityData = cityData;
         $scope.timePicker = timePicker;
         $ionicLoading.hide();
-
+        $scope.start_time = $scope.end_time = '00:00';
         /**
          * 合并日期
          */
@@ -474,6 +486,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                 $scope.data.events_user_id = loginData.getUserId();
                 image && ($scope.data.image = image.dataURL);
                 mergeTime();
+
                 restApi.Events.save($scope.data, function (data) {
                     if (data && !data.error) {
                         $ionicPopup.alert({
@@ -783,6 +796,11 @@ angular.module('app.controllers', ['imageupload','pickadate'])
             })
         };
 
+        //分享
+        $scope.shareEvt = function(){
+            alert('请点击微信右上角的分享图标进行分享！')
+        }
+
     })
 
     .controller('ServicesAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,$ionicLoading) {
@@ -1016,6 +1034,11 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                 $scope.zan = true;
             })
         };
+
+        //分享
+        $scope.shareEvt = function(){
+            alert('请点击微信右上角的分享图标进行分享！')
+        }
     })
 
     .controller('ProjectMyCtrl', function ($scope, restApi,loginData,$ionicLoading) {
@@ -1236,12 +1259,25 @@ angular.module('app.controllers', ['imageupload','pickadate'])
             })
         };
 
+        //分享
+        $scope.shareEvt = function(){
+            alert('请点击微信右上角的分享图标进行分享！')
+        }
 
     })
 
-    .controller('FavoritesCtrl', ['$scope', '$state', function ($scope, $state) {
-        $scope.navTitle = 'Tab Page';
-    }])
+    .controller('FavoritesCtrl',  function ($scope, $state,$ionicLoading,loginData,restApi) {
+
+        $ionicLoading.hide();
+        var userId = loginData.getUserId();
+
+        restApi.Favorites.query({uid:userId},function(ajax){
+            $scope.data = ajax.data;
+            if(!ajax.data.event.length && !ajax.data.jobs.length && !ajax.data.project.length && !ajax.data.services.length && !ajax.data.users.length){
+                $scope.nodata = true;
+            }
+        })
+    })
 
 
     .controller('HomeController', ['$scope', '$state', function ($scope, $state) {
@@ -1265,7 +1301,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
 
         $scope.loginData = loginData.get();
         
-        //console.log($scope.loginData);
+        console.log($scope.loginData);
 
 
         $scope.logout = function () {

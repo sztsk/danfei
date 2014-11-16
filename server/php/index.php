@@ -867,6 +867,18 @@ $app->post(
     }
 );
 
+
+
+$app->get(
+    '/favorites/:userId',
+    function ($userId){
+        $db = new DbHandler();
+        $data = $db->getFavoritesByUserId($userId);
+        $db = null;
+        echoRespnse(200,$data);
+    }
+);
+
 /**
  * Echoing json response to client
  * @param String $status_code Http response code

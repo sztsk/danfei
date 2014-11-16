@@ -186,6 +186,11 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'save': { method: 'POST'}
         });
 
+        //收藏
+        RestApi.Favorites = $resource(BATEURL + 'favorites/:uid',{},{
+            'query': { method: 'GET'}
+        });
+
         return RestApi;
     })
     //设置post header
@@ -223,6 +228,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
                 _loginData.user_name = data.user_name;
                 _loginData.user_phone = data.user_phone;
                 _loginData.user_thum = data.user_thum;
+                _loginData.user_vip = data.user_vip;
 
                 //cache
                 $localStorage.loginData = _loginData;

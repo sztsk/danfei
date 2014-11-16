@@ -35,7 +35,7 @@
             <ion-item ng-repeat="item in data" href="#/app/tabs/events/{{item.events_id}}">
                 <h2 class="positive">{{item.events_title}} </h2>
                 <div class="events_info">
-                    <img ng-src="{{item.events_img}}" alt="" />
+                    <img ng-src="{{item.events_img}}" alt="" ng-show="item.events_img" />
                     <div><i class="icon ion-clock"></i> <time>{{item.events_start_time}}</time></div>
                     <div><i class="icon ion-location"></i> <span>{{item.events_city}}</span></div>
                     <div class="events_detail" ng-show="item.events_users_num">

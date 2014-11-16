@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <style>
+        .css {
+            background-image: url(1x.png);    /*不支持image-set的情况下显示*/
+            background: -webkit-image-set(
+                    url(1x.png) 1x,/* 支持image-set的浏览器的[普通屏幕]下 */
+                    url(2x.png) 2x,/* 支持image-set的浏览器的[2倍Retina屏幕] */
+                    url(3x.png) 3x/* 支持image-set的浏览器的[3倍Retina屏幕] */
+            );
+        }
+    </style>
+</head>
+<body>
+
+</body>
+</html>

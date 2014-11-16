@@ -26,10 +26,11 @@
         <ion-content class="has-header">
             <!--用户信息-->
             <div class="menu_user" ng-show="loginData.user_name">
-                <a menu-close href="#/app/useredit/{{loginData.user_id}}"><img  ng-src="{{loginData.user_thum}}" alt="{{loginData.user_name}}" /></a>
+                <a menu-close href="#/app/useredit/{{loginData.user_id}}"><img  ng-src="{{loginData.user_thum || 'logo.png'}}" alt="{{loginData.user_name}}" /></a>
                 <div class="menu_user_info">
                     <p class="menu_user_name positive">{{loginData.user_name}}</p>
-                    <p class="menu_user_vip">VIP</p>
+                    <p class="menu_user_vip" ng-show="!!loginData.user_vip">VIP</p>
+                    <p class="menu_user_vip" ng-show="!loginData.user_vip">审核中</p>
                     <p class="menu_user_phone">{{loginData.user_phone}}</p>
                 </div>
             </div>
