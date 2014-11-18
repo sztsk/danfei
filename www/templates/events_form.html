@@ -5,7 +5,7 @@
     </div>
 </ion-header-bar>
 <ion-content>
-    <form name="events_form" class="mod_form" ng-submit="eventsSubmit(events_form,image.resized)">
+    <form name="events_form" novalidate class="mod_form" ng-submit="eventsSubmit(events_form,image.resized)">
         <div class="list">
 
             <div class="upload">
@@ -23,9 +23,11 @@
                 </div>
             </div>
 
-            <label class="item item-input">
+            <label class="item item-text-wrap">
                 <span class="input-label">活动标题</span>
-                <input type="text" name="events_title" placeholder="活动简短标题" ng-model="data.events_title" required>
+                <!--<input type="text" name="events_title" placeholder="活动简短标题" ng-model="data.events_title" required>-->
+                <textarea rows="2" name="events_title" ng-model="data.events_title" msd-elastic="\n" placeholder="活动简短标题" maxlength="30"  required>
+                </textarea>
                 <input type="hidden" name="events_id" value="{{data.events_id}}" />
                 <i class="icon ion-checkmark-circled balanced" ng-show="events_form.events_title.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="events_form.events_title.$invalid && events_form.events_title.$dirty"></i>
@@ -33,7 +35,9 @@
             <label class="item item-input">
                 <span class="input-label">城市</span>
                 <select ng-options="m.name as m.name for m in cityData"
-                        ng-model="data.events_city">
+                        ng-model="data.events_city"
+                        ng-init="data.events_city = cityData[0].name"
+                        >
                 </select>
             </label>
             <div class="item item-input">
@@ -75,32 +79,64 @@
             </div>
             <label class="item item-input">
                 <span class="input-label">活动名额</span>
-                <input type="text" name="events_quota" ng-model="data.events_quota" required />
+                <input type="text" name="events_quota" ng-model="data.events_quota" required placeholder="请直接填写人数" ng-pattern="/^([0-9]{1,4})?$/" maxlength="4" />
                 <i class="icon ion-checkmark-circled balanced" ng-show="events_form.events_quota.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="events_form.events_quota.$invalid && events_form.events_quota.$dirty"></i>
             </label>
-            <label class="item item-input">
+            <label class="item item-text-wrap">
                 <span class="input-label">分享嘉宾</span>
-                <input type="text" name="events_guests" ng-model="data.events_guests" required />
+                <textarea name="events_guests" msd-elastic="\n" ng-model="data.events_guests" required></textarea>
                 <i class="icon ion-checkmark-circled balanced" ng-show="events_form.events_guests.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="events_form.events_guests.$invalid && events_form.events_guests.$dirty"></i>
             </label>
             <label class="item item-text-wrap">
                 <span class="input-label">活动详情</span>
-                <textarea rows="3" ng-model="data.events_detail" required>
+                <textarea rows="3" ng-model="data.events_detail" msd-elastic="\n"  required>
                 </textarea>
                 <i class="icon ion-checkmark-circled balanced" ng-show="events_form.events_detail.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="events_form.events_detail.$invalid && events_form.events_detail.$dirty"></i>
             </label>
             <label class="item item-text-wrap">
                 <span class="input-label">地址及交通</span>
-                <textarea rows="3" ng-model="data.events_address" required>
+                <textarea rows="3" msd-elastic="\n"  ng-model="data.events_address" required>
                 </textarea>
                 <i class="icon ion-checkmark-circled balanced" ng-show="events_form.events_address.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="events_form.events_address.$invalid && events_form.events_address.$dirty"></i>
             </label>
 
         </div>
+
+        <div class="mod_form_error assertive"
+             ng-show="events_form.$invalid">
+
+            <p class="error"
+               ng-show="events_form.events_quota.$invalid && !events_form.events_quota.$pristine">
+                活动名额必须是数字！
+            </p>
+
+            <p class="error"
+               ng-show="events_form.events_title.$invalid && !events_form.events_title.$dirty && submit">
+                活动标题必须填写
+            </p>
+            <p class="error"
+               ng-show="events_form.datepicker.$invalid && !events_form.datepicker.$dirty && submit">
+                活动时间必须填写
+            </p>
+            <p class="error"
+               ng-show="events_form.events_quota.$invalid && !events_form.events_quota.$dirty && submit">
+                活动名额必须填写
+            </p>
+            <p class="error"
+               ng-show="events_form.events_detail.$invalid && !events_form.events_detail.$dirty && submit">
+                活动详情必须填写
+            </p>
+            <p class="error"
+               ng-show="events_form.events_address.$invalid && !events_form.events_address.$dirty && submit">
+                地址及交通必须填写
+            </p>
+        </div>
+
+
         <div class="padding">
             <button class="button button-block button-positive" type="submit">{{events_btn}}</button>
         </div>

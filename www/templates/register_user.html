@@ -5,24 +5,24 @@
     </div>
 </ion-header-bar>
 <ion-content>
-    <form name="signup_form" class="mod_form"  ng-submit="registerUser(signup_form)">
+    <form name="signup_form" novalidate class="mod_form"  ng-submit="registerUser(signup_form)">
         <div class="list">
             <label class="item item-input">
                 <span class="input-label">手机号码</span>
-                <input type="tel" name="user_phone" placeholder="用于登录或找回密码" ng-model="data.user_phone" required ng-pattern="/^([0-9]{11})?$/" maxlength="11">
+                <input type="tel" name="user_phone" placeholder="用于登录或找回密码" ng-model="data.user_phone" ng-required="true" ng-pattern="/^([0-9]{11})?$/" maxlength="11" >
                 <!--/^[0-9]+$/-->
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_phone.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_phone.$invalid && signup_form.user_phone.$dirty"></i>
             </label>
             <label class="item item-input">
                 <span class="input-label">密码</span>
-                <input type="password" name="user_password" placeholder="登录网站的密码" ng-model="data.user_password" required>
+                <input type="password" name="user_password" placeholder="登录网站的密码" ng-model="data.user_password" ng-required="true">
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_password.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_password.$invalid && signup_form.user_password.$dirty"></i>
             </label>
             <label class="item item-input">
                 <span class="input-label">RTX英文名</span>
-                <input type="text" name="user_rtx" placeholder="入职时候的rtx名字" ng-model="data.user_rtx" required ng-pattern="/^([a-zA-Z])+$/">
+                <input type="text" name="user_rtx" placeholder="入职时候的rtx名字" ng-model="data.user_rtx" ng-required="true" ng-pattern="/^([a-zA-Z])+$/">
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_rtx.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_rtx.$invalid && signup_form.user_rtx.$dirty"></i>
 
@@ -30,13 +30,13 @@
 
             <label class="item item-input">
                 <span class="input-label">用户昵称</span>
-                <input type="text" placeholder="勿写真实姓名 展示在人才库中" ng-model="data.user_nice_name" name="user_nice_name" required>
+                <input type="text" placeholder="勿写真实姓名 展示在人才库中" ng-model="data.user_nice_name" name="user_nice_name" ng-required="true">
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_nice_name.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_nice_name.$invalid && signup_form.user_nice_name.$dirty"></i>
             </label>
             <label class="item item-input">
                 <span class="input-label">真实姓名</span>
-                <input type="text" placeholder="真实姓名" ng-model="data.user_name" name="user_name" required ng-pattern="/^[\u0391-\uFFE5]+$/">
+                <input type="text" placeholder="真实姓名" ng-model="data.user_name" name="user_name" ng-required="true" ng-pattern="/^[\u0391-\uFFE5]+$/">
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_name.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_name.$invalid && signup_form.user_name.$dirty"></i>
             </label>
@@ -47,20 +47,20 @@
                        ng-model="data.user_leave_time"
                        name="user_leave_time"
                        ng-click="opendateModal()"
-                       readonly required>
-                <!--<input type="date" placeholder="离职日期" name="user_leave_time" ng-model="data.user_leave_time" required>-->
+                       readonly ng-required="true">
+                <!--<input type="date" placeholder="离职日期" name="user_leave_time" ng-model="data.user_leave_time" ng-required="true">-->
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_leave_time.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_leave_time.$invalid && signup_form.user_leave_time.$dirty"></i>
             </label>
             <label class="item item-input">
                 <span class="input-label">单飞部门</span>
-                <input type="text" placeholder="离职时所在的部门" name="user_leave_department" ng-model="data.user_leave_department" required>
+                <input type="text" placeholder="离职时所在的部门" name="user_leave_department" ng-model="data.user_leave_department" ng-required="true">
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_leave_department.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_leave_department.$invalid && signup_form.user_leave_department.$dirty"></i>
             </label>
             <label class="item item-input">
                 <span class="input-label">部门GM</span>
-                <input type="text" placeholder="离职时部门GM名字" name="user_leader" ng-model="data.user_leader" required>
+                <input type="text" placeholder="离职时部门GM名字" name="user_leader" ng-model="data.user_leader" ng-required="true">
                 <i class="icon ion-checkmark-circled balanced" ng-show="signup_form.user_leader.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="signup_form.user_leader.$invalid && signup_form.user_leader.$dirty"></i>
             </label>
@@ -73,9 +73,10 @@
         <div class="mod_form_error assertive"
              ng-show="signup_form.$invalid">
             <p class="error"
-                   ng-show="signup_form.user_phone.$invalid && !signup_form.user_phone.$pristine">
+               ng-show="signup_form.user_phone.$invalid && !signup_form.user_phone.$pristine">
                 手机号码必须是11位数字
             </p>
+
             <p class="error"
                ng-show="signup_form.user_rtx.$invalid && !signup_form.user_rtx.$pristine">
                 RTX名字必须是英文
@@ -83,7 +84,44 @@
             <p class="error"
                    ng-show="signup_form.user_name.$invalid && !signup_form.user_name.$pristine">
             姓名必须是中文
-        </p>
+            </p>
+
+            <p class="error"
+               ng-show="signup_form.user_phone.$invalid && !signup_form.user_phone.$dirty && submit">
+                手机号码必须填写
+            </p>
+            <p class="error"
+               ng-show="signup_form.user_password.$invalid && !signup_form.user_password.$dirty && submit">
+                密码必须填写
+            </p>
+            <p class="error"
+               ng-show="signup_form.user_rtx.$invalid && !signup_form.user_rtx.$dirty && submit">
+                RTX英文名必须填写
+            </p>
+            <p class="error"
+               ng-show="signup_form.user_nice_name.$invalid && !signup_form.user_nice_name.$dirty && submit">
+                用户昵称必须填写
+            </p>
+            <p class="error"
+               ng-show="signup_form.user_phone.$invalid && !signup_form.user_phone.$dirty && submit">
+                手机号码必须填写
+            </p>
+            <p class="error"
+               ng-show="signup_form.user_name.$invalid && !signup_form.user_name.$dirty && submit">
+                真实姓名必须填写
+            </p>
+            <p class="error"
+               ng-show="signup_form.user_leave_time.$invalid && !signup_form.user_leave_time.$dirty && submit">
+                单飞时间必须填写
+            </p>
+            <p class="error"
+               ng-show="signup_form.user_leave_department.$invalid && !signup_form.user_leave_department.$dirty && submit">
+                单飞部门必须填写
+            </p>
+            <p class="error"
+               ng-show="signup_form.user_leader.$invalid && !signup_form.user_leader.$dirty && submit">
+                部门GM必须填写
+            </p>
         </div>
         <div class="padding">
             <button class="button button-block button-positive" type="submit">注册</button>

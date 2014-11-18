@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['imageupload','pickadate'])
+angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic'])
 
     .controller('AppCtrl', function ($scope, $state,$stateParams,$ionicModal,$rootScope, loginData,$ionicLoading,$location, restApi, cityData,salaryData,eduData,experienceData,timeData,jobsData) {
 // Create the login modal that we will use later
@@ -475,13 +475,14 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         //关闭页面
         $scope.closePop = function () {
             $state.go('app.tabs.events');
-        }
+        };
 
         //提交表单
         $scope.eventsSubmit = function(events_form,image){
             //console.log(image);
-            
+
             if (events_form.$valid) {
+                $scope.submit = false;
                 //userId 在外层control
                 $scope.data.events_user_id = loginData.getUserId();
                 image && ($scope.data.image = image.dataURL);
@@ -500,6 +501,8 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                         alert(data.message);
                     }
                 })
+            }else{
+                $scope.submit = true;
             }
         };
 
@@ -586,6 +589,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         //提交表单
         $scope.eventsSubmit = function(events_form,image){
             if (events_form.$valid) {
+                $scope.submit = false;
                 //删除用户名 因为提交的时候不需要username
                 delete  $scope.data.user_name;
                 image && ($scope.data.image = image.dataURL);
@@ -603,6 +607,8 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                         alert(data.message);
                     }
                 })
+            }else{
+                $scope.submit = true;
             }
         };
 
@@ -1057,7 +1063,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
     })
 
     //发布创业项目
-    .controller('ProjectAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,stageData,$ionicLoading) {
+    .controller('ProjectAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,stageData,$ionicLoading,$ionicModal) {
         $scope.data = {};
         industryData.shift();
         cityData.shift();
@@ -1072,6 +1078,7 @@ angular.module('app.controllers', ['imageupload','pickadate'])
             //表单验证
             // TODO 详细验证信息需要设置
             if (project_form.$valid) {
+                $scope.submit = false;
                 $scope.data.project_user_id = loginData.getUserId();
                 image && ($scope.data.image = image.dataURL);
                 restApi.Project.save($scope.data, function (data) {
@@ -1083,12 +1090,32 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                     }
 
                 })
+            }else{
+                $scope.submit = true;
             }
         };
 
         $scope.closePage = function(){
-            $state.go('app.tabs.servicesmy');
-        }
+            $state.go('app.tabs.projectmy');
+        };
+
+
+        $ionicModal.fromTemplateUrl('templates/datemodal.html',
+            function(modal) {
+                $scope.datemodal = modal;
+            },
+            {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }
+        );
+        $scope.opendateModal = function(type) {
+            $scope.datemodal.show();
+        };
+        $scope.closedateModal = function(modal) {
+            $scope.datemodal.hide();
+            $scope.data.project_date = modal;
+        };
     })
 
     .controller('ProjectEditCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData,stageData,$ionicLoading) {
@@ -1357,11 +1384,13 @@ angular.module('app.controllers', ['imageupload','pickadate'])
         $ionicLoading.hide();
         //注册用户
         $scope.registerUser = function (signup_form) {
-            //console.log($scope.data);
+            console.log(signup_form);
+
             //表单验证
             // TODO 详细验证信息需要设置
             if (signup_form.$valid) {
                 $scope.data.user_type = 1;//个人
+                $scope.submit = false;
                 restApi.Users.save($scope.data, function (data) {
                     if (data && !data.error) {
                         $scope.data.user_id = data.user_id;
@@ -1373,6 +1402,8 @@ angular.module('app.controllers', ['imageupload','pickadate'])
                     }
 
                 })
+            }else if(signup_form.$error.required){
+                $scope.submit = true;
             }
         };
 
