@@ -72,12 +72,13 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
         });
 
 
-        $scope.cityData = cityData;
-        $scope.salaryData = salaryData;
-        $scope.eduData = eduData;
+        //为了不影响子controller的数据
+        $scope.cityData = angular.copy(cityData);
+        $scope.salaryData = angular.copy(salaryData);
+        $scope.eduData = angular.copy(eduData);
         $scope.experienceData = experienceData;
-        $scope.timeData = timeData;
-        $scope.jobsData = jobsData;
+        $scope.timeData = angular.copy(timeData);
+        $scope.jobsData = angular.copy(jobsData);
         //重新整理数据
         $scope.cityData[0].name = '不限';
         $scope.salaryData[0].name = '不限';
@@ -451,7 +452,7 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
     })
 
     //活动表格 新增
-    .controller('EventsAddFormCtrl', function ($scope,$http, restApi, $state, $ionicPopup,cityData,loginData,$ionicLoading,$ionicModal,timePicker) {
+    .controller('EventsAddFormCtrl', function ($scope,$http, restApi, $state, $ionicPopup,cityData,loginData,$ionicLoading,$ionicModal,timePicker,validation) {
         $scope.data = {};
         $scope.events_title = "发布活动";
         $scope.events_btn = '发布活动';
@@ -482,7 +483,6 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
             //console.log(image);
 
             if (events_form.$valid) {
-                $scope.submit = false;
                 //userId 在外层control
                 $scope.data.events_user_id = loginData.getUserId();
                 image && ($scope.data.image = image.dataURL);
@@ -502,7 +502,7 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
                     }
                 })
             }else{
-                $scope.submit = true;
+                alert(validation.events(events_form));
             }
         };
 
@@ -537,7 +537,7 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
     })
 
     //活动表格 修改
-    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,$ionicLoading,$ionicModal,timePicker) {
+    .controller('EventsEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,$ionicLoading,$ionicModal,timePicker,validation) {
 
         cityData.shift();
         $scope.cityData = cityData;
@@ -608,7 +608,7 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
                     }
                 })
             }else{
-                $scope.submit = true;
+                alert(validation.events(events_form));
             }
         };
 
@@ -809,19 +809,19 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
 
     })
 
-    .controller('ServicesAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,$ionicLoading) {
+    .controller('ServicesAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,$ionicLoading,validation) {
         $scope.data = {};
-        industryData.shift();
-        cityData.shift();
+        //industryData.shift();
+        //cityData.shift();
         $scope.industryData = industryData;
         $scope.cityData = cityData;
         $ionicLoading.hide();
         //发布创业服务
-        $scope.submitForm = function (signup_form,image) {
-            $ionicLoading.show();
+        $scope.submitForm = function (services_form,image) {
             //表单验证
             // TODO 详细验证信息需要设置
-            if (signup_form.$valid) {
+            if (services_form.$valid) {
+                $ionicLoading.show();
                 $scope.data.services_user_id = loginData.getUserId();
                 image && ($scope.data.image = image.dataURL);
                 restApi.Services.save($scope.data, function (data) {
@@ -834,6 +834,8 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
                     }
 
                 })
+            }else{
+                alert(validation.services(services_form))
             }
         };
         $scope.closePage = function(){
@@ -842,9 +844,9 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
     })
 
     //活动表格 修改
-    .controller('ServicesEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData,$ionicLoading) {
-        cityData.shift();
-        industryData.shift();
+    .controller('ServicesEditFormCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData,$ionicLoading,validation) {
+        //cityData.shift();
+        //industryData.shift();
         $scope.cityData = cityData;
         $scope.industryData = industryData;
         $scope.form_title = '修改创业服务';
@@ -858,11 +860,13 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
         });
 
         //提交表单
-        $scope.submitForm = function(events_form,image){
-            if (events_form.$valid) {
+        $scope.submitForm = function(services_form,image){
+            if (services_form.$valid) {
+                $ionicLoading.show();
                 image && ($scope.data.image = image.dataURL);
                 //删除用户名 因为提交的时候不需要username
                 restApi.Services.update($scope.data, function (data) {
+                    $ionicLoading.hide();
                     if (data && !data.error) {
                         $ionicPopup.alert({
                             title: '提示!',
@@ -875,6 +879,8 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
                         alert(data.message);
                     }
                 })
+            }else{
+                alert(validation.services(services_form))
             }
         };
 
@@ -1063,22 +1069,20 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
     })
 
     //发布创业项目
-    .controller('ProjectAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,stageData,$ionicLoading,$ionicModal) {
+    .controller('ProjectAddCtrl', function ($scope, $state, restApi, loginData,industryData,cityData,stageData,$ionicLoading,$ionicModal,validation) {
         $scope.data = {};
-        industryData.shift();
-        cityData.shift();
-        stageData.shift();
+        //industryData.shift();
+        //cityData.shift();
+        //stageData.shift();
         $scope.industryData = industryData;
         $scope.cityData = cityData;
         $scope.stageData = stageData;
         $ionicLoading.hide();
         //发布创业服务
         $scope.submitForm = function (project_form,image) {
-            //console.log($scope.data);
             //表单验证
             // TODO 详细验证信息需要设置
             if (project_form.$valid) {
-                $scope.submit = false;
                 $scope.data.project_user_id = loginData.getUserId();
                 image && ($scope.data.image = image.dataURL);
                 restApi.Project.save($scope.data, function (data) {
@@ -1091,7 +1095,7 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
 
                 })
             }else{
-                $scope.submit = true;
+                alert(validation.project(project_form));
             }
         };
 
@@ -1118,10 +1122,10 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
         };
     })
 
-    .controller('ProjectEditCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData,stageData,$ionicLoading) {
-        cityData.shift();
-        industryData.shift();
-        stageData.shift();
+    .controller('ProjectEditCtrl', function ($scope, restApi,$state, loginData, $stateParams,$location,$ionicPopup,cityData,industryData,stageData,$ionicLoading,validation) {
+        //cityData.shift();
+        //industryData.shift();
+        //stageData.shift();
         $scope.cityData = cityData;
         $scope.industryData = industryData;
         $scope.stageData = stageData;
@@ -1137,6 +1141,7 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
 
         //提交表单
         $scope.submitForm = function(project_form,image){
+
             if (project_form.$valid) {
                 $ionicLoading.show();
                 image && ($scope.data.image = image.dataURL);
@@ -1154,6 +1159,8 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
                         alert(data.message);
                     }
                 })
+            }else{
+                alert(validation.project(project_form));
             }
         };
 
@@ -1377,20 +1384,17 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
         }
     })
 
-    .controller('RegisterCtrl', function ($scope, $location, $state, restApi, loginData,cityData,$ionicLoading,$ionicModal) {
+    .controller('RegisterCtrl', function ($scope, $location, $state, restApi, loginData,cityData,$ionicLoading,$ionicModal,validation) {
         $scope.data = {};
         cityData.shift();
         $scope.cityData = cityData;
         $ionicLoading.hide();
         //注册用户
         $scope.registerUser = function (signup_form) {
-            console.log(signup_form);
-
             //表单验证
             // TODO 详细验证信息需要设置
             if (signup_form.$valid) {
                 $scope.data.user_type = 1;//个人
-                $scope.submit = false;
                 restApi.Users.save($scope.data, function (data) {
                     if (data && !data.error) {
                         $scope.data.user_id = data.user_id;
@@ -1402,8 +1406,8 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
                     }
 
                 })
-            }else if(signup_form.$error.required){
-                $scope.submit = true;
+            }else{
+                alert(validation.signup(signup_form))
             }
         };
 
@@ -1453,13 +1457,14 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
         }
     })
 
-    .controller('CvFormCtrl', function ($scope, $state, restApi, loginData,cityData,jobsData,eduData,salaryData,sexData,experienceData,$ionicLoading) {
+    .controller('CvFormCtrl', function ($scope, $state, restApi, loginData,cityData,jobsData,eduData,salaryData,sexData,experienceData,$ionicLoading,$ionicModal,validation) {
         var userId = loginData.getUserId();
         $scope.event_title = "我的简历";
         $scope.data = {};
-        cityData.shift();
+        //cityData.shift();
         $scope.cityData = cityData;
         $scope.jobsData = jobsData;
+
         $scope.eduData = eduData;
         $scope.salaryData = salaryData;
         $scope.sexData = sexData;
@@ -1473,6 +1478,23 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
             $ionicLoading.hide();
         });
 
+        $ionicModal.fromTemplateUrl('templates/datemodal.html',
+            function(modal) {
+                $scope.datemodal = modal;
+            },
+            {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }
+        );
+        $scope.opendateModal = function(type) {
+            $scope.datemodal.show();
+        };
+        $scope.closedateModal = function(modal) {
+            $scope.datemodal.hide();
+            $scope.data.cv_birth = modal;
+        };
+
         $scope.submitForm = function (cv_form,image) {
             //console.log($scope.data);
             //表单验证
@@ -1480,24 +1502,30 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
             if (cv_form.$valid) {
                 $scope.data.cv_user_id = userId;
                 image && ($scope.data.image = image.dataURL);
+                $ionicLoading.show();
                 if($scope.edit){
                     restApi.Cv.update($scope.data, function (data) {
+                        $ionicLoading.hide();
                         if (data && !data.error) {
-                            $state.go('app.tabs.cv2');
+                            alert('我的简历修改成功！');
+                            //$state.go('app.tabs.cv2');
                         } else {
                             alert(data.message);
                         }
                     })
                 }else{
                     restApi.Cv.save($scope.data, function (data) {
+                        $ionicLoading.hide();
                         if (data && !data.error) {
-                            $state.go('app.tabs.cv2');
+                            //$state.go('app.tabs.cv2');
+                            alert('我的简历保存成功！')
                         } else {
                             alert(data.message);
                         }
                     })
                 }
-
+            }else{
+                alert(validation.cv(cv_form));
             }
         };
 

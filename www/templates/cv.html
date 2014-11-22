@@ -5,12 +5,12 @@
     </div>
 </ion-header-bar>
 <ion-content>
-    <form name="cv_form"  ng-submit="submitForm(cv_form,images)">
+    <form name="cv_form" novalidate  ng-submit="submitForm(cv_form,images)">
         <div class="list">
             <div class="upload">
                 <div class="upload_hd">真实照片</div>
                 <div class="upload_bd">
-                    <img ng-model="image" ng-src="{{image.resized.dataURL || editimage}}" src="./img/upload.jpg"/>
+                    <img ng-model="image" ng-src="{{image.resized.dataURL || editimage|| './img/upload.jpg'}}" src="./img/upload.jpg"/>
                     <input type="file"
                            class="upload_inp"
                            accept="image/*"
@@ -23,15 +23,16 @@
             </div>
             <label class="item item-input">
                 <span class="input-label">英文名</span>
-                <input type="text" placeholder="英文名" ng-model="data.cv_en_name" requiredrequired>
+                <input type="text" placeholder="英文名" name="cv_en_name" ng-model="data.cv_en_name" required>
             </label>
             <label class="item item-input">
                 <span class="input-label">中文名</span>
-                <input type="text" placeholder="中文名" ng-model="data.cv_ch_name" requiredrequired>
+                <input type="text" placeholder="中文名" name="cv_ch_name" ng-model="data.cv_ch_name" required>
             </label>
             <label class="item item-input">
                 <span class="input-label">性别</span>
                 <select ng-options="m.name as m.name for m in sexData"
+                        name="cv_sex"
                         ng-model="data.cv_sex"
                         ng-init="data.cv_sex = sexData[0].name"
                         ng-change="changeSex(data.cv_sex)">
@@ -39,76 +40,88 @@
             </label>
             <label class="item item-input">
                 <span class="input-label">出生年月</span>
-                <input type="date" placeholder="出生年月" ng-model="data.cv_birth" requiredrequired>
+                <input type="text"
+                       placeholder="日期"
+                       ng-model="data.cv_birth"
+                       name="cv_birth"
+                       ng-click="opendateModal()"
+                       readonly required>
             </label>
             <label class="item item-input">
                 <span class="input-label">籍贯</span>
-                <input type="text" placeholder="籍贯" ng-model="data.cv_birthcity" requiredrequired>
+                <input type="text" placeholder="籍贯" name="cv_birthcity" ng-model="data.cv_birthcity" required>
             </label>
             <label class="item item-input">
                 <span class="input-label">目前所在地</span>
                 <select ng-options="m.name as m.name for m in cityData"
                         ng-model="data.cv_city_now"
-                        ng-init="data.cv_city_now = cityData[0].name">
+                        name="cv_city_now"
+                        ng-init="data.cv_city_now = cityData[0].name" required>
                 </select>
             </label>
             <label class="item item-input">
                 <span class="input-label">期望工作地</span>
                 <select ng-options="m.name as m.name for m in cityData"
                         ng-model="data.cv_city_hope"
-                        ng-init="data.cv_city_hope = cityData[0].name">
+                        name="cv_city_hope"
+                        ng-init="data.cv_city_hope = cityData[0].name" required>
                 </select>
             </label>
             <label class="item item-input">
                 <span class="input-label">期望职位</span>
                 <select ng-options="m.name as m.name for m in jobsData"
                         ng-model="data.cv_job"
-                        ng-init="data.cv_job = jobsData[0].name">
+                        name="cv_job"
+                        ng-init="data.cv_job = jobsData[0].name" required>
                 </select>
             </label>
             <label class="item item-input">
                 <span class="input-label">期望薪酬</span>
                 <select ng-options="m.name as m.name for m in salaryData"
                         ng-model="data.cv_salary"
+                        name="cv_salary"
                         ng-init="data.cv_salary = salaryData[0].name"
-                        ng-change="changeSalary(data.cv_salary)">
+                        ng-change="changeSalary(data.cv_salary)" required>
                 </select>
             </label>
             <label class="item item-input">
                 <span class="input-label">工作年限</span>
                 <select ng-options="m.name as m.name for m in experienceData"
                         ng-model="data.cv_jobs_year"
+                        name="cv_jobs_year"
                         ng-init="data.cv_jobs_year = experienceData[0].name"
-                        ng-change="changeExperience(data.cv_jobs_year)">
+                        ng-change="changeExperience(data.cv_jobs_year)" required>
                 </select>
             </label>
             <label class="item item-input">
                 <span class="input-label">最高学历</span>
                 <select ng-options="m.name as m.name for m in eduData"
                         ng-model="data.cv_edu_top"
+                        name="cv_edu_top"
                         ng-init="data.cv_edu_top = eduData[0].name"
-                        ng-change="changeEdu(data.cv_edu_top)">
+                        ng-change="changeEdu(data.cv_edu_top)" required>
                 </select>
             </label>
             <label class="item item-input">
                 <span class="input-label">邮箱</span>
-                <input type="email" placeholder="邮箱" ng-model="data.cv_email" requiredrequired>
+                <input type="email" placeholder="邮箱" name="cv_email" ng-model="data.cv_email" required>
             </label>
             <label class="item item-input">
                 <span class="input-label">QQ</span>
-                <input type="number" placeholder="QQ" ng-model="data.cv_qq" requiredrequired>
+                <input type="tel" placeholder="QQ" name="cv_qq" ng-model="data.cv_qq" required ng-pattern="/^([0-9]{1,13})?$/" maxlength="13">
             </label>
             <label class="item item-input">
                 <span class="input-label">微信号</span>
-                <input type="text" placeholder="微信号" ng-model="data.cv_wx" requiredrequired>
+                <input type="text" placeholder="微信号" name="cv_wx" ng-model="data.cv_wx" required>
             </label>
             <label class="item item-input">
                 <span class="input-label">教育背景</span>
-                <input type="text" placeholder="您的真实姓名" ng-model="data.cv_education" requiredrequired>
+                <input type="text" placeholder="教育背景" name="cv_education" ng-model="data.cv_education" required>
             </label>
         </div>
         <div class="padding">
-            <button class="button button-block button-positive" type="submit">保存，并下一步</button>
+            <button class="button button-block button-positive" type="submit">保存</button>
+            <!--，并下一步-->
         </div>
     </form>
 </ion-content>

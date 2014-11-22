@@ -59,7 +59,7 @@
                 '<a href="" class="pickadate-next" ng-click="changeMonth(1)" ng-show="allowNextMonth">下一月</a>' +
               '</div>'+
               '<h3 class="pickadate-centered-heading">' +
-                '{{currentDate | date:"yyyy年MM月"}}' +
+                '年份：<select ng-change="changeYear(year)" ng-init="year = yearData[0]" ng-model="year"><option ng-value="2014">2014年</option><option ng-value="2013">2013年</option><option  ng-value="2012">2012年</option><option ng-value="2011">2011年</option></select>' +
               '</h3>' +
             '</div>' +
             '<div class="pickadate-body">' +
@@ -156,6 +156,16 @@
             currentDate.setMonth(currentDate.getMonth() + offset);
             scope.render(currentDate);
           };
+
+            scope.changeYear = function(year){
+                currentDate.setDate(1);
+                currentDate.setYear(year);
+                console.log(currentDate);
+                
+                scope.render(currentDate);
+            };
+            
+            
 
           function isDateDisabled(dateObj) {
             return (/pickadate-disabled/.test(dateObj.className));

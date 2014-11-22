@@ -529,6 +529,102 @@ angular.module('app.services', ['ngResource','ngStorage'])
     .service('timePicker',function(){
         return ['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00']
     })
+
+    //表单验证
+    .factory('validation', function () {
+        return {
+            events : function(events_form){
+
+                if(events_form.events_quota.$invalid && !events_form.events_quota.$pristine){
+                    return '活动名额必须是数字！';
+                }else if(events_form.events_title.$invalid && !events_form.events_title.$dirty){
+                    return '活动标题必须填写';
+                }else if(events_form.datepicker.$invalid && !events_form.datepicker.$dirty){
+                    return '活动时间必须填写';
+                }else if(events_form.events_quota.$invalid && !events_form.events_quota.$dirty){
+                    return '活动名额必须填写';
+                }else if(events_form.events_detail.$invalid && !events_form.events_detail.$dirty){
+                    return '活动详情必须填写';
+                }else if(events_form.events_address.$invalid && !events_form.events_address.$dirty){
+                    return '地址及交通必须填写';
+                }
+            },
+            signup : function(signup_form){
+                if(signup_form.user_phone.$invalid && !signup_form.user_phone.$pristine){
+                    return '手机号码必须是11位数字！';
+                }else if(signup_form.user_rtx.$invalid && !signup_form.user_rtx.$pristine){
+                    return 'RTX名字必须是英文';
+                }else if(signup_form.user_name.$invalid && !signup_form.user_name.$pristine){
+                    return '姓名必须是中文';
+                }else if(signup_form.user_phone.$invalid && !signup_form.user_phone.$dirty){
+                    return '手机号码必须填写';
+                }else if(signup_form.user_password.$invalid && !signup_form.user_password.$dirty){
+                    return '密码必须填写';
+                }else if(signup_form.user_rtx.$invalid && !signup_form.user_rtx.$dirty){
+                    return 'RTX英文名必须填写';
+                }else if(signup_form.user_nice_name.$invalid && !signup_form.user_nice_name.$dirty){
+                    return '用户昵称必须填写';
+                }else if(signup_form.user_name.$invalid && !signup_form.user_name.$dirty){
+                    return '真实姓名必须填写';
+                }else if(signup_form.user_leave_department.$invalid && !signup_form.user_leave_department.$dirty){
+                    return '单飞部门必须填写';
+                }else if(signup_form.user_leader.$invalid && !signup_form.user_leader.$dirty){
+                    return '部门GM必须填写';
+                }
+            },
+            project : function(project_form){
+                if(project_form.project_financing.$invalid && !project_form.project_financing.$pristine){
+                    return '融资金额必须是数字！';
+                }else if(project_form.project_financing.$invalid && !project_form.project_financing.$dirty){
+                    return '融资金额必须填写！';
+                }else if(project_form.project_name.$invalid && !project_form.project_name.$dirty){
+                    return '项目名称必须填写！';
+                }else if(project_form.project_founder.$invalid && !project_form.project_founder.$dirty){
+                    return '创始人必须填写！';
+                }else if(project_form.project_founder_intro.$invalid && !project_form.project_founder_intro.$dirty){
+                    return '创始人介绍必须填写！';
+                }else if(project_form.project_user_num.$invalid && !project_form.project_user_num.$dirty){
+                    return '团队人数必须填写！';
+                }else if(project_form.datepicker.$invalid && !project_form.datepicker.$dirty){
+                    return '创业时间必须填写！';
+                }else if(project_form.project_brief.$invalid && !project_form.project_brief.$dirty){
+                    return '一句话描述项目 必须填写！';
+                }else if(project_form.project_intro.$invalid && !project_form.project_intro.$dirty){
+                    return '项目介绍必须填写！';
+                }
+            },
+            services : function(services_form){
+                if(services_form.services_organization_name.$invalid && !services_form.services_organization_name.$dirty){
+                    return '组织名称必须填写！';
+                }else if(services_form.services_content.$invalid && !services_form.services_content.$dirty){
+                    return '可提供的服务必须填写！';
+                }else if(services_form.services_client.$invalid && !services_form.services_client.$dirty){
+                    return '代表客户必须填写！';
+                }else if(services_form.services_organization_intro.$invalid && !services_form.services_organization_intro.$dirty){
+                    return '组织简介必须填写！';
+                }
+            },
+            cv : function(cv_form){
+                if(cv_form.cv_qq.$invalid && !cv_form.cv_qq.$pristine){
+                    return 'QQ必须是数字！';
+                }else if(cv_form.cv_en_name.$invalid && !cv_form.cv_en_name.$dirty){
+                    return '英文名必须填写！';
+                }else if(cv_form.cv_ch_name.$invalid && !cv_form.cv_ch_name.$dirty){
+                    return '中文名必须填写！';
+                }else if(cv_form.cv_birth.$invalid && !cv_form.cv_birth.$dirty){
+                    return '出生年月必须填写！';
+                }else if(cv_form.cv_email.$invalid && !cv_form.cv_email.$dirty){
+                    return '邮箱必须填写！';
+                }else if(cv_form.cv_qq.$invalid && !cv_form.cv_qq.$dirty){
+                    return 'QQ必须填写！';
+                }else if(cv_form.cv_wx.$invalid && !cv_form.cv_wx.$dirty){
+                    return '微信号必须填写！';
+                }else if(cv_form.cv_education.$invalid && !cv_form.cv_education.$dirty){
+                    return '教育背景必须填写！';
+                }
+            }
+        };
+    });
 ;
 
 

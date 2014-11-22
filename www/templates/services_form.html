@@ -5,12 +5,12 @@
     </div>
 </ion-header-bar>
 <ion-content>
-    <form name="services_form" class="mod_form"  ng-submit="submitForm(services_form,image)">
+    <form name="services_form" class="mod_form" novalidate ng-submit="submitForm(services_form,image)">
         <div class="list">
             <div class="upload">
                 <div class="upload_hd">组织LOGO</div>
                 <div class="upload_bd">
-                    <img ng-model="image" ng-src="{{image.resized.dataURL || editimage}}" src="./img/upload.jpg"/>
+                    <img ng-model="image" ng-src="{{image.resized.dataURL || editimage || './img/upload.jpg'}}" src="./img/upload.jpg"/>
                     <input type="file"
                            class="upload_inp"
                            accept="image/*"
@@ -47,13 +47,13 @@
             </label>
             <label class="item item-text-wrap">
                 <span class="input-label">可提供的服务</span>
-                <textarea rows="3" name="services_content" placeholder="可提供的服务" ng-model="data.services_content" required></textarea>
+                <textarea rows="3" msd-elastic="\n" name="services_content" placeholder="可提供的服务" ng-model="data.services_content" required></textarea>
                 <i class="icon ion-checkmark-circled balanced" ng-show="services_form.services_content.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="services_form.services_content.$invalid && services_form.services_content.$dirty"></i>
             </label>
             <label class="item item-text-wrap">
                 <span class="input-label">代表客户</span>
-                <textarea rows="3" name="services_client" placeholder="代表客户" ng-model="data.services_client" required></textarea>
+                <textarea rows="3" msd-elastic="\n" name="services_client" placeholder="代表客户" ng-model="data.services_client" required></textarea>
                 <i class="icon ion-checkmark-circled balanced" ng-show="services_form.services_client.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="services_form.services_client.$invalid && services_form.services_client.$dirty"></i>
 
@@ -61,7 +61,7 @@
 
             <label class="item item-text-wrap">
                 <span class="input-label">组织简介</span>
-                <textarea rows="5" name="services_organization_intro" placeholder="可提供的服务" ng-model="data.services_organization_intro" required></textarea>
+                <textarea rows="5" msd-elastic="\n" name="services_organization_intro" placeholder="可提供的服务" ng-model="data.services_organization_intro" required></textarea>
                 <i class="icon ion-checkmark-circled balanced" ng-show="services_form.services_organization_intro.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="services_form.services_organization_intro.$invalid && services_form.services_organization_intro.$dirty"></i>
             </label>

@@ -75,7 +75,7 @@
             </label>
             <label class="item item-input">
                 <span class="input-label">团队人数</span>
-                <input type="number" placeholder="写具体团队人数 数字" name="project_user_num" ng-model="data.project_user_num" required>
+                <input type="tel" placeholder="写具体团队人数 数字" name="project_user_num" ng-model="data.project_user_num" required>
                 <i class="icon ion-checkmark-circled balanced" ng-show="project_form.project_user_num.$valid"></i>
                 <i class="icon ion-close-circled assertive" ng-show="project_form.project_user_num.$invalid && project_form.project_user_num.$dirty"></i>
             </label>
@@ -111,45 +111,6 @@
                 <!--<i class="icon ion-close-circled assertive" ng-show="project_form.user_leader.$invalid && project_form.user_leader.$dirty"></i>-->
             <!--</label>-->
         </div>
-
-        <div class="mod_form_error assertive"
-             ng-show="project_form.$invalid">
-
-            <p class="error"
-               ng-show="project_form.project_financing.$invalid && !project_form.project_financing.$pristine">
-                融资金额必须是数字！
-            </p>
-
-            <p class="error"
-               ng-show="project_form.project_name.$invalid && !project_form.project_name.$dirty && submit">
-                项目名称必须填写
-            </p>
-            <p class="error"
-               ng-show="project_form.project_founder.$invalid && !project_form.project_founder.$dirty && submit">
-                创始人必须填写
-            </p>
-            <p class="error"
-               ng-show="project_form.project_founder_intro.$invalid && !project_form.project_founder_intro.$dirty && submit">
-                创始人介绍必须填写
-            </p>
-            <p class="error"
-               ng-show="project_form.project_user_num.$invalid && !project_form.project_user_num.$dirty && submit">
-                团队人数必须填写
-            </p>
-            <p class="error"
-               ng-show="project_form.datepicker.$invalid && !project_form.datepicker.$dirty && submit">
-                创业时间必须填写
-            </p>
-            <p class="error"
-               ng-show="project_form.project_brief.$invalid && !project_form.project_brief.$dirty && submit">
-                一句话描述项目 必须填写
-            </p>
-            <p class="error"
-               ng-show="project_form.project_intro.$invalid && !project_form.project_intro.$dirty && submit">
-                项目介绍必须填写
-            </p>
-        </div>
-
 
         <div class="padding">
             <button class="button button-block button-positive" type="submit">{{ form_btn ||  '发布项目'}}</button>

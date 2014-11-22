@@ -106,37 +106,6 @@
 
         </div>
 
-        <div class="mod_form_error assertive"
-             ng-show="events_form.$invalid">
-
-            <p class="error"
-               ng-show="events_form.events_quota.$invalid && !events_form.events_quota.$pristine">
-                活动名额必须是数字！
-            </p>
-
-            <p class="error"
-               ng-show="events_form.events_title.$invalid && !events_form.events_title.$dirty && submit">
-                活动标题必须填写
-            </p>
-            <p class="error"
-               ng-show="events_form.datepicker.$invalid && !events_form.datepicker.$dirty && submit">
-                活动时间必须填写
-            </p>
-            <p class="error"
-               ng-show="events_form.events_quota.$invalid && !events_form.events_quota.$dirty && submit">
-                活动名额必须填写
-            </p>
-            <p class="error"
-               ng-show="events_form.events_detail.$invalid && !events_form.events_detail.$dirty && submit">
-                活动详情必须填写
-            </p>
-            <p class="error"
-               ng-show="events_form.events_address.$invalid && !events_form.events_address.$dirty && submit">
-                地址及交通必须填写
-            </p>
-        </div>
-
-
         <div class="padding">
             <button class="button button-block button-positive" type="submit">{{events_btn}}</button>
         </div>
