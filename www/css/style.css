@@ -2,6 +2,7 @@
 /*===== 公共模块 =====*/
 ion-nav-view{background: #fff;}
 .hide{display: none;}
+.tabs-striped.tabs-stable .tab-item.activated, .tabs-striped.tabs-stable .tab-item.active, .tabs-striped.tabs-stable .tab-item.tab-item-active{border-color: #444}
 /*分享*/
 .mod_share a{color: #5a5a5a; text-decoration: none; display: block; height: 26px; line-height: 26px;}
 .mod_share a.selected,

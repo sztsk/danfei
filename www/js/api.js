@@ -116,6 +116,7 @@ angular.module('app.services', ['ngResource','ngStorage'])
             'query': { method: 'GET',isArray:true},
             'getOne':{method:'GET',params:{}},
             'getMin':{method:'GET',params:{cmd:'edit'}},
+            'zan':{method:'PATCH',params:{ cmd:'zan'}},
             'update':{method:'PATCH'},
             'save':{method:'POST'},
             'delete':{method:'DELETE'}

@@ -1293,7 +1293,7 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
         };
         //赞
         $scope.zanEvt = function(){
-            restApi.Cv.zan($stateParams, function (ajax) {
+            restApi.Users.zan($stateParams, function (ajax) {
                 $scope.data = ajax.data;
                 $scope.zan = true;
             })
