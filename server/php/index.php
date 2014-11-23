@@ -405,7 +405,7 @@ $app->get(
         $db = new DbHandler();
         $where = '';
         if($city != '全部地区'){
-            $where .= " AND user_city = '$city'";
+            $where .= " AND services_city = '$city'";
         };
         if($industry != '全部领域'){
             $where .= " AND services_industry = '$industry'";

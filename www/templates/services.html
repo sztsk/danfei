@@ -27,7 +27,7 @@
             <ion-item class="item mod_item" ng-repeat="item in data" href="#/app/tabs/services/{{item.services_id}}">
                 <div class="mod_item_info">
                     <div class="mod_item_col1">
-                        <img class="mod_item_img" ng-src="{{item.services_img}}" alt="组织LOGO 公司LOGO" />
+                        <img class="mod_item_img" ng-src="{{item.services_img || 'logo.png'}}" alt="组织LOGO 公司LOGO" />
                     </div>
                     <div class="mod_item_col2">
                         <h2 class="positive mod_item_tit">{{item.services_organization_name}} </h2>

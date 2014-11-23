@@ -341,7 +341,9 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
                 //判断是否已经报名
                 restApi.CheckIsJoin.query(join,function(data){
                     $scope.isjoin = data.data;
-                    $scope.joinBtnName = '已报名'
+                    if($scope.isjoin){
+                        $scope.joinBtnName = '已报名';
+                    }
                 });
                 //获取报名列表
                 //$scope.joinData = restApi.EventsJoin.query($stateParams);
@@ -379,7 +381,10 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
          */
         $scope.joinEvents = function(){
             if(userId){
-                restApi.EventsJoin.save(join);
+                restApi.EventsJoin.save(join,function(data){
+                    $scope.isjoin = true;
+                    $scope.joinBtnName = '已报名';
+                });
                 $ionicPopup.alert({
                     title: '提示',
                     template: '报名成功！'
@@ -675,6 +680,7 @@ angular.module('app.controllers', ['imageupload','pickadate','monospaced.elastic
         $scope.changeCity = function(city){
             $scope.selectedCity = city;
             $ionicLoading.show();
+            $scope.nodata = false;
             restApi.ServicesFilter.query({city:$scope.selectedCity.name,industry:$scope.selectedIndustry.name},function(ajax){
                 done(ajax);
             });
